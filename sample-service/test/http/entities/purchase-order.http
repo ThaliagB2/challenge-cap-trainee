@@ -1,0 +1,87 @@
+@baseUrl = http://localhost:4004/sample
+@productId = bf31a561-b426-40dc-950f-1b90772dce54
+@invalidProductId = 550e8400-e29b-41d4-a716-446655440004
+
+POST {{baseUrl}}/PurchaseOrders
+Content-Type: application/json
+Accept-Language: pt-BR
+Authorization: Basic dummy:dummy
+
+{
+    "date": "2025-01-01",
+    "items": [
+        {
+            "product_id": "{{productId}}",
+            "quantity": 5,
+            "price": 10
+        }
+    ]
+}
+
+
+### Items with invalid product id
+POST {{baseUrl}}/PurchaseOrders
+Content-Type: application/json
+Accept-Language: pt-BR
+Authorization: Basic dummy:dummy
+
+{
+    "date": "2025-01-01",
+    "items": [
+        {
+            "product_id": "{{invalidProductId}}",
+            "quantity": 5,
+            "price": 10
+        }
+    ]
+}
+
+### Items with mixed invalid and valid product id
+POST {{baseUrl}}/PurchaseOrders
+Content-Type: application/json
+Accept-Language: pt-BR
+Authorization: Basic dummy:dummy
+
+{
+    "date": "2025-01-01",
+    "items": [
+        {
+            "product_id": "{{invalidProductId}}",
+            "quantity": 5,
+            "price": 10
+        },
+        {
+            "product_id": "{{productId}}",
+            "quantity": 5,
+            "price": 10
+        }
+    ]
+}
+
+### Without items
+POST {{baseUrl}}/PurchaseOrders
+Content-Type: application/json
+Accept-Language: pt-BR
+Authorization: Basic dummy:dummy
+
+{
+    "date": "2025-01-01",
+    "items": []
+}
+
+### With invalid quanity and price
+POST {{baseUrl}}/PurchaseOrders
+Content-Type: application/json
+Accept-Language: pt-BR
+Authorization: Basic dummy:dummy
+
+{
+    "date": "2025-01-01",
+    "items": [
+        {
+            "product_id": "{{productId}}",
+            "quantity": 0,
+            "price": 0
+        }
+    ]
+}

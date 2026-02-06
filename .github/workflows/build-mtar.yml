@@ -1,0 +1,97 @@
+name: Build MTAR (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      node_version:
+        description: 'Node.js version to use'
+        required: false
+        default: '22.x'
+        type: string
+      artifact_name:
+        description: 'Name for the MTAR artifact'
+        required: false
+        default: 'mtar-build'
+        type: string
+      retention_days:
+        description: 'Days to retain the artifact'
+        required: false
+        default: 7
+        type: number
+    outputs:
+      artifact_name:
+        description: 'Name of the generated artifact'
+        value: ${{ jobs.build.outputs.artifact_name }}
+      mtar_file:
+        description: 'Name of the generated MTAR file'
+        value: ${{ jobs.build.outputs.mtar_file }}
+
+jobs:
+  build:
+    name: Build MTAR
+    runs-on: ubuntu-latest
+    
+    outputs:
+      artifact_name: ${{ steps.upload.outputs.artifact-id }}
+      mtar_file: ${{ steps.build-info.outputs.mtar_file }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node_version }}
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: |
+        echo "Installing project dependencies..."
+        yarn install --frozen-lockfile
+
+    - name: Install SAP CDS-DK locally
+      run: |
+        echo "Installing SAP CDS-DK locally for MBT compatibility..."
+        npm install @sap/cds-dk --save-dev
+        
+        # Verify installation
+        echo "Local CDS installed: $(npx cds --version)"
+
+    - name: Clean previous builds
+      run: |
+        echo "Cleaning previous builds..."
+        yarn clean
+
+    - name: Build MTAR
+      run: |
+        echo "Building MTAR package..."
+        yarn build
+
+    - name: Build information
+      id: build-info
+      run: |
+        echo "Collecting build information..."
+        MTAR_FILE=$(find mta_archives/ -name "*.mtar" -type f | head -1)
+        MTAR_NAME=$(basename "$MTAR_FILE")
+        
+        echo "Build completed successfully!"
+        echo "📦 MTAR file: $MTAR_NAME"
+        echo "Full path: $MTAR_FILE"
+        echo "Size: $(du -h "$MTAR_FILE" | cut -f1)"
+        
+        echo "mtar_file=$MTAR_NAME" >> $GITHUB_OUTPUT
+
+    - name: 📦 Upload MTAR artifact
+      id: upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact_name }}-${{ github.sha }}
+        path: mta_archives/*.mtar
+        retention-days: ${{ inputs.retention_days }}
+
+    - name: Build summary
+      run: |
+        echo "Build completed successfully!"
+        echo "📦 Artifact: ${{ inputs.artifact_name }}-${{ github.sha }}"
+        echo "Retention: ${{ inputs.retention_days }} days"

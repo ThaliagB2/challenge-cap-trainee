@@ -1,0 +1,87 @@
+name: Deploy to Cloud Foundry (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Target environment (development/production/quality)'
+        required: true
+        type: string
+      artifact_name:
+        description: 'Name of the MTAR artifact to deploy'
+        required: true
+        type: string
+      cf_retries:
+        description: 'Number of retries for CF deploy command'
+        required: false
+        default: 0
+        type: number
+    secrets:
+      cf_api_url:
+        description: 'Cloud Foundry API URL'
+        required: true
+      cf_username:
+        description: 'Cloud Foundry username'
+        required: true
+      cf_password:
+        description: 'Cloud Foundry password'
+        required: true
+      cf_space:
+        description: 'Cloud Foundry space'
+        required: true
+      cf_org:
+        description: 'Cloud Foundry organization'
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deployment Start
+      run: |
+        echo "Starting deployment to ${{ inputs.environment }}..."
+        echo "📦 Artifact: ${{ inputs.artifact_name }}"
+        echo "Environment: ${{ inputs.environment }}"
+        echo "Triggered by: ${{ github.actor }}"
+        echo "Commit: ${{ github.sha }}"
+        
+        if [ "${{ inputs.environment }}" = "production" ]; then
+          echo "⚠️  🚨 PRODUCTION DEPLOYMENT 🚨 ⚠️"
+        fi
+
+    - name: 📦 Download MTAR artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: ./mta_archives
+
+    - name: Setup CF CLI
+      uses: VAEES/github-actions-shared-tools/.github/actions/setup-cf-cli@main
+      with:
+        version: '8.7.10'
+
+    - name: Install CF MultiApps Plugin
+      run: |
+        cf install-plugin multiapps -f
+        echo "✅ MultiApps plugin installed"
+
+    - name: Login to Cloud Foundry
+      run: cf login -a ${{ secrets.cf_api_url }} -u ${{ secrets.cf_username }} -p ${{ secrets.cf_password }} -o ${{ secrets.cf_org }} -s ${{ secrets.cf_space }}
+
+    - name: Deploy to SAP BTP
+      run: cf deploy $(find ./mta_archives -name "*.mtar" -type f | head -1) -f --retries 0
+
+    - name: 📊 Deployment summary
+      id: deploy-result
+      run: |
+        echo "status=success" >> $GITHUB_OUTPUT
+        echo "✅ Deployment to ${{ inputs.environment }} completed successfully!"
+        echo "🎯 Environment: ${{ inputs.environment }}"
+        echo "👤 Deployed by: ${{ github.actor }}"

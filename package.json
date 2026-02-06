@@ -1,0 +1,24 @@
+{
+    "name": "{{app-name}}",
+    "version": "0.0.1",
+    "description": "A simple CAP project.",
+    "private": true,
+    "devDependencies": {
+        "mbt": "^1.2.18",
+        "npm-run-all": "^4.1.5",
+        "rimraf": "^6.0.1"
+    },
+    "scripts": {
+        "setup": "node scripts/setup-template.js",
+        "setup:alt": "node scripts/setup.js",
+        "bd": "npm-run-all clean build deploy",
+        "clean": "rimraf mta_archives",
+        "build": "mbt build --mtar {{app-name}}.mtar",
+        "build:cf": "npm-run-all build:cds build:apps",
+        "build:cds": "cds build --production",
+        "build:apps": "npm-run-all build:app-srv",
+        "build:app-srv": "cd {{app-name}} && yarn && yarn build:mta",
+        "deploy": "cf deploy mta_archives/{{app-name}}.mtar --retries 0",
+        "undeploy": "cf undeploy {{app-name}} --delete-services --delete-service-keys --delete-service-brokers"
+    }
+}

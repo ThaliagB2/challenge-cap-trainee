@@ -1,0 +1,86 @@
+name: Setup Template
+
+on:
+    push:
+        branches: [main]
+    create:
+
+jobs:
+    setup-template:
+        runs-on: ubuntu-latest
+        if: github.event_name == 'push' && github.run_number == 1 && github.repository != 'VAEES/ai-cap-clean-architecture-typescript-backend-template'
+        
+        steps:
+            - name: Check for ADMIN_TOKEN
+              run: |
+                if [ -z "${{ secrets.ADMIN_TOKEN }}" ]; then
+                  echo "❌ ADMIN_TOKEN não encontrado!"
+                  echo "📋 Para configurar:"
+                  echo "   1. Vá em Settings → Secrets and variables → Actions"
+                  echo "   2. Crie um novo secret chamado 'ADMIN_TOKEN'"
+                  echo "   3. Use um Personal Access Token com permissões de repo"
+                  echo "   4. Execute o workflow novamente"
+                  exit 1
+                fi
+                
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                token: ${{ secrets.ADMIN_TOKEN }}
+                
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: '22'
+                
+            - name: Replace project-name template variables
+              run: |
+                PROJECT_NAME="${{ github.event.repository.name }}"
+                echo "🔄 Iniciando substituição de {{project-name}} por: $PROJECT_NAME"
+                
+                # Substituir {{project-name}} em todos os arquivos relevantes
+                echo "📋 Arquivos que serão processados:"
+                find . -type f \( -name "*.json" -o -name "*.yaml" -o -name "*.yml" -o -name "*.md" \) \
+                  -not -path "./.git/*" -not -path "./node_modules/*" | sort
+                
+                echo ""
+                echo "🔧 Executando substituições..."
+                find . -type f \( -name "*.json" -o -name "*.yaml" -o -name "*.yml" -o -name "*.md" \) \
+                  -not -path "./.git/*" -not -path "./node_modules/*" | \
+                  xargs sed -i "s/{{project-name}}/$PROJECT_NAME/g"
+                
+                # Verificar se houve alterações
+                if git diff --quiet; then
+                    echo "ℹ️  Nenhuma alteração necessária"
+                else
+                    echo "✅ Alterações detectadas, fazendo commit..."
+                    git config --local user.email "action@github.com"
+                    git config --local user.name "GitHub Action"
+                    git add .
+                    git commit -m "🚀 refactor: Replace {{project-name}} with $PROJECT_NAME"
+                    git push
+                    echo "📤 Push realizado com sucesso!"
+                fi
+                
+            - name: Remove this workflow
+              run: |
+                echo "🧹 Removendo workflow de setup do template..."
+                if [ -f ".github/workflows/setup-template.yml" ]; then
+                    rm .github/workflows/setup-template.yml
+                    echo "✅ Arquivo .github/workflows/setup-template.yml removido"
+                else
+                    echo "⚠️  Arquivo já foi removido"
+                fi
+                
+                # Remover também o arquivo de instruções do token
+                if [ -f "SETUP-TOKEN.md" ]; then
+                    rm SETUP-TOKEN.md
+                    echo "✅ Arquivo SETUP-TOKEN.md removido"
+                fi
+                
+                git config --local user.email "action@github.com"
+                git config --local user.name "GitHub Action"
+                git add .
+                git commit -m "🧹 chore:Remove template setup workflow e arquivos de configuração"
+                git push
+                echo "🎉 Template configurado com sucesso! Repositório pronto para uso." 

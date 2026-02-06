@@ -1,0 +1,89 @@
+name: Quality Pipeline
+
+on:
+  push:
+    branches: [quality]
+  workflow_dispatch:
+    inputs:
+      deploy_type:
+        description: 'Choose action type'
+        required: true
+        default: 'build-only'
+        type: choice
+        options:
+        - build-only
+        - build-and-deploy
+
+jobs:
+  build:
+    name: Build MTAR for Quality
+    uses: ./.github/workflows/build-mtar.yml
+    with:
+      node_version: '22.x'
+      artifact_name: 'mtar-quality'
+      retention_days: 30
+
+  deploy:
+    name: Deploy to Quality
+    needs: build
+    if: |
+      (github.event_name == 'workflow_dispatch' && 
+       github.event.inputs.deploy_type == 'build-and-deploy' && 
+       github.event.inputs.confirmation == 'DEPLOY') ||
+      (github.event_name == 'push' && 
+       (github.ref == 'refs/heads/quality'))
+    uses: ./.github/workflows/deploy-to-cf.yml
+    with:
+      environment: 'quality'
+      artifact_name: 'mtar-quality-${{ github.sha }}'
+      cf_retries: 1
+    secrets:
+      cf_api_url: ${{ secrets.QUALITY_CF_API_URL }}
+      cf_username: ${{ secrets.QUALITY_CF_USERNAME }}
+      cf_password: ${{ secrets.QUALITY_CF_PASSWORD }}
+      cf_space: ${{ secrets.QUALITY_CF_SPACE }}
+      cf_org: ${{ secrets.QUALITY_CF_ORG }}
+
+  summary:
+    name: Pipeline Summary
+    runs-on: ubuntu-latest
+    needs: [build, deploy]
+    if: always()
+    steps:
+    - name: Quality Pipeline Summary
+      run: |
+        echo "QUALITY PIPELINE SUMMARY"
+        echo "==========================="
+        echo "Environment: Quality"
+        echo "Branch/Tag: ${{ github.ref_name }}"
+        echo "Triggered by: ${{ github.actor }}"
+        echo "Timestamp: $(date -u)"
+        echo ""
+        
+        # Build status
+        if [ "${{ needs.build.result }}" = "success" ]; then
+          echo "Build: SUCCESS"
+        else
+          echo "Build: FAILED"
+        fi
+        
+        # Deploy status
+        if [ "${{ needs.deploy.result }}" = "success" ]; then
+          echo "Deploy: SUCCESS"
+          echo "QUALITY DEPLOYMENT COMPLETED!"
+          echo "Quality environment is LIVE!"
+        elif [ "${{ needs.deploy.result }}" = "skipped" ]; then
+          echo "Deploy: SKIPPED"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ github.event.inputs.confirmation }}" != "DEPLOY" ]; then
+              echo "Reason: Missing confirmation (type 'DEPLOY')"
+            else
+              echo "Reason: Build-only selected"
+            fi
+          fi
+        else
+          echo "Deploy: FAILED"
+          echo "QUALITY DEPLOYMENT FAILED!"
+        fi
+        
+        echo "📦 Artifact: mtar-quality-${{ github.sha }}"

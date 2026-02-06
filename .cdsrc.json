@@ -1,0 +1,27 @@
+{
+    "build": {
+        "target": "gen",
+        "tasks": [
+            {
+                "for": "hana",
+                "src": "db",
+                "options": {
+                    "model": [
+                        "db",
+                        "{{app-name}}/src/main/routes"
+                    ]
+                }
+            },
+            {
+                "for": "nodejs",
+                "src": "{{app-name}}",
+                "options": {
+                    "model": [
+                        "db",
+                        "{{app-name}}/src/main/routes"
+                    ]
+                }
+            }
+        ]
+    }
+}

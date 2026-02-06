@@ -1,0 +1,57 @@
+name: Build Only (CI)
+
+on:
+  pull_request:
+    branches: [development]
+  workflow_dispatch:
+    inputs:
+      node_version:
+        description: 'Node.js version to use'
+        required: false
+        default: '22.x'
+        type: string
+      artifact_retention:
+        description: 'Days to retain the artifact'
+        required: false
+        default: 3
+        type: number
+
+jobs:
+  build:
+    name: Build MTAR (CI Only)
+    uses: ./.github/workflows/build-mtar.yml
+    with:
+      node_version: ${{ github.event.inputs.node_version || '22.x' }}
+      artifact_name: 'mtar-ci'
+      retention_days: ${{ github.event.inputs.artifact_retention || 3 }}
+
+  summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    steps:
+    - name: CI Build Summary
+      run: |
+        echo "BUILD ONLY PIPELINE SUMMARY"
+        echo "=========================="
+        echo "Purpose: Continuous Integration (No Deploy)"
+        echo "Branch: ${{ github.ref_name }}"
+        echo "Triggered by: ${{ github.actor }}"
+        echo "Node.js version: ${{ github.event.inputs.node_version || '22.x' }}"
+        echo "Timestamp: $(date -u)"
+        echo ""
+        
+        # Build status
+        if [ "${{ needs.build.result }}" = "success" ]; then
+          echo "Build: SUCCESS"
+          echo "📦 Artifact: mtar-ci-${{ github.sha }}"
+          echo "Retention: ${{ github.event.inputs.artifact_retention || 3 }} days"
+          echo ""
+          echo "✅ Build validation completed successfully!"
+          echo "Code is ready for deployment when needed."
+        else
+          echo "Build: FAILED"
+          echo "❌ Build validation failed!"
+          echo "Please check the build logs and fix issues before proceeding."
+        fi
