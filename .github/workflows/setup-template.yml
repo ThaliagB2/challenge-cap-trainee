@@ -36,9 +36,9 @@ jobs:
             - name: Replace project-name template variables
               run: |
                 PROJECT_NAME="${{ github.event.repository.name }}"
-                echo "🔄 Iniciando substituição de {{project-name}} por: $PROJECT_NAME"
+                echo "🔄 Iniciando substituição de challenge-cap-trainee por: $PROJECT_NAME"
                 
-                # Substituir {{project-name}} em todos os arquivos relevantes
+                # Substituir challenge-cap-trainee em todos os arquivos relevantes
                 echo "📋 Arquivos que serão processados:"
                 find . -type f \( -name "*.json" -o -name "*.yaml" -o -name "*.yml" -o -name "*.md" \) \
                   -not -path "./.git/*" -not -path "./node_modules/*" | sort
@@ -47,7 +47,7 @@ jobs:
                 echo "🔧 Executando substituições..."
                 find . -type f \( -name "*.json" -o -name "*.yaml" -o -name "*.yml" -o -name "*.md" \) \
                   -not -path "./.git/*" -not -path "./node_modules/*" | \
-                  xargs sed -i "s/{{project-name}}/$PROJECT_NAME/g"
+                  xargs sed -i "s/challenge-cap-trainee/$PROJECT_NAME/g"
                 
                 # Verificar se houve alterações
                 if git diff --quiet; then
@@ -57,7 +57,7 @@ jobs:
                     git config --local user.email "action@github.com"
                     git config --local user.name "GitHub Action"
                     git add .
-                    git commit -m "🚀 refactor: Replace {{project-name}} with $PROJECT_NAME"
+                    git commit -m "🚀 refactor: Replace challenge-cap-trainee with $PROJECT_NAME"
                     git push
                     echo "📤 Push realizado com sucesso!"
                 fi
