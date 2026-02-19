@@ -8,17 +8,17 @@
                 "options": {
                     "model": [
                         "db",
-                        "{{app-name}}/src/main/routes"
+                        "vet-clinic-service/src/main/routes"
                     ]
                 }
             },
             {
                 "for": "nodejs",
-                "src": "{{app-name}}",
+                "src": "vet-clinic-service",
                 "options": {
                     "model": [
                         "db",
-                        "{{app-name}}/src/main/routes"
+                        "vet-clinic-service/src/main/routes"
                     ]
                 }
             }
