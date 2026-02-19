@@ -8,11 +8,11 @@ export type PetProps = {
     owner_id: string;
 };
 
-export class Pet {
+export class PetModel {
     constructor(private props: PetProps) {}
 
     public static create(props: PetProps) {
-        return new Pet(props);
+        return new PetModel(props);
     }
 
     public get id(): string {

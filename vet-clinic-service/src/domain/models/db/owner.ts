@@ -6,11 +6,11 @@ export type OwnerProps = {
     email: string;
 };
 
-export class Owner {
+export class OwnerModel {
     constructor(private props: OwnerProps) {}
 
     public static create(props: OwnerProps) {
-        return new Owner(props);
+        return new OwnerModel(props);
     }
 
     public get id(): string {
