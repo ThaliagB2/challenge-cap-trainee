@@ -1,0 +1,9 @@
+ID,date,status,isEmergency,totalCost,notes,pet_ID,veterinarian_ID
+1,2026-02-01T10:00:00,SCHEDULED,false,100.00,Checkup,1,1
+2,2026-02-02T11:00:00,IN_PROGRESS,true,200.00,Emergency surgery,2,1
+3,2026-02-03T09:30:00,COMPLETED,false,150.00,Vaccination,3,2
+4,2026-02-04T14:00:00,CANCELLED,false,0.00,Cancelled by owner,4,2
+5,2026-02-05T15:00:00,SCHEDULED,false,120.00,General checkup,5,3
+6,2026-02-06T16:00:00,COMPLETED,false,180.00,Dental cleaning,6,3
+7,2026-02-07T13:00:00,IN_PROGRESS,true,250.00,Emergency treatment,7,1
+8,2026-02-08T12:00:00,SCHEDULED,false,90.00,Follow-up,8,2
