@@ -12,6 +12,10 @@ export type AppointmentProps = {
     procedures: ProcedureProps[];
 };
 
+export type AppointmentForCreateProps = Omit<AppointmentProps, 'id'> & {
+    id?: string;
+};
+
 export class AppointmentModel {
     constructor(private props: AppointmentProps) {}
 
