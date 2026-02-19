@@ -1,5 +1,5 @@
 _schema-version: 3.3.0
-ID: {{app-name}}
+ID: vet-clinic-service
 version: 0.0.1
 description: "A simple CAP project."
 parameters:
@@ -12,9 +12,9 @@ build-parameters:
         - yarn build:cf
 
 modules:
-  - name: {{app-name}}-srv
+  - name: vet-clinic-service-srv
     type: nodejs
-    path: gen/{{app-name}}
+    path: gen/vet-clinic-service
     parameters:
       instances: 1
       buildpack: nodejs_buildpack
@@ -22,21 +22,21 @@ modules:
     build-parameters:
       builder: custom
       commands:
-        - cp ../../{{app-name}}/.cdsrc.json .
+        - cp ../../vet-clinic-service/.cdsrc.json .
         - node srv/src/main/scripts/replace-csn-source.js
     provides:
-      - name: {{app-name}}-api
+      - name: vet-clinic-service-api
         properties:
-          {{app-name}}-url: ${default-url}
+          vet-clinic-service-url: ${default-url}
     properties:
       OPTIMIZE_MEMORY: true
     requires:
-      - name: {{app-name}}-db
-      - name: {{app-name}}-dest-service
-      - name: {{app-name}}-conn-service
-      - name: {{app-name}}-uaa
+      - name: vet-clinic-service-db
+      - name: vet-clinic-service-dest-service
+      - name: vet-clinic-service-conn-service
+      - name: vet-clinic-service-uaa
 
-  - name: {{app-name}}-db-deployer
+  - name: vet-clinic-service-db-deployer
     type: hdb
     path: gen/db
     build-parameters:
@@ -46,45 +46,45 @@ modules:
       buildpack: nodejs_buildpack
       memory: 256M
     requires:
-      - name: {{app-name}}-db
+      - name: vet-clinic-service-db
         properties:
           TARGET_CONTAINER: '~{hdi-container-name}'
 
 resources:
-  - name: {{app-name}}-db
+  - name: vet-clinic-service-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
       config:
-        schema: {{schema-name}}
+        schema: VET_CLINIC_SCHEMA
         makeUniqueName: false
     properties:
       hdi-container-name: '${service-name}'
       hdi-service-name: ${service-name}
 
-  - name: {{app-name}}-dest-service
+  - name: vet-clinic-service-dest-service
     type: org.cloudfoundry.managed-service
     parameters:
       config:
         HTML5Runtime_enabled: false
         version: 1.0.0
       service: destination
-      service-name: {{app-name}}-dest-service
+      service-name: vet-clinic-service-dest-service
       service-plan: lite
 
-  - name: {{app-name}}-conn-service
+  - name: vet-clinic-service-conn-service
     type: org.cloudfoundry.managed-service
     parameters:
       service-plan: lite
       service: connectivity
 
-  - name: {{app-name}}-uaa
+  - name: vet-clinic-service-uaa
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
       service-plan: application
       path: ./xs-security.json
       config:
-        xsappname: {{app-name}}-${space}
+        xsappname: vet-clinic-service-${space}
         tenant-mode: dedicated
