@@ -1,4 +1,6 @@
-import { ProcedureProps } from './procedure';
+import { randomUUID } from 'crypto';
+
+import { ProcedureProps, ProcedureForCreateProps } from './procedure';
 
 export type AppointmentProps = {
     id: string;
@@ -12,6 +14,13 @@ export type AppointmentProps = {
     procedures: ProcedureProps[];
 };
 
+export type EmergencyAppointmentProps = {
+    notes: string;
+    pet_id: string;
+    veterinarian_id: string;
+    procedures: ProcedureForCreateProps[];
+};
+
 export type AppointmentForCreateProps = Omit<AppointmentProps, 'id'> & {
     id?: string;
 };
@@ -21,6 +30,27 @@ export class AppointmentModel {
 
     public static create(props: AppointmentProps) {
         return new AppointmentModel(props);
+    }
+
+    public static createEmergencyAppointment(props: EmergencyAppointmentProps) {
+        const id = randomUUID();
+
+        const proceduresWithIds: ProcedureProps[] = props.procedures.map((procedure) => ({
+            ...procedure,
+            id: procedure.id ?? randomUUID()
+        }));
+
+        const totalCost = proceduresWithIds.reduce((total, procedure) => total + procedure.cost, 0) * 1.5;
+
+        return new AppointmentModel({
+            id: id,
+            date: new Date().toISOString(),
+            ...props,
+            procedures: proceduresWithIds,
+            isEmergency: true,
+            totalCost: totalCost,
+            status: 'IN_PROGRESS'
+        });
     }
 
     public get id(): string {
@@ -40,7 +70,7 @@ export class AppointmentModel {
     }
 
     public get totalCost(): number {
-        return this.props.totalCost;
+        return this.calculateTotalCost();
     }
 
     public get notes(): string {
@@ -65,7 +95,7 @@ export class AppointmentModel {
             date: this.props.date,
             status: this.props.status,
             isEmergency: this.props.isEmergency,
-            totalCost: this.props.totalCost,
+            totalCost: this.calculateTotalCost(),
             notes: this.props.notes,
             pet_id: this.props.pet_id,
             veterinarian_id: this.props.veterinarian_id,
@@ -75,5 +105,9 @@ export class AppointmentModel {
 
     public calculateTotalCost(): number {
         return this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
+    }
+
+    public calculateTotalCostWithEmergencyFee(): number {
+        return this.calculateTotalCost() * 1.5;
     }
 }
