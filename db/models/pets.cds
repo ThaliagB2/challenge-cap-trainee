@@ -2,7 +2,6 @@ namespace db.models;
 
 using { db.models.Owners } from './owners';
 
-
 entity Pets {
     key ID: UUID;
     name: String(100);
