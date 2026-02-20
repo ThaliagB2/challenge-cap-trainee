@@ -56,4 +56,15 @@ export class PetsModel {
             owner: this.props.owner
         };
     }
+    // Método para calcular a idade do pet com base na data de nascimento
+    public calculatebirthDate(): number {
+        const today = new Date();
+        const birthPet = new Date();
+        let yerPet = today.getFullYear() - birthPet.getFullYear();
+        const month = today.getMonth() - birthPet.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthPet.getDate())) {
+            yerPet--;
+        }
+        return yerPet;
+    }
 }

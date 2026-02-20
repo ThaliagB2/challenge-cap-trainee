@@ -68,4 +68,9 @@ export class AppointmentsModel {
             procedures: this.props.procedures
         };
     }
+
+    // Método para calcular o custo total com base nos procedimentos
+    public calculatecust(): number {
+        return this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
+    }
 }
