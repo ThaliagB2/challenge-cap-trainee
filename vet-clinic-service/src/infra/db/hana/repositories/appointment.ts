@@ -29,8 +29,10 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         });
     }
 
-    async findByVetIdAndDate(vetId: string, date: Date): Promise<AppointmentModel[]> {
-        const resultQuery = SELECT.from('Appointments').where({ veterinarian_id: vetId, date });
+    async findByVetIdAndDate(vetId: string, days: number): Promise<AppointmentModel[]> {
+        const today = new Date();
+        const futureDate = new Date(today.getDate() + days);
+        const resultQuery = SELECT.from('Appointments').where({ veterinarian_id: vetId }).and('date >=', new Date()).and('date <=', futureDate).orderBy('date', 'asc');
         const result: Appointments = await cds.run(resultQuery);
         return result.map((appointment) => {
             return AppointmentModel.create({
@@ -56,5 +58,29 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
     async create(appointment: AppointmentModel[]): Promise<void> {
         const appointmentData = appointment.map((appointment) => appointment.toObject());
         await cds.create('Appointments').entries(appointmentData);
+    }
+
+    async generateReportByOwnerId(ownerId: string): Promise<AppointmentModel[]> {
+        const appointmentsByOwnerQuery = SELECT.from('Appointments').where({ owner_id: ownerId, status: 'COMPLETED' });
+        const appointmentsByOwner: Appointments = await cds.run(appointmentsByOwnerQuery);
+        return appointmentsByOwner.map((appointment) => {
+            return AppointmentModel.create({
+                id: appointment.id,
+                date: appointment.date.toString(),
+                status: appointment.status,
+                isEmergency: appointment.isEmergency,
+                totalCost: appointment.totalCost,
+                notes: appointment.notes,
+                pet_id: appointment.pet_id,
+                veterinarian_id: appointment.veterinarian_id,
+                procedures: appointment.procedures.map((procedure) => {
+                    return {
+                        id: procedure.id,
+                        description: procedure.description,
+                        cost: procedure.cost
+                    };
+                })
+            });
+        });
     }
 }
