@@ -4,6 +4,10 @@ export type ProcedureProps = {
     cost: number;
 };
 
+export type ProcedureForCreateProps = Omit<ProcedureProps, 'id'> & {
+    id?: string;
+};
+
 export class ProcedureModel {
     constructor(private props: ProcedureProps) {}
 
