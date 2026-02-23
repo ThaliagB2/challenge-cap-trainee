@@ -1,9 +1,12 @@
+import { PetProps } from './pet';
+
 export type OwnerProps = {
     id: string;
     firstName: string;
     lastName: string;
     phone: string;
     email: string;
+    pets?: PetProps[];
 };
 
 export class OwnerModel {
