@@ -1,9 +1,18 @@
 export type ownersProps = {
     id: string;
-    fistName: string;
+    firstName: string;
     lastName: string;
     phone: number;
     email: string;
+};
+
+export type OwnerExpenseReport = {
+    ownerId: string;
+    ownerFullName: string;
+    ownerEmail: string;
+    totalSpent: number;
+    totalAppointments: number;
+    totalEmergencyAppointments: number;
 };
 
 export class OwnersModel {
@@ -13,30 +22,30 @@ export class OwnersModel {
         return new OwnersModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get fistName() {
-        return this.props.fistName;
+    public get firstName(): string {
+        return this.props.firstName;
     }
 
-    public get lastName() {
+    public get lastName(): string {
         return this.props.lastName;
     }
 
-    public get phone() {
+    public get phone(): number {
         return this.props.phone;
     }
 
-    public get email() {
+    public get email(): string {
         return this.props.email;
     }
 
     public toObject(): ownersProps {
         return {
             id: this.props.id,
-            fistName: this.props.fistName,
+            firstName: this.props.firstName,
             lastName: this.props.lastName,
             phone: this.props.phone,
             email: this.props.email

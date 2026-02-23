@@ -11,15 +11,15 @@ export class ProduresModel {
         return new ProduresModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get description() {
+    public get description(): string {
         return this.props.description;
     }
 
-    public get cost() {
+    public get cost(): number {
         return this.props.cost;
     }
 

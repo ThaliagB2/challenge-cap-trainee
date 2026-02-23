@@ -12,46 +12,56 @@ export type appointmentsProps = {
     procedures: ProceduresProps[];
 };
 
+export type EmergencyAppointmentProps = {
+    date: Date;
+    notes: string;
+    pet_id: string;
+    veterinarian_id: string;
+    procedures: ProceduresProps[];
+};
+
+export type AppointmentCreateProps = Omit<appointmentsProps, 'id'> & { id?: string };
+
 export class AppointmentsModel {
     constructor(private props: appointmentsProps) {}
 
-    public static create(props: appointmentsProps) {
+    public static create(props: appointmentsProps): AppointmentsModel {
         return new AppointmentsModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get date() {
+    public get date(): Date {
         return this.props.date;
     }
 
-    public get status() {
+    public get status(): string {
         return this.props.status;
     }
 
-    public get isEmergency() {
+    public get isEmergency(): boolean {
         return this.props.isEmergency;
     }
 
-    public get totalCoct() {
+    public get totalCoct(): number {
         return this.props.totalCoct;
     }
 
-    public get notes() {
+    public get notes(): string {
         return this.props.notes;
     }
 
-    public get pet_id() {
+    public get pet_id(): string {
         return this.props.pet_id;
     }
 
-    public get veterinarian_id() {
+    public get veterinarian_id(): string {
         return this.props.veterinarian_id;
     }
 
-    public get procedures() {
+    public get procedures(): ProceduresProps[] {
         return this.props.procedures;
     }
 

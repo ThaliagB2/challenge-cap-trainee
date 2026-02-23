@@ -10,6 +10,12 @@ export type PetsProps = {
     owner: Owner;
 };
 
+export type PetsCreatePropsId = Omit<PetsProps, 'id'> & { id?: string };
+
+export type PetsAgeProps = PetsProps & {
+    age: number;
+};
+
 export class PetsModel {
     constructor(private props: PetsProps) {}
 
@@ -17,31 +23,31 @@ export class PetsModel {
         return new PetsModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get name() {
+    public get name(): string {
         return this.props.name;
     }
 
-    public get species() {
+    public get species(): string {
         return this.props.species;
     }
 
-    public get bread() {
+    public get bread(): string {
         return this.props.bread;
     }
 
-    public get birthDate() {
+    public get birthDate(): Date {
         return this.props.birthDate;
     }
 
-    public get weight() {
+    public get weight(): number {
         return this.props.weight;
     }
 
-    public get owner() {
+    public get owner(): Owner {
         return this.props.owner;
     }
 
