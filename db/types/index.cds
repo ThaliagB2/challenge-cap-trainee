@@ -1,2 +1,2 @@
-using from './appontments-status';
+using from './appointments-status';
 

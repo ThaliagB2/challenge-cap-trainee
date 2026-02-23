@@ -1,13 +1,12 @@
 namespace db.models;
 
-using { db.models.Pets } from './pets';
-
+using { db.models } from '.';
 
 entity Owners {
-    key ID: UUID;
+    key id: UUID;
     firstName: String(50);
     lastName: String(100);
     phone: String(20);
     email: String(255);
-    pets: Composition of many Pets on pets.owner = $self;
+    pets: Composition of many models.Pets on pets.owner = $self;
 }
