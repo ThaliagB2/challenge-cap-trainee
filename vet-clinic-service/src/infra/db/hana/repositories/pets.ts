@@ -1,8 +1,9 @@
 import cds from '@sap/cds';
 
+import { Pets } from '@models/db/models';
+
 import { PetsModel } from '@/domain/models/db/pets';
 import { petsRepository } from '@/domain/repositories';
-import { Pets } from '@models/db/models';
 
 export class PetsRepositoryImpl implements petsRepository {
     async findPetsById(id: string): Promise<PetsModel> {
