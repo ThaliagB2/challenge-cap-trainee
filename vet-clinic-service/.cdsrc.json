@@ -1,0 +1,36 @@
+{
+    "i18n": {
+        "folders": [
+            "src/infra/utils/translator/i18n"
+        ]
+    },
+    "[development]": {
+        "requires": {
+            "db": {
+                "kind": "sqlite"
+            },
+            "auth": {
+                "kind": "basic-auth",
+                "users": {
+                    "dummy": {
+                        "password": "dummy",
+                        "roles": ["DUMMY_USER"],
+                        "attr": {
+                            "Groups": ["DUMMY_USER"]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "[production]": {
+        "requires": {
+            "db": {
+                "kind": "hana"
+            },
+            "uaa": {
+                "kind": "xsuaa"
+            }
+        }
+    }
+}
