@@ -1,14 +1,35 @@
 import cds from '@sap/cds';
 
-import { AppointmentsModel } from '@/domain/models/db/appointments';
-import { appointmentsRepository } from '@/domain/repositories';
 import { Appointments } from '@models/db/models';
 
+import { AppointmentsModel } from '@/domain/models/db/appointments';
+import { appointmentsRepository } from '@/domain/repositories';
+
 export class AppointmentsRepositoryImpl implements appointmentsRepository {
-    async findPetById(petId: string): Promise<AppointmentsModel[]> {
-        const petAppointmentsQuerry = cds.ql.SELECT.from('Appointments').where({ pet_id: petId });
+    private readonly ENTITY = 'db.models.Appointments'; //refatorar os proximos
+
+    public async findPetById(petId: string): Promise<AppointmentsModel[]> {
+        const petAppointmentsQuerry = cds.ql.SELECT.from(this.ENTITY).where({ pet_id: petId });
         const petAppointments: Appointments = await cds.run(petAppointmentsQuerry);
-        return petAppointments.map((appointment) => {
+        return this.mapPetAppointments(petAppointments);
+    }
+
+    public async create(appointment: AppointmentsModel[]): Promise<void> {
+        const appointmentData = appointment.map((appointment) => appointment.toObject());
+        await cds.create('ENTITY').entries(appointmentData);
+    }
+
+    public async findVetIdandDate(vetId: string, days: number): Promise<AppointmentsModel[]> {
+        const today = new Date();
+        const futureDays = new Date();
+        futureDays.setDate(today.getDate() + days);
+        const vetAppointmentsQuerry = cds.ql.SELECT.from('ENTITY').where({ veterinarian_id: vetId, date: { '>=': today, '<=': futureDays } });
+        const vetAppointmentsResult: Appointments = await cds.run(vetAppointmentsQuerry);
+        return this.mapVetsCompleteAppointments(vetAppointmentsResult);
+    }
+
+    private mapVetsCompleteAppointments(vetAppointmentsResult: Appointments): AppointmentsModel[] {
+        return vetAppointmentsResult.map((appointment) => {
             return AppointmentsModel.create({
                 id: appointment.id,
                 date: new Date(appointment.date),
@@ -29,18 +50,8 @@ export class AppointmentsRepositoryImpl implements appointmentsRepository {
         });
     }
 
-    async create(appointment: AppointmentsModel[]): Promise<void> {
-        const appointmentData = appointment.map((appointment) => appointment.toObject());
-        await cds.create('Appointments').entries(appointmentData);
-    }
-
-    async findVetIdandDate(vetId: string, days: number): Promise<AppointmentsModel[]> {
-        const today = new Date();
-        const futureDays = new Date();
-        futureDays.setDate(today.getDate() + days);
-        const vetAppointmentsQuerry = cds.ql.SELECT.from('Appointments').where({ veterinarian_id: vetId, date: { '>=': today, '<=': futureDays } });
-        const vetAppointmentsResult: Appointments = await cds.run(vetAppointmentsQuerry);
-        return vetAppointmentsResult.map((appointment) => {
+    private mapPetAppointments(petAppointmentsResult: Appointments): AppointmentsModel[] {
+        return petAppointmentsResult.map((appointment) => {
             return AppointmentsModel.create({
                 id: appointment.id,
                 date: new Date(appointment.date),
