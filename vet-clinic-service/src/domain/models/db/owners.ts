@@ -6,19 +6,10 @@ export type ownersProps = {
     email: string;
 };
 
-export type OwnerExpenseReport = {
-    ownerId: string;
-    ownerFullName: string;
-    ownerEmail: string;
-    totalSpent: number;
-    totalAppointments: number;
-    totalEmergencyAppointments: number;
-};
-
 export class OwnersModel {
     constructor(private props: ownersProps) {}
 
-    public static create(props: ownersProps) {
+    public static create(props: ownersProps): OwnersModel {
         return new OwnersModel(props);
     }
 
