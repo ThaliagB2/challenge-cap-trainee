@@ -1,13 +1,11 @@
-import { Owner } from '@models/db/models';
-
 export type PetsProps = {
     id: string;
     name: string;
     species: string;
-    bread: string;
+    breed: string;
     birthDate: Date;
     weight: number;
-    owner: Owner;
+    owner_id: string;
 };
 
 export type PetsCreatePropsId = Omit<PetsProps, 'id'> & { id?: string };
@@ -19,7 +17,7 @@ export type PetsAgeProps = PetsProps & {
 export class PetsModel {
     constructor(private props: PetsProps) {}
 
-    public static create(props: PetsProps) {
+    public static create(props: PetsProps): PetsModel {
         return new PetsModel(props);
     }
 
@@ -35,8 +33,8 @@ export class PetsModel {
         return this.props.species;
     }
 
-    public get bread(): string {
-        return this.props.bread;
+    public get breed(): string {
+        return this.props.breed;
     }
 
     public get birthDate(): Date {
@@ -47,8 +45,8 @@ export class PetsModel {
         return this.props.weight;
     }
 
-    public get owner(): Owner {
-        return this.props.owner;
+    public get owner_id(): string {
+        return this.props.owner_id;
     }
 
     public toObject(): PetsProps {
@@ -56,10 +54,10 @@ export class PetsModel {
             id: this.props.id,
             name: this.props.name,
             species: this.props.species,
-            bread: this.props.bread,
+            breed: this.props.breed,
             birthDate: this.props.birthDate,
             weight: this.props.weight,
-            owner: this.props.owner
+            owner_id: this.props.owner_id
         };
     }
     // Método para calcular a idade do pet com base na data de nascimento

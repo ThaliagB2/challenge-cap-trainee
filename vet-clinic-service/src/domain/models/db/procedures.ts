@@ -4,11 +4,11 @@ export type ProceduresProps = {
     cost: number;
 };
 
-export class ProduresModel {
+export class ProceduresModel {
     constructor(private props: ProceduresProps) {}
 
-    public static create(props: ProceduresProps) {
-        return new ProduresModel(props);
+    public static create(props: ProceduresProps): ProceduresModel {
+        return new ProceduresModel(props);
     }
 
     public get id(): string {
