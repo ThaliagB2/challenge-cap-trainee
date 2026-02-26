@@ -1,0 +1,9 @@
+ID,name,species,breed,birthDate,weight,owner_ID
+1,Buddy,Dog,Labrador,2020-01-01,25.5,1
+2,Max,Dog,Beagle,2019-05-12,20.0,1
+3,Charlie,Cat,Persian,2021-03-15,4.5,2
+4,Bella,Dog,Poodle,2020-07-20,8.0,2
+5,Luna,Cat,Siamese,2022-02-10,3.2,3
+6,Lucy,Dog,Golden Retriever,2018-11-30,30.0,3
+7,Daisy,Cat,Maine Coon,2021-09-25,5.0,4
+8,Milo,Dog,Bulldog,2019-08-14,22.0,5
