@@ -5,7 +5,7 @@ export type appointmentsProps = {
     date: Date;
     status: string;
     isEmergency: boolean;
-    totalCoct: number;
+    totalCost: number;
     notes: string;
     pet_id: string;
     veterinarian_id: string;
@@ -45,8 +45,8 @@ export class AppointmentsModel {
         return this.props.isEmergency;
     }
 
-    public get totalCoct(): number {
-        return this.props.totalCoct;
+    public get totalCost(): number {
+        return this.props.totalCost;
     }
 
     public get notes(): string {
@@ -71,7 +71,7 @@ export class AppointmentsModel {
             date: this.props.date,
             isEmergency: this.props.isEmergency,
             status: this.props.status,
-            totalCoct: this.props.totalCoct,
+            totalCost: this.props.totalCost,
             notes: this.props.notes,
             pet_id: this.props.pet_id,
             veterinarian_id: this.props.veterinarian_id,
