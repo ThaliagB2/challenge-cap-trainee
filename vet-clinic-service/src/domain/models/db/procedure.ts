@@ -11,7 +11,7 @@ export type ProcedureForCreateProps = Omit<ProcedureProps, 'id'> & {
 export class ProcedureModel {
     constructor(private props: ProcedureProps) {}
 
-    public static create(props: ProcedureProps) {
+    public static create(props: ProcedureProps): ProcedureModel {
         return new ProcedureModel(props);
     }
 

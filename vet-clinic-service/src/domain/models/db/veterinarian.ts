@@ -9,7 +9,7 @@ export type VeterinarianProps = {
 export class VeterinarianModel {
     constructor(private props: VeterinarianProps) {}
 
-    public static create(props: VeterinarianProps) {
+    public static create(props: VeterinarianProps): VeterinarianModel {
         return new VeterinarianModel(props);
     }
 

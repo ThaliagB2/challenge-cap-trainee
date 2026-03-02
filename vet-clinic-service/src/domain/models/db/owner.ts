@@ -12,7 +12,7 @@ export type OwnerProps = {
 export class OwnerModel {
     constructor(private props: OwnerProps) {}
 
-    public static create(props: OwnerProps) {
+    public static create(props: OwnerProps): OwnerModel {
         return new OwnerModel(props);
     }
 
@@ -38,11 +38,7 @@ export class OwnerModel {
 
     public toObject(): OwnerProps {
         return {
-            id: this.props.id,
-            firstName: this.props.firstName,
-            lastName: this.props.lastName,
-            phone: this.props.phone,
-            email: this.props.email
+            ...this.props
         };
     }
 }

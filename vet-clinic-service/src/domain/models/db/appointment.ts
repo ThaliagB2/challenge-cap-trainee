@@ -28,11 +28,11 @@ export type AppointmentForCreateProps = Omit<AppointmentProps, 'id'> & {
 export class AppointmentModel {
     constructor(private props: AppointmentProps) {}
 
-    public static create(props: AppointmentProps) {
+    public static create(props: AppointmentProps): AppointmentModel {
         return new AppointmentModel(props);
     }
 
-    public static createEmergencyAppointment(props: EmergencyAppointmentProps) {
+    public static createEmergencyAppointment(props: EmergencyAppointmentProps): AppointmentModel {
         const id = randomUUID();
 
         const proceduresWithIds: ProcedureProps[] = props.procedures.map((procedure) => ({
@@ -70,7 +70,7 @@ export class AppointmentModel {
     }
 
     public get totalCost(): number {
-        return this.calculateTotalCost();
+        return this.props.totalCost;
     }
 
     public get notes(): string {
@@ -95,7 +95,7 @@ export class AppointmentModel {
             date: this.props.date,
             status: this.props.status,
             isEmergency: this.props.isEmergency,
-            totalCost: this.calculateTotalCost(),
+            totalCost: this.props.totalCost,
             notes: this.props.notes,
             pet_id: this.props.pet_id,
             veterinarian_id: this.props.veterinarian_id,

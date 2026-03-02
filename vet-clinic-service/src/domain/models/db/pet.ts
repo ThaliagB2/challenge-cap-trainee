@@ -21,10 +21,10 @@ export type PetWithAgeProps = PetProps & {
 export class PetModel {
     constructor(private props: PetProps) {}
 
-    public static create(props: PetProps) {
+    public static create(props: PetProps): PetModel {
         return new PetModel(props);
     }
-    public static forCreate(props: PetForCreateProps) {
+    public static forCreate(props: PetForCreateProps): PetModel {
         const id = randomUUID();
         return new PetModel({ ...props, id });
     }
