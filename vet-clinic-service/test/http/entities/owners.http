@@ -1,0 +1,47 @@
+@baseUrl = http://localhost:4004/sample/Owners
+
+GET {{baseUrl}}
+Authorization: Basic dummy:dummy
+Content-Type: application/json
+
+###
+GET {{baseUrl}}/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+Authorization: Basic dummy:dummy
+Content-Type: application/json
+
+###
+POST {{baseUrl}}
+Authorization: Basic dummy:dummy
+Content-Type: application/json
+
+{
+    //"id": "e1f2a3b4-c5d6-47e8-9f0a-1b2c3d4e5f6a",
+      "firstName": "Jonas",
+      "lastName": "Souza",
+      "phone": "(11) 94365-4321",
+      "email": "jonas.souza@email.com"
+}
+
+###
+PATCH {{baseUrl}}/929acd48-326f-49fd-80aa-4fcdf57c9c85
+Authorization: Basic dummy:dummy
+Content-Type: application/json
+
+{
+  "firstName": "José"
+}
+
+###
+DELETE {{baseUrl}}/929acd48-326f-49fd-80aa-4fcdf57c9c85
+Authorization: Basic dummy:dummy
+Content-Type: application/json
+
+###
+GET {{baseUrl}}?$expand=pets
+Authorization: Basic dummy:dummy
+Content-Type: application/json
+
+###
+GET {{baseUrl}}/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d?$expand=pets
+Authorization: Basic dummy:dummy
+Content-Type: application/json
