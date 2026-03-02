@@ -2,11 +2,13 @@ import '../config/module-alias';
 
 import { Request, Service } from '@sap/cds';
 
-import { afterReadPetController } from '../factories/controllers/entity-events/pet';
-import { beforeCreateAppointmentController } from '../factories/controllers/entity-events/appointment';
-import { getOwnerExpenseReportController } from '../factories/controllers/functions/get-owner-expense-report';
-import { getVeterinarianScheduleController } from '../factories/controllers/functions/get-veterinarian-schedule';
-import { scheduleEmergencyAppointmentController } from '../factories/controllers/actions/schedule-emergency-appointment';
+import { afterReadPetController } from '@/main/factories/controllers/entity-events/pet';
+import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointment';
+import { getOwnerExpenseReportController } from '@/main/factories/controllers/functions/get-owner-expense-report';
+import { getVeterinarianScheduleController } from '@/main/factories/controllers/functions/get-veterinarian-schedule';
+import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
+import { PetWithAgeProps } from '@/domain/models/db/pet';
+import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-schedule';
 
 // eslint-disable-next-line max-lines-per-function
 export default (service: Service) => {
@@ -22,15 +24,24 @@ export default (service: Service) => {
         }
     });
 
-    service.after('READ', 'Pets', async (results, req) => {
-        if (!results || results.length === 0) {
-            return results;
+    service.after('READ', 'Pets', async (petList, req) => {
+        if (!petList) {
+            return;
         }
 
-        const result = await afterReadPetController.execute(results);
+        const isArray = Array.isArray(petList);
+        const petsArray = isArray ? petList : [petList];
+
+        if (petsArray.length === 0) {
+            return;
+        }
+
+        const result = await afterReadPetController.execute(petsArray);
 
         if (result.status === 200) {
-            req.data = result.data;
+            result.data.forEach((petWithAge: PetWithAgeProps, index: number) => {
+                petsArray[index].age = petWithAge.age;
+            });
         } else {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
@@ -38,10 +49,15 @@ export default (service: Service) => {
     });
 
     service.on('scheduleEmergencyAppointment', async (req: Request) => {
-        const result = await scheduleEmergencyAppointmentController.execute(req.data);
+        const result = await scheduleEmergencyAppointmentController.execute({
+            pet_id: req.data.payload.petId,
+            veterinarian_id: req.data.payload.veterinarianId,
+            notes: req.data.payload.notes,
+            procedures: req.data.payload.procedures
+        });
 
         if (result.status === 200) {
-            req.data = result.data;
+            return result.data;
         } else {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
@@ -49,10 +65,13 @@ export default (service: Service) => {
     });
 
     service.on('getVeterinarianSchedule', async (req: Request) => {
-        const result = await getVeterinarianScheduleController.execute(req.data[0].veterinarianId, req.data[0].days);
+        const days: number = req.data.days || 7;
+
+        const result = await getVeterinarianScheduleController.execute(req.data.veterinarianId, days);
 
         if (result.status === 200) {
-            req.data = result.data;
+            const appointments = result.data.schedulings.map((appointment: VeterinarianScheduleModel) => appointment.toObject());
+            return appointments;
         } else {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
@@ -60,9 +79,10 @@ export default (service: Service) => {
     });
 
     service.on('getOwnerExpenseReport', async (req: Request) => {
-        const result = await getOwnerExpenseReportController.execute(req.data[0].ownerId);
+        const result = await getOwnerExpenseReportController.execute(req.data.ownerId);
+
         if (result.status === 200) {
-            req.data = result.data;
+            return result.data;
         } else {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
