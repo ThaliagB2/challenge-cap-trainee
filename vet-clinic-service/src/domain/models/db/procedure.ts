@@ -29,9 +29,7 @@ export class ProcedureModel {
 
     public toObject(): ProcedureProps {
         return {
-            id: this.props.id,
-            description: this.props.description,
-            cost: this.props.cost
+            ...this.props
         };
     }
 }

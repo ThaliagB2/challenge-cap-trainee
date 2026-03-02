@@ -35,11 +35,7 @@ export class VeterinarianModel {
 
     public toObject(): VeterinarianProps {
         return {
-            id: this.props.id,
-            firstName: this.props.firstName,
-            lastName: this.props.lastName,
-            specialty: this.props.specialty,
-            crmv: this.props.crmv
+            ...this.props
         };
     }
 }

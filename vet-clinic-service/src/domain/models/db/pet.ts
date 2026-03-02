@@ -59,13 +59,7 @@ export class PetModel {
 
     public toObject(): PetProps {
         return {
-            id: this.props.id,
-            name: this.props.name,
-            species: this.props.species,
-            breed: this.props.breed,
-            birthDate: this.props.birthDate,
-            weight: this.props.weight,
-            owner_id: this.props.owner_id
+            ...this.props
         };
     }
 
