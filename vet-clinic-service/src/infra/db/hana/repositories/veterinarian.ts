@@ -1,21 +1,24 @@
 import cds from '@sap/cds';
 
+import { Veterinarian } from '@models/db/models';
 import { VeterinarianModel } from '@/domain/models/db/veterinarian';
 import { VeterinarianRepository } from '@/domain/repositories';
 
 export class VeterinarianRepositoryImpl implements VeterinarianRepository {
-    async findById(id: string): Promise<VeterinarianModel> {
-        const veterinarianQuery = SELECT.from('Veterinarians').where({ id });
-        const veterinarian = await cds.run(veterinarianQuery);
-        if (veterinarian.length === 0) {
+    private readonly ENTITY = 'db_models_Veterinarians';
+
+    public async findById(id: string): Promise<VeterinarianModel> {
+        const veterinarianQuery = SELECT.from(this.ENTITY).where({ id });
+        const [veterinarian]: Veterinarian[] = await cds.run(veterinarianQuery);
+        if (!veterinarian) {
             return null;
         }
         return VeterinarianModel.create({
-            id: veterinarian[0].id,
-            firstName: veterinarian[0].firstName,
-            lastName: veterinarian[0].lastName,
-            specialty: veterinarian[0].specialty,
-            crmv: veterinarian[0].crmv
+            id: veterinarian.id,
+            firstName: veterinarian.firstName,
+            lastName: veterinarian.lastName,
+            specialty: veterinarian.specialty,
+            crmv: veterinarian.crmv
         });
     }
 }
