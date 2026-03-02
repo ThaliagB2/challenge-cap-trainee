@@ -1,5 +1,5 @@
 import { ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
-import { BaseControllerImpl, BaseControllerResponse } from '../base/controller';
+import { BaseControllerImpl, BaseControllerResponse } from '@/presentation/base/controller';
 
 export class ScheduleEmergencyAppointmentController extends BaseControllerImpl {
     constructor(private readonly useCase: ScheduleEmergencyAppointmentUseCase) {
@@ -11,6 +11,6 @@ export class ScheduleEmergencyAppointmentController extends BaseControllerImpl {
         if (result.isLeft()) {
             return this.error(result.value.code, result.value.toErrorDetails());
         }
-        return this.success(result.value);
+        return this.success(result.value.appointmentId);
     }
 }
