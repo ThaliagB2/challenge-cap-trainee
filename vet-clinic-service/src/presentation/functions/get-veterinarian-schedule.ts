@@ -1,5 +1,5 @@
 import { GetVeterinarianScheduleUseCase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
-import { BaseControllerImpl, BaseControllerResponse } from '../base/controller';
+import { BaseControllerImpl, BaseControllerResponse } from '@/presentation/base/controller';
 
 export class GetVeterinarianScheduleController extends BaseControllerImpl {
     constructor(private readonly useCase: GetVeterinarianScheduleUseCase) {

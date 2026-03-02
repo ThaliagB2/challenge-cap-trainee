@@ -1,5 +1,5 @@
 import { ScheduleEmergencyAppointmentUseCaseImpl } from '@/data/use-cases/actions/schedule-emergency-appointment';
-import { translator } from '../../utils/translator';
+import { translator } from '@/main/factories/utils/translator';
 import { AppointmentRepositoryImpl, PetRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
 
 export const makeScheduleEmergencyAppointmentUseCase = () => {
