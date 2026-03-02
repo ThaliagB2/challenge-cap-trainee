@@ -1,14 +1,8 @@
 using { db.models } from '../models';
 
-namespace db.types;
+namespace db.types.VeterinarianSchedule;
 
-type ParamsVeterinarian: {
-    veterinarianId: models.Veterinarians:id;
-    days: Integer;
-}
-
-
-type VeterinarianSchedule: {
+type ExpectedResult: {
     appointmentId: models.Appointments:id;
     date: models.Appointments:date;
     isEmergency: models.Appointments:isEmergency;

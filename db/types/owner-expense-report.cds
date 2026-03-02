@@ -1,12 +1,8 @@
 using { db.models } from '../models';
 
-namespace db.types;
+namespace db.types.OwnerExpenseReport;
 
-type ParamsOwner: {
-    ownerId: Integer;
-}
-
-type OwnerExpenseReport: {
+type ExpectedResult: {
     ownerId: models.Owners:id;
     ownerFullName: String(150);
     totalExpenses: Decimal(10, 2);
