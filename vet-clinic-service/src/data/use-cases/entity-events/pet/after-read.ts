@@ -10,7 +10,12 @@ export class AfterReadPetUseCaseImpl implements AfterReadPetUseCase {
     }
 
     private addPetAge(params: PetProps): PetWithAgeProps {
-        const pet = PetModel.create(params);
+        const petData = {
+            ...params,
+            birthDate: params.birthDate instanceof Date ? params.birthDate : new Date(params.birthDate)
+        };
+
+        const pet = PetModel.create(petData);
         return {
             ...pet.toObject(),
             age: pet.calculateAge()
