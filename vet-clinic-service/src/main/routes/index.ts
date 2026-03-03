@@ -16,36 +16,36 @@ export default (service: Service) => {
         const params = req.data;
         const result = await beforeCreateAppointmentController.execute(params);
 
-        if (result.status === 200) {
-            req.data = result.data;
-        } else {
+        if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
         }
+
+        return result.data;
     });
 
     service.after('READ', 'Pets', async (petList, req) => {
         if (!petList) {
-            return;
+            req.reject(404, 'No pets found');
         }
 
         const isArray = Array.isArray(petList);
         const petsArray = isArray ? petList : [petList];
 
         if (petsArray.length === 0) {
-            return;
+            req.reject(404, 'No pets found');
         }
 
         const result = await afterReadPetController.execute(petsArray);
 
-        if (result.status === 200) {
-            result.data.forEach((petWithAge: PetWithAgeProps, index: number) => {
-                petsArray[index].age = petWithAge.age;
-            });
-        } else {
+        if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
         }
+
+        return result.data.forEach((petWithAge: PetWithAgeProps, index: number) => {
+            petsArray[index].age = petWithAge.age;
+        });
     });
 
     service.on('scheduleEmergencyAppointment', async (req: Request) => {
@@ -56,12 +56,12 @@ export default (service: Service) => {
             procedures: req.data.payload.procedures
         });
 
-        if (result.status === 200) {
-            return result.data;
-        } else {
+        if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
         }
+
+        return result.data;
     });
 
     service.on('getVeterinarianSchedule', async (req: Request) => {
@@ -69,23 +69,23 @@ export default (service: Service) => {
 
         const result = await getVeterinarianScheduleController.execute(req.data.veterinarianId, days);
 
-        if (result.status === 200) {
-            const appointments = result.data.schedulings.map((appointment: VeterinarianScheduleModel) => appointment.toObject());
-            return appointments;
-        } else {
+        if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
         }
+
+        const appointments = result.data.schedulings.map((appointment: VeterinarianScheduleModel) => appointment.toObject());
+        return appointments;
     });
 
     service.on('getOwnerExpenseReport', async (req: Request) => {
         const result = await getOwnerExpenseReportController.execute(req.data.ownerId);
 
-        if (result.status === 200) {
-            return result.data;
-        } else {
+        if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
             req.reject(result.status, errorMessages);
         }
+
+        return result.data;
     });
 };
