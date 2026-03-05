@@ -1,5 +1,5 @@
-import { ProduresModel } from '../models/db/procedures';
+import { ProceduresModel } from '../models/db/procedures';
 
 export interface proceduresRepository {
-    create(procedures: ProduresModel): Promise<ProduresModel>;
+    create(procedures: ProceduresModel): Promise<void>;
 }
