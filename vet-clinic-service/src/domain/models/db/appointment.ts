@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 
+import { ValidationResult } from '@/domain/validators/common/validation-result';
 import { ProcedureProps, ProcedureForCreateProps } from './procedure';
 
 export type AppointmentProps = {
@@ -90,24 +91,31 @@ export class AppointmentModel {
     }
 
     public toObject(): AppointmentProps {
-        return {
-            id: this.props.id,
-            date: this.props.date,
-            status: this.props.status,
-            isEmergency: this.props.isEmergency,
-            totalCost: this.props.totalCost,
-            notes: this.props.notes,
-            pet_id: this.props.pet_id,
-            veterinarian_id: this.props.veterinarian_id,
-            procedures: this.props.procedures
-        };
+        return { ...this.props, totalCost: this.calculateTotalCost() };
     }
 
     public calculateTotalCost(): number {
-        return this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
+        return this.props.procedures?.reduce((total, procedure) => total + procedure.cost, 0);
     }
 
-    public calculateTotalCostWithEmergencyFee(): number {
-        return this.calculateTotalCost() * 1.5;
+    public validateData(): ValidationResult {
+        const errors = [];
+
+        if (this.pet_id === '') {
+            errors.push('petIsRequired');
+        }
+
+        if (this.veterinarian_id === '') {
+            errors.push('veterinarianIsRequired');
+        }
+
+        if (errors.length > 0) {
+            return {
+                hasError: true,
+                errorMessages: errors
+            };
+        }
+
+        return { hasError: false };
     }
 }

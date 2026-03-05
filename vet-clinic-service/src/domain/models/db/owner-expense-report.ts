@@ -34,8 +34,6 @@ export class OwnerExpenseReportModel {
     }
 
     public toObject(): OwnerExpenseReportProps {
-        return {
-            ...this.props
-        };
+        return { ...this.props };
     }
 }

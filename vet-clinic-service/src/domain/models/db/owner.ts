@@ -37,8 +37,6 @@ export class OwnerModel {
     }
 
     public toObject(): OwnerProps {
-        return {
-            ...this.props
-        };
+        return { ...this.props };
     }
 }

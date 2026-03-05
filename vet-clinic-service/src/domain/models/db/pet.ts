@@ -58,9 +58,7 @@ export class PetModel {
     }
 
     public toObject(): PetProps {
-        return {
-            ...this.props
-        };
+        return { ...this.props };
     }
 
     public calculateAge(): number {

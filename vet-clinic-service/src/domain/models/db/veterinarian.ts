@@ -34,8 +34,6 @@ export class VeterinarianModel {
     }
 
     public toObject(): VeterinarianProps {
-        return {
-            ...this.props
-        };
+        return { ...this.props };
     }
 }

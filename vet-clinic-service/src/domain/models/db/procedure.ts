@@ -28,8 +28,6 @@ export class ProcedureModel {
     }
 
     public toObject(): ProcedureProps {
-        return {
-            ...this.props
-        };
+        return { ...this.props };
     }
 }

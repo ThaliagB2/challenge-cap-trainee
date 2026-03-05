@@ -64,8 +64,6 @@ export class VeterinarianScheduleModel {
     }
 
     public toObject(): VeterinarianScheduleProps {
-        return {
-            ...this.props
-        };
+        return { ...this.props };
     }
 }
