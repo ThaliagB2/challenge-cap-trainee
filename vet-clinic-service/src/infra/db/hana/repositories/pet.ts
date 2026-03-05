@@ -12,10 +12,7 @@ export class PetRepositoryImpl implements PetRepository {
         if (!pet) {
             return null;
         }
-        return PetModel.create({
-            ...pet,
-            birthDate: new Date(pet.birthDate)
-        });
+        return PetModel.create({ ...pet });
     }
     public async findByOwnerId(id: string): Promise<PetModel[]> {
         const petOwnerQuery = SELECT.from(this.ENTITY).where({ owner_id: id });
@@ -24,10 +21,7 @@ export class PetRepositoryImpl implements PetRepository {
             return null;
         }
         return petOwner.map((pet) => {
-            return PetModel.create({
-                ...pet,
-                birthDate: new Date(pet.birthDate)
-            });
+            return PetModel.create({ ...pet });
         });
     }
 }

@@ -10,7 +10,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         const petAppointmentQuery = SELECT.from(this.ENTITY).where({ pet_id: petId });
         const petAppointment: AppointmentProps[] = await cds.run(petAppointmentQuery);
         return petAppointment.map((appointment) => {
-            return AppointmentModel.create({ ...appointment, isEmergency: Boolean(appointment.isEmergency) });
+            return AppointmentModel.create({ ...appointment });
         });
     }
 
@@ -19,16 +19,16 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         const appointments: AppointmentProps[] = await cds.run(resultQuery);
 
         return appointments.map((appointment) => {
-            return AppointmentModel.create({ ...appointment, isEmergency: Boolean(appointment.isEmergency) });
+            return AppointmentModel.create({ ...appointment });
         });
     }
 
     public async create(appointment: AppointmentModel): Promise<void> {
         const appointmentData = {
             id: appointment.id,
-            date: appointment.date,
+            date: new Date(appointment.date),
             status: appointment.status,
-            isEmergency: appointment.isEmergency ? true : false,
+            isEmergency: appointment.isEmergency ? 1 : 0,
             totalCost: Number(appointment.totalCost),
             notes: appointment.notes,
             pet_id: appointment.pet_id,
@@ -57,7 +57,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         const appointmentsByOwner: AppointmentProps[] = await cds.run(appointmentsByOwnerQuery);
 
         return appointmentsByOwner.map((appointment) => {
-            return AppointmentModel.create({ ...appointment, isEmergency: Boolean(appointment.isEmergency) });
+            return AppointmentModel.create({ ...appointment });
         });
     }
 }
