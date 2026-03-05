@@ -11,6 +11,6 @@ export class BeforeCreateAppointmentController extends BaseControllerImpl {
         if (result.isLeft()) {
             return this.error(result.value.code, result.value.toErrorDetails());
         }
-        return this.success(result.value.payload);
+        return this.success(result.value);
     }
 }

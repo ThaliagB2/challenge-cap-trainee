@@ -11,6 +11,6 @@ export class ScheduleEmergencyAppointmentController extends BaseControllerImpl {
         if (result.isLeft()) {
             return this.error(result.value.code, result.value.toErrorDetails());
         }
-        return this.success(result.value.appointmentId);
+        return this.success(result.value);
     }
 }

@@ -11,6 +11,6 @@ export class GetOwnerExpenseReportController extends BaseControllerImpl {
         if (result.isLeft()) {
             return this.error(result.value.code, result.value.toErrorDetails());
         }
-        return this.success(result.value.report);
+        return this.success(result.value);
     }
 }
