@@ -1,21 +1,18 @@
 import { left, right } from '@sweet-monads/either';
 
-import { petsRepository, veterinariansRepository } from '@/domain/repositories';
-import { Translator } from '@/domain/utils/translator';
+import { BadRequestError, NotFoundError } from '@/domain/errors';
 import { PetsModel } from '@/domain/models/db/pets';
 import { VeterinariansModel } from '@/domain/models/db/veterinarians';
+import { petsRepository, veterinariansRepository } from '@/domain/repositories';
 import { BeforeCreateAppointmentUseCase } from '@/domain/use-cases/entity-events/appointments';
-import { BadRequestError, NotFoundError } from '@/domain/errors';
 
 export class BeforeCreateAppointmentsUseCaseImpl implements BeforeCreateAppointmentUseCase {
     constructor(
         private readonly petRepository: petsRepository,
-        private readonly vetRepository: veterinariansRepository,
-        private readonly translator: Translator
+        private readonly vetRepository: veterinariansRepository
     ) {
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;
-        this.translator = translator;
     }
 
     public async execute(params: BeforeCreateAppointmentUseCase.Params): Promise<BeforeCreateAppointmentUseCase.Result> {
