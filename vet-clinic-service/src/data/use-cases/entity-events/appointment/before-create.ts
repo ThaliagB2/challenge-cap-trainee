@@ -1,7 +1,10 @@
 import { left, right } from '@sweet-monads/either';
 
-import { BeforeCreateAppointmentUseCase, PayloadResult } from '@/domain/use-cases/entity-events/appointments';
+import { AppointmentModel } from '@/domain/models/db/appointment';
+import { BeforeCreateAppointmentUseCase } from '@/domain/use-cases/entity-events/appointments';
+import { PetModel } from '@/domain/models/db/pet';
 import { Translator } from '@/domain/utils/translator';
+import { VeterinarianModel } from '@/domain/models/db/veterinarian';
 import { BadRequestError, NotFoundError } from '@/domain/errors';
 import { PetRepository, VeterinarianRepository } from '@/domain/repositories';
 
@@ -12,63 +15,49 @@ export class BeforeCreateAppointmentUseCaseImpl implements BeforeCreateAppointme
         private readonly translator: Translator
     ) {}
 
-    async execute(params: BeforeCreateAppointmentUseCase.Params): Promise<BeforeCreateAppointmentUseCase.Result> {
+    // eslint-disable-next-line max-lines-per-function
+    public async execute(params: BeforeCreateAppointmentUseCase.Params): Promise<BeforeCreateAppointmentUseCase.Result> {
+        const createAppointment = AppointmentModel.create(params);
+        const validateAppointment = createAppointment.validateData();
+
+        if (validateAppointment.hasError) {
+            const errorMessages = validateAppointment.errorMessages.map((errorMessage) => this.translator.translate(errorMessage)).join('\n ');
+            return left(new BadRequestError(errorMessages));
+        }
+
         const petExists = await this.validatePetExists(params.pet_id);
-        if (petExists.hasError) {
-            return left(new NotFoundError(petExists.errorMessage));
+        if (!petExists) {
+            const message = this.translator.translate('petNotFound');
+            return left(new NotFoundError(message));
         }
 
         const veterinarianExists = await this.validateVeterinarianExists(params.veterinarian_id);
-        if (veterinarianExists.hasError) {
-            return left(new NotFoundError(veterinarianExists.errorMessage));
+        if (!veterinarianExists) {
+            const message = this.translator.translate('veterinarianNotFound');
+            return left(new NotFoundError(message));
         }
 
         if (params.procedures.length === 0) {
-            return left(new BadRequestError('No procedures provided'));
+            const message = this.translator.translate('noProceduresProvided');
+            return left(new BadRequestError(message));
         }
-
-        const totalCost = params.procedures.reduce((total, procedure) => total + procedure.cost, 0);
-        params.totalCost = totalCost;
 
         if (!params.status) {
             params.status = 'SCHEDULED';
         }
 
-        return right({
-            hasError: false,
-            payload: params
-        });
+        params.totalCost = createAppointment.calculateTotalCost();
+
+        return right(createAppointment.toObject());
     }
 
-    private async validatePetExists(petId: string): Promise<PayloadResult> {
+    private async validatePetExists(petId: string): Promise<PetModel> {
         const pet = await this.petRepository.findById(petId);
-
-        if (!pet) {
-            return {
-                hasError: true,
-                errorMessage: 'Pet not found'
-            };
-        }
-
-        return {
-            pet,
-            hasError: false
-        };
+        return pet;
     }
 
-    private async validateVeterinarianExists(veterinarianId: string): Promise<PayloadResult> {
+    private async validateVeterinarianExists(veterinarianId: string): Promise<VeterinarianModel> {
         const veterinarian = await this.veterinarianRepository.findById(veterinarianId);
-
-        if (!veterinarian) {
-            return {
-                hasError: true,
-                errorMessage: 'Veterinarian not found'
-            };
-        }
-
-        return {
-            veterinarian,
-            hasError: false
-        };
+        return veterinarian;
     }
 }

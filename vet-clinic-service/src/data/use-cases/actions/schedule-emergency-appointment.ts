@@ -1,10 +1,12 @@
 import { left, right } from '@sweet-monads/either';
 
 import { AppointmentModel } from '@/domain/models/db/appointment';
-import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
-import { PayloadResult, ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
+import { PetModel } from '@/domain/models/db/pet';
+import { ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
 import { Translator } from '@/domain/utils/translator';
+import { VeterinarianModel } from '@/domain/models/db/veterinarian';
 import { AppointmentRepository, PetRepository, VeterinarianRepository } from '@/domain/repositories';
+import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
 
 export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergencyAppointmentUseCase {
     constructor(
@@ -14,62 +16,49 @@ export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergenc
         private readonly translator: Translator
     ) {}
 
+    // eslint-disable-next-line max-lines-per-function
     async execute(params: ScheduleEmergencyAppointmentUseCase.Params): Promise<ScheduleEmergencyAppointmentUseCase.Result> {
         try {
+            const appointment = AppointmentModel.createEmergencyAppointment(params);
+            const validateAppointment = appointment.validateData();
+
+            if (validateAppointment.hasError) {
+                const errorMessages = validateAppointment.errorMessages.map((errorMessage) => this.translator.translate(errorMessage)).join('\n ');
+                return left(new BadRequestError(errorMessages));
+            }
+
             const petExists = await this.validatePetExists(params.pet_id);
-            if (petExists.hasError) {
-                return left(new NotFoundError(petExists.errorMessage));
+            if (!petExists) {
+                const message = this.translator.translate('petNotFound');
+                return left(new NotFoundError(message));
             }
 
             const veterinarianExists = await this.validateVeterinarianExists(params.veterinarian_id);
-            if (veterinarianExists.hasError) {
-                return left(new NotFoundError(veterinarianExists.errorMessage));
+            if (!veterinarianExists) {
+                const message = this.translator.translate('veterinarianNotFound');
+                return left(new NotFoundError(message));
             }
 
             if (params.procedures.length === 0) {
-                return left(new BadRequestError('No procedures provided'));
+                const message = this.translator.translate('noProceduresProvided');
+                return left(new BadRequestError(message));
             }
 
-            const appointment = AppointmentModel.createEmergencyAppointment(params);
             await this.appointmentRepository.create(appointment);
-            return right({
-                hasError: false,
-                appointmentId: appointment.id
-            });
+            return right(appointment.id);
         } catch {
-            return left(new ServerError('Internal server error'));
+            const message = this.translator.translate('internalServerError');
+            return left(new ServerError(message));
         }
     }
 
-    private async validatePetExists(petId: string): Promise<PayloadResult> {
+    private async validatePetExists(petId: string): Promise<PetModel> {
         const pet = await this.petRepository.findById(petId);
-
-        if (!pet) {
-            return {
-                hasError: true,
-                errorMessage: 'Pet not found'
-            };
-        }
-
-        return {
-            pet,
-            hasError: false
-        };
+        return pet;
     }
 
-    private async validateVeterinarianExists(veterinarianId: string): Promise<PayloadResult> {
+    private async validateVeterinarianExists(veterinarianId: string): Promise<VeterinarianModel> {
         const veterinarian = await this.veterinarianRepository.findById(veterinarianId);
-
-        if (!veterinarian) {
-            return {
-                hasError: true,
-                errorMessage: 'Veterinarian not found'
-            };
-        }
-
-        return {
-            veterinarian,
-            hasError: false
-        };
+        return veterinarian;
     }
 }

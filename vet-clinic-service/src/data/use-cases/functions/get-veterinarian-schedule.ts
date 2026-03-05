@@ -1,8 +1,10 @@
 import { left, right } from '@sweet-monads/either';
 
-import { GetVeterinarianScheduleUseCase, PayloadResult } from '@/domain/use-cases/functions/get-veterinarian-schedule';
-import { NotFoundError } from '@/domain/errors';
+import { GetVeterinarianScheduleUseCase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
+import { Translator } from '@/domain/utils/translator';
+import { VeterinarianModel } from '@/domain/models/db/veterinarian';
 import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-schedule';
+import { BadRequestError, NotFoundError } from '@/domain/errors';
 import { AppointmentRepository, VeterinarianRepository, PetRepository, OwnerRepository, ProcedureRepository } from '@/domain/repositories';
 
 export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianScheduleUseCase {
@@ -11,15 +13,22 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         private readonly appointmentRepository: AppointmentRepository,
         private readonly petRepository: PetRepository,
         private readonly ownerRepository: OwnerRepository,
-        private readonly procedureRepository: ProcedureRepository
+        private readonly procedureRepository: ProcedureRepository,
+        private readonly translator: Translator
     ) {}
 
     // eslint-disable-next-line max-lines-per-function
     async execute(veterinarianId: string, days: number): Promise<GetVeterinarianScheduleUseCase.Result> {
+        if (!veterinarianId) {
+            const message = this.translator.translate('veterinarianIsRequired');
+            return left(new BadRequestError(message));
+        }
+
         const veterinarianExists = await this.validateVeterinarianExists(veterinarianId);
 
-        if (veterinarianExists.hasError) {
-            return left(new NotFoundError(veterinarianExists.errorMessage));
+        if (!veterinarianExists) {
+            const message = this.translator.translate('veterinarianNotFound');
+            return left(new NotFoundError(message));
         }
 
         const today = new Date();
@@ -27,19 +36,14 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         const appointments = await this.appointmentRepository.findByVetIdAndDate(veterinarianId, today, futureDate);
 
         if (appointments.length === 0) {
-            return left(new NotFoundError('No appointments found'));
+            const message = this.translator.translate('appointmentsNotFound');
+            return left(new NotFoundError(message));
         }
 
         const schedulings = await Promise.all(
             appointments.map(async (appointment) => {
                 const pet = await this.petRepository.findById(appointment.pet_id);
-                if (!pet) {
-                    throw new Error(`Pet with id ${appointment.pet_id} not found`);
-                }
                 const owner = await this.ownerRepository.findById(pet.owner_id);
-                if (!pet) {
-                    throw new Error(`Pet with id ${appointment.pet_id} not found`);
-                }
                 const procedures = await this.procedureRepository.findByAppointmentId(appointment.id);
 
                 return VeterinarianScheduleModel.create({
@@ -57,25 +61,11 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
             })
         );
 
-        return right({
-            hasError: false,
-            schedulings
-        });
+        return right(schedulings);
     }
 
-    private async validateVeterinarianExists(veterinarianId: string): Promise<PayloadResult> {
+    private async validateVeterinarianExists(veterinarianId: string): Promise<VeterinarianModel> {
         const veterinarian = await this.veterinarianRepository.findById(veterinarianId);
-
-        if (!veterinarian) {
-            return {
-                hasError: true,
-                errorMessage: 'Veterinarian not found'
-            };
-        }
-
-        return {
-            veterinarian,
-            hasError: false
-        };
+        return veterinarian;
     }
 }
