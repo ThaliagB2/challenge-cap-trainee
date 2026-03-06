@@ -2,7 +2,7 @@ using { db.models } from '../../../../db/models';
 
 @path: '/sample'
 @requires: 'authenticated-user'
-service {{UpperCamelCaseAppName}} {
+service VetClinicService {
     entity Products as projection on models.Products {
         *,
         virtual formattedPrice: String
@@ -12,11 +12,11 @@ service {{UpperCamelCaseAppName}} {
 }
 
 // Functions
-extend service {{UpperCamelCaseAppName}} with {
+extend service VetClinicService with {
     function extractProductsToExcel() returns String;
 }
 
 // Actions
-extend service {{UpperCamelCaseAppName}} with {
-    action bulkCreatePurchaseOrders(payload: array of {{UpperCamelCaseAppName}}.PurchaseOrders) returns String;
+extend service VetClinicService with {
+    action bulkCreatePurchaseOrders(payload: array of VetClinicService.PurchaseOrders) returns String;
 }

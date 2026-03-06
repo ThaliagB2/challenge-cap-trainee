@@ -1,5 +1,5 @@
 {
-    "name": "{{app-name}}",
+    "name": "vet-clinic-service",
     "version": "0.0.1",
     "description": "A simple CAP project.",
     "private": true,
@@ -13,12 +13,12 @@
         "setup:alt": "node scripts/setup.js",
         "bd": "npm-run-all clean build deploy",
         "clean": "rimraf mta_archives",
-        "build": "mbt build --mtar {{app-name}}.mtar",
+        "build": "mbt build --mtar vet-clinic-service.mtar",
         "build:cf": "npm-run-all build:cds build:apps",
         "build:cds": "cds build --production",
         "build:apps": "npm-run-all build:app-srv",
-        "build:app-srv": "cd {{app-name}} && yarn && yarn build:mta",
-        "deploy": "cf deploy mta_archives/{{app-name}}.mtar --retries 0",
-        "undeploy": "cf undeploy {{app-name}} --delete-services --delete-service-keys --delete-service-brokers"
+        "build:app-srv": "cd vet-clinic-service && yarn && yarn build:mta",
+        "deploy": "cf deploy mta_archives/vet-clinic-service.mtar --retries 0",
+        "undeploy": "cf undeploy vet-clinic-service --delete-services --delete-service-keys --delete-service-brokers"
     }
 }
