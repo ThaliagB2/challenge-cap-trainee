@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from '@/domain/errors';
+import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
 import { AppointmentsModel } from '@/domain/models/db/appointments';
 import { appointmentsRepository, petsRepository, proceduresRepository, veterinariansRepository } from '@/domain/repositories';
 import { ResultPayload, scheduleEmergencyAppointmentUsecase, ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
@@ -13,26 +13,30 @@ export class scheduleEmergencyAppointmentImpl implements scheduleEmergencyAppoin
     ) {}
 
     public async execute(params: ScheduleEmergencyAppointmentUseCase.Params): Promise<ScheduleEmergencyAppointmentUseCase.Result> {
-        const PetExist = await this.ValidatePet(params.pet_id);
-        if (PetExist.hasError) {
-            return left(new NotFoundError('Pet não encontrado'));
-        }
+        try {
+            const PetExist = await this.ValidatePet(params.pet_id);
+            if (PetExist.hasError) {
+                return left(new NotFoundError('Pet não encontrado'));
+            }
 
-        const VetExist = await this.ValidateVet(params.veterinarian_id);
-        if (VetExist.hasError) {
-            return left(new NotFoundError('Veterinario não encontrado'));
-        }
+            const VetExist = await this.ValidateVet(params.veterinarian_id);
+            if (VetExist.hasError) {
+                return left(new NotFoundError('Veterinario não encontrado'));
+            }
 
-        if (params.procedures.length === 0) {
-            return left(new BadRequestError('Lista de Procedimentos esta vazia'));
-        }
+            if (params.procedures.length === 0) {
+                return left(new BadRequestError('Lista de Procedimentos esta vazia'));
+            }
 
-        const appointment = AppointmentsModel.createEmergency(params);
-        await this.appointmentRepository.create([appointment]);
-        return right({
-            appointment: appointment.id,
-            hasError: false
-        });
+            const appointment = AppointmentsModel.createEmergency(params);
+            await this.appointmentRepository.create([appointment]);
+            return right({
+                appointment: appointment.id,
+                hasError: false
+            });
+        } catch {
+            return left(new ServerError('Erro ao agendar consulta de emergência'));
+        }
     }
 
     private async ValidatePet(petId: string): Promise<ResultPayload> {
