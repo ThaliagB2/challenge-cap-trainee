@@ -95,7 +95,7 @@ export class AppointmentModel {
     }
 
     public calculateTotalCost(): number {
-        return this.props.procedures?.reduce((total, procedure) => total + procedure.cost, 0);
+        return this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
     }
 
     public validateData(): ValidationResult {
