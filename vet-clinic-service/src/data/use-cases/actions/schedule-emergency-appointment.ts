@@ -17,7 +17,7 @@ export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergenc
     ) {}
 
     // eslint-disable-next-line max-lines-per-function
-    async execute(params: ScheduleEmergencyAppointmentUseCase.Params): Promise<ScheduleEmergencyAppointmentUseCase.Result> {
+    public async execute(params: ScheduleEmergencyAppointmentUseCase.Params): Promise<ScheduleEmergencyAppointmentUseCase.Result> {
         try {
             const appointment = AppointmentModel.createEmergencyAppointment(params);
             const validateAppointment = appointment.validateData();

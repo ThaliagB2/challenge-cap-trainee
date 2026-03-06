@@ -15,7 +15,7 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
     ) {}
 
     // eslint-disable-next-line max-lines-per-function
-    public async execute(ownerId: string): Promise<GetOwnerExpenseReportUseCase.Result> {
+    async execute(ownerId: string): Promise<GetOwnerExpenseReportUseCase.Result> {
         if (!ownerId) {
             const message = this.translator.translate('ownerIsRequired');
             return left(new BadRequestError(message));
@@ -34,7 +34,7 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
             return left(new NotFoundError(message));
         }
 
-        const totalExpenses = schedulings.reduce((total, appointment) => total + appointment.toObject().totalCost, 0);
+        const totalExpenses = schedulings.reduce((total, appointment) => total + appointment.totalCost, 0);
         const appointmentCount = schedulings.length;
         const averageCost = totalExpenses / appointmentCount;
 

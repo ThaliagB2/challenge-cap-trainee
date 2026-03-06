@@ -18,7 +18,7 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
     ) {}
 
     // eslint-disable-next-line max-lines-per-function
-    async execute(veterinarianId: string, days: number): Promise<GetVeterinarianScheduleUseCase.Result> {
+    public async execute(veterinarianId: string, days: number): Promise<GetVeterinarianScheduleUseCase.Result> {
         if (!veterinarianId) {
             const message = this.translator.translate('veterinarianIsRequired');
             return left(new BadRequestError(message));
