@@ -26,7 +26,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
     public async create(appointment: AppointmentModel): Promise<void> {
         const appointmentData = {
             id: appointment.id,
-            date: new Date(appointment.date),
+            date: appointment.date,
             status: appointment.status,
             isEmergency: appointment.isEmergency ? 1 : 0,
             totalCost: Number(appointment.totalCost),
