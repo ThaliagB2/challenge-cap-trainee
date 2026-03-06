@@ -18,7 +18,7 @@ export default (service: Service) => {
 
         if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
-            req.reject(result.status, errorMessages);
+            return req.reject(result.status, errorMessages);
         }
 
         return result.data;
@@ -26,21 +26,21 @@ export default (service: Service) => {
 
     service.after('READ', 'Pets', async (petList, req) => {
         if (!petList) {
-            req.reject(404, 'No pets found');
+            return;
         }
 
         const isArray = Array.isArray(petList);
         const petsArray = isArray ? petList : [petList];
 
         if (petsArray.length === 0) {
-            req.reject(404, 'No pets found');
+            return;
         }
 
         const result = await afterReadPetController.execute(petsArray);
 
         if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
-            req.reject(result.status, errorMessages);
+            return req.reject(result.status, errorMessages);
         }
 
         return result.data.forEach((petWithAge: PetWithAgeProps, index: number) => {
@@ -58,7 +58,7 @@ export default (service: Service) => {
 
         if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
-            req.reject(result.status, errorMessages);
+            return req.reject(result.status, errorMessages);
         }
 
         return result.data;
@@ -71,10 +71,10 @@ export default (service: Service) => {
 
         if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
-            req.reject(result.status, errorMessages);
+            return req.reject(result.status, errorMessages);
         }
 
-        const appointments = result.data.schedulings.map((appointment: VeterinarianScheduleModel) => appointment.toObject());
+        const appointments = result.data.map((appointment: VeterinarianScheduleModel) => appointment.toObject());
         return appointments;
     });
 
@@ -83,7 +83,7 @@ export default (service: Service) => {
 
         if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
-            req.reject(result.status, errorMessages);
+            return req.reject(result.status, errorMessages);
         }
 
         return result.data;
