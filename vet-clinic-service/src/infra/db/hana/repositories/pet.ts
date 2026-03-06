@@ -7,7 +7,7 @@ export class PetRepositoryImpl implements PetRepository {
     private readonly ENTITY = 'db_models_Pets';
 
     public async findById(id: string): Promise<PetModel> {
-        const petQuery = SELECT.one.from(this.ENTITY).where({ id });
+        const petQuery = cds.ql.SELECT.one.from(this.ENTITY).where({ id });
         const pet: PetProps = await cds.run(petQuery);
         if (!pet) {
             return null;

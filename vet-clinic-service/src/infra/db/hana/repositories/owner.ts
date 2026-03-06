@@ -7,7 +7,7 @@ export class OwnerRepositoryImpl implements OwnerRepository {
     private readonly ENTITY = 'db_models_Owners';
 
     public async findById(id: string): Promise<OwnerModel> {
-        const ownerQuery = SELECT.one.from(this.ENTITY).where({ id });
+        const ownerQuery = cds.ql.SELECT.one.from(this.ENTITY).where({ id });
         const owner: OwnerProps = await cds.run(ownerQuery);
         if (!owner) {
             return null;
