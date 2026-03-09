@@ -1,0 +1,16 @@
+id,name,description,cost,appointment_id
+10d0b436-d1e7-4104-a60f-00220420d211,Quimioterapia,"Tratamento química contra câncer ou tumor",800,bbbb8088-6693-4b3f-a4c9-1abfe1ee09e5
+c65df49f-75b9-498c-9ba0-aaf65795cbd1,Remoção de nódulo,"Corte, extração e costura de nódulos, ciscos, tumores",700,bbbb8088-6693-4b3f-a4c9-1abfe1ee09e5
+3c03a84d-fd38-43af-8857-4503a417930e,Vacinação contra raiva,"Aplicação de vacina contra a doença da raiva",500,22117387-a75b-4720-9b16-b727298a7649
+2bf12f0c-121a-410b-a850-2174a2a85460,Curativo pós-operatório,"Troca de curativo e limpeza de ferida cirúrgica",150,c0f0a14b-5d46-4185-b790-ea58d2509e48
+ed9cd3e8-6d5d-44ec-ba1d-527e6d432eaf,Radiografia,"Imagem radiológica para diagnóstico ósseo",400,c0f0a14b-5d46-4185-b790-ea58d2509e48
+9f3e8e1b-ff62-4f0a-bd10-da7fe90c1779,Consulta clínica geral,"Avaliação geral de saúde do animal",200,ea7868a1-9681-43d8-ad1a-c3092d21168b
+f0f4cc9f-05f4-4e86-817e-4d64a6eae55e,Vacinação V10,"Aplicação do complexo vacinal V10 para cães",350,ea7868a1-9681-43d8-ad1a-c3092d21168b
+196e5258-e752-47d1-95fc-d99c2c3c5c57,Osteossíntese,"Fixação cirúrgica de fraturas com placa e parafusos",2500,a4b7c8f9-f76f-48d0-8292-7b710e071452
+289c0970-5f08-401f-8cfd-d60484690a05,Anestesia geral,"Sedação e monitoramento anestésico durante procedimento",600,a4b7c8f9-f76f-48d0-8292-7b710e071452
+f6cfc193-4f3f-416a-a3ea-c41ea3091f94,Hemograma completo,"Coleta e análise de sangue com contagem celular",180,6645be4e-f6f8-4696-b5ac-7f64aed9f214
+6da7fc1d-38bf-4ec6-85c3-1e6c71c00c62,Urinálise,"Análise físico-química e microscópica da urina",120,6645be4e-f6f8-4696-b5ac-7f64aed9f214
+5dea13c3-c4e8-4c6a-a0af-7b1a2c81cd26,Ultrassonografia abdominal,"Exame de imagem para avaliação de órgãos abdominais",350,6645be4e-f6f8-4696-b5ac-7f64aed9f214
+af7b70db-14c9-4930-9156-fc94e6a54a38,Sutura de emergência,"Fechamento cirúrgico de lacerações por trauma",900,9fd74f28-7af4-41e1-bc54-35de23ac075b
+187d7be9-48d8-46b2-a672-b6cc4bb61ac9,Transfusão sanguínea,"Administração de sangue compatível em casos de anemia grave",1200,9fd74f28-7af4-41e1-bc54-35de23ac075b
+a1833995-6de3-4269-9134-028135519e2e,Castração,"Orquiectomia ou ovariohisterectomia para controle reprodutivo",1200,96e1767c-456e-41a8-86cc-b0771cb4947a
