@@ -258,7 +258,7 @@ classDiagram
   - CSV para Veterinarians (mínimo 3 registros)
   - CSV para Appointments (mínimo 8 registros, referenciando Pets e Veterinarians)
   - CSV para Procedures (mínimo 15 registros, referenciando Appointments)
-- [ ] Executar `yarn dev` para verificar que as entidades foram criadas e os dados carregados corretamente
+- [x] Executar `yarn dev` para verificar que as entidades foram criadas e os dados carregados corretamente
 
 > **Atenção ao padrão dos nomes dos CSV:** O nome do arquivo CSV deve seguir o padrão `namespace-Entity.csv`. Observe como os CSVs de exemplo estão nomeados no projeto.
 
