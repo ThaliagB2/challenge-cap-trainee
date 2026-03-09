@@ -229,12 +229,12 @@ classDiagram
 
 **Tasks:**
 
-- [ ] Clonar o repositório template
-- [ ] Criar a branch `feature/seunome-trainee-2026` a partir da `main`
-- [ ] Executar `yarn` e `yarn setup` na raiz do projeto
-- [ ] Instalar dependências do serviço e verificar que o projeto inicia com `yarn dev`
-- [ ] Estudar a estrutura do projeto template e os exemplos existentes (Products, PurchaseOrders)
-- [ ] Ler o arquivo `CLEAN-ARCHITECTURE-CAP.md` por completo para entender cada camada
+- [x] Clonar o repositório template
+- [x] Criar a branch `feature/seunome-trainee-2026` a partir da `main`
+- [x] Executar `yarn` e `yarn setup` na raiz do projeto
+- [x] Instalar dependências do serviço e verificar que o projeto inicia com `yarn dev`
+- [x] Estudar a estrutura do projeto template e os exemplos existentes (Products, PurchaseOrders)
+- [x] Ler o arquivo `CLEAN-ARCHITECTURE-CAP.md` por completo para entender cada camada
 
 **Sugestão de commit:** `chore: initial project setup and configuration`
 
@@ -246,13 +246,13 @@ classDiagram
 
 **Tasks:**
 
-- [ ] Criar os arquivos CDS para as 5 entidades na pasta `db/models/`, seguindo o diagrama UML
-- [ ] Definir as associações (Association) e composições (Composition) corretamente
-- [ ] Utilizar o aspecto `managed` na entidade Appointments
-- [ ] Implementar o campo `status` como enum com os 4 valores definidos
-- [ ] Criar o arquivo barrel (`index.cds`) importando todos os modelos
-- [ ] Criar os tipos CDS em `db/types/` para os payloads e retornos da Action e das Functions
-- [ ] Criar os arquivos CSV na pasta `test/data/` para popular o banco com dados iniciais:
+- [x] Criar os arquivos CDS para as 5 entidades na pasta `db/models/`, seguindo o diagrama UML
+- [x] Definir as associações (Association) e composições (Composition) corretamente
+- [x] Utilizar o aspecto `managed` na entidade Appointments
+- [x] Implementar o campo `status` como enum com os 4 valores definidos
+- [x] Criar o arquivo barrel (`index.cds`) importando todos os modelos
+- [x] Criar os tipos CDS em `db/types/` para os payloads e retornos da Action e das Functions
+- [x] Criar os arquivos CSV na pasta `test/data/` para popular o banco com dados iniciais:
   - CSV para Owners (mínimo 5 registros)
   - CSV para Pets (mínimo 8 registros, referenciando IDs de Owners)
   - CSV para Veterinarians (mínimo 3 registros)
