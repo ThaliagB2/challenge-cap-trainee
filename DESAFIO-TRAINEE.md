@@ -316,13 +316,13 @@ classDiagram
 
 **Tasks:**
 
-- [ ] Implementar os **repositórios** em `infra/db/hana/repositories/`:
+- [x] Implementar os **repositórios** em `infra/db/hana/repositories/`:
   - Cada repositório implementa sua interface correspondente do Domain
   - Utilizar CDS QL (SELECT, INSERT, etc.) para acesso ao banco
   - Mapear os resultados do banco para os Domain Models
   - Para repositórios que buscam dados com relacionamentos, utilizar JOINs ou expansões conforme necessário
 
-- [ ] Criar o barrel export (`index.ts`) para os repositórios
+- [x] Criar o barrel export (`index.ts`) para os repositórios
 
 > A camada Infra é a ÚNICA que conhece o CDS e o HANA. É aqui que os `import` do `@sap/cds` aparecem.
 
