@@ -291,7 +291,7 @@ classDiagram
   - Interface para Appointments (criar, buscar por veterinário e período, buscar por pet IDs)
   - Interface para Procedures (criar)
 
-- [ ] Criar as **interfaces de use case** em `domain/use-cases/`:
+- [x] Criar as **interfaces de use case** em `domain/use-cases/`:
   - **Entity Events:**
     - Interface para `before CREATE Appointments`
     - Interface para `after READ Pets`
