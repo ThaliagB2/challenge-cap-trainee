@@ -275,16 +275,16 @@ classDiagram
 
 **Tasks:**
 
-- [ ] Criar os **Domain Models** em `domain/models/db/` para cada entidade:
+- [x] Criar os **Domain Models** em `domain/models/db/` para cada entidade:
   - Cada model deve conter: tipo Props, classe com getters, método estático de criação (`with()` ou `create()`)
   - O model de **Pets** deve conter um método para calcular a idade do animal a partir da data de nascimento
   - O model de **Appointments** deve conter um método para calcular o custo total a partir dos procedimentos
 
-- [ ] Criar ou adaptar as classes de **erros customizados** em `domain/errors/`:
+- [x] Criar ou adaptar as classes de **erros customizados** em `domain/errors/`:
   - Verificar os erros já existentes no template (BadRequestError, NotFoundError, ServerError, etc.)
   - Utilizá-los conforme necessário nas implementações
 
-- [ ] Criar as **interfaces de repositório** em `domain/repositories/`:
+- [x] Criar as **interfaces de repositório** em `domain/repositories/`:
   - Interface para Owners (buscar por ID)
   - Interface para Pets (buscar por ID, buscar por owner ID)
   - Interface para Veterinarians (buscar por ID)
