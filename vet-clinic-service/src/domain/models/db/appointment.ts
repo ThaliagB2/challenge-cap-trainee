@@ -83,13 +83,13 @@ export class AppointmentModel {
         return this.props.totalCost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    public toObject(): AppointmentProps {
+    public toCreationObject(): AppointmentProps {
         return {
             id: this.props.id,
             date: this.props.date,
             status: this.props.status,
             isEmergency: this.props.isEmergency,
-            totalCost: this.props.totalCost,
+            totalCost: this.calculateTotalCost(),
             notes: this.props.notes,
             procedures: this.props.procedures,
             owner: this.props.owner,

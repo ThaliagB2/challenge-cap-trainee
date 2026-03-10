@@ -52,7 +52,7 @@ export class ProcedureModel {
         return this.props.cost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    public toObject(): ProcedureProps {
+    public toCreationObject(): ProcedureProps {
         return {
             id: this.props.id,
             name: this.props.name,
