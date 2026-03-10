@@ -5,5 +5,6 @@ entity Veterinarians {
     firstName: String(50);
     lastName: String(100);
     specialty: String(100);
-    crmv: String(20);
+    state: String(2);
+    crmv: Decimal(5);
 }
