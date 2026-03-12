@@ -7,7 +7,7 @@ export class VeterinarianRepositoryImpl implements VeterinarianRepository {
     private readonly ENTITY = 'db_models_Veterinarians';
 
     public async findById(id: string): Promise<VeterinarianModel> {
-        const veterinarianQuery = SELECT.one.from(this.ENTITY).where({ id });
+        const veterinarianQuery = cds.ql.SELECT.one.from(this.ENTITY).where({ id });
         const veterinarian: VeterinarianProps = await cds.run(veterinarianQuery);
         if (!veterinarian) {
             return null;

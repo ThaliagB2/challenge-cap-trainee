@@ -12,7 +12,7 @@ export class ProcedureRepositoryImpl implements ProcedureRepository {
     }
 
     public async findByAppointmentId(appointmentId: string): Promise<ProcedureModel[]> {
-        const proceduresQuery = SELECT.from(this.ENTITY).where({ appointment_id: appointmentId });
+        const proceduresQuery = cds.ql.SELECT.from(this.ENTITY).where({ appointment_id: appointmentId });
         const procedures: ProcedureProps[] = await cds.run(proceduresQuery);
 
         if (procedures.length === 0) {
