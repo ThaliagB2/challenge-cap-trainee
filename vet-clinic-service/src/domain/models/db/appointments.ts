@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { ProceduresProps } from './procedures';
 
 export type appointmentsProps = {
@@ -27,6 +28,22 @@ export class AppointmentsModel {
 
     public static create(props: appointmentsProps): AppointmentsModel {
         return new AppointmentsModel(props);
+    }
+
+    public static createEmergency(props: EmergencyAppointmentProps): AppointmentsModel {
+        const id = randomUUID();
+        const totalCost = props.procedures.reduce((total, procedure) => total + procedure.cost, 0) * 1.5;
+        return new AppointmentsModel({
+            id,
+            date: props.date,
+            status: 'IN_PROGRESS',
+            isEmergency: true,
+            totalCost: totalCost,
+            notes: props.notes,
+            pet_id: props.pet_id,
+            veterinarian_id: props.veterinarian_id,
+            procedures: props.procedures
+        });
     }
 
     public get id(): string {
@@ -80,7 +97,12 @@ export class AppointmentsModel {
     }
 
     // Método para calcular o custo total com base nos procedimentos
-    public calculatecust(): number {
+    public calculateCust(): number {
         return this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
+    }
+    // Método para calcular o custo total com base nos procedimentos, aplicando um fator de emergência
+    public calculateTotalCost(): number {
+        const baseCost = this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
+        return baseCost * 1.5;
     }
 }
