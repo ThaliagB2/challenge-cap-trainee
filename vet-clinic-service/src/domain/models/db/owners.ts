@@ -25,6 +25,10 @@ export class OwnersModel {
         return this.props.lastName;
     }
 
+    public get fullName(): string {
+        return `${this.props.firstName} ${this.props.lastName}`;
+    }
+
     public get phone(): number {
         return this.props.phone;
     }
