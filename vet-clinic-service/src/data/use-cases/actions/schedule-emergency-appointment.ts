@@ -45,10 +45,11 @@ export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergenc
             }
 
             await this.appointmentRepository.create(appointment);
+
             return right(appointment.id);
-        } catch {
-            const message = this.translator.translate('internalServerError');
-            return left(new ServerError(message));
+        } catch (error) {
+            const errorData = error as Error;
+            return left(new ServerError(errorData.stack, errorData.message));
         }
     }
 
