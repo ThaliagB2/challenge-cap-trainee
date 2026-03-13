@@ -13,6 +13,11 @@ export type FullVeterinarianProps = VeterinarianProps & {
     formattedCrmv: string;
 };
 
+export type SearchVeterinarianScheduleParams = {
+    veterinarianId: string;
+    days?: number;
+};
+
 export class VeterinarianModel {
     constructor(private props: VeterinarianProps) {}
 
@@ -56,7 +61,7 @@ export class VeterinarianModel {
         return `CRMV-${this.props.state} ${this.props.crmv}-${specialtyAcronym}`;
     }
 
-    public toObject(): VeterinarianProps {
+    public toCreationObject(): VeterinarianProps {
         return {
             id: this.props.id,
             firstName: this.props.firstName,
