@@ -11,6 +11,8 @@ export type OwnerProps = {
 
 export type OwnerWithoutIdProps = Omit<OwnerProps, 'id'>;
 
+export type OwnerWithoutPets = Omit<OwnerProps, 'pets'>;
+
 export class OwnerModel {
     constructor(private props: OwnerProps) {}
 
@@ -49,7 +51,7 @@ export class OwnerModel {
         return this.props.pets;
     }
 
-    public toObject(): OwnerProps {
+    public toCreationObject(): OwnerProps {
         return {
             id: this.props.id,
             firstName: this.props.firstName,
