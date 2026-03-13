@@ -3,5 +3,6 @@ import { AppointmentsModel } from '../models/db/appointments';
 export interface appointmentsRepository {
     findPetById(petId: string): Promise<AppointmentsModel[]>;
     create(appointment: AppointmentsModel[]): Promise<void>;
-    findVetIdandDate(vetId: string, date: number): Promise<AppointmentsModel[]>;
+    findVetIdandDate(vetId: string, date: number, futureDate: Date): Promise<AppointmentsModel[]>;
+    findByOwnerIdAndStatus(ownerId: string, status: string): Promise<AppointmentsModel[]>;
 }

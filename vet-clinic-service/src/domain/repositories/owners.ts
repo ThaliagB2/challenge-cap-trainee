@@ -1,4 +1,4 @@
-import { OwnersModel } from '../models/db/owners';
+import { OwnersModel } from '@/domain/models/db/owners';
 
 export interface ownersRepository {
     findOwnersById(id: string): Promise<OwnersModel>;
