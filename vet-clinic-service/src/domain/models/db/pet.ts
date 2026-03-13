@@ -1,4 +1,4 @@
-import { OwnerProps } from './owner';
+import { OwnerWithoutPets } from './owner';
 
 export type PetProps = {
     id: string;
@@ -7,10 +7,14 @@ export type PetProps = {
     breed: string;
     birthDate: Date;
     weight: number;
-    owner: OwnerProps;
+    owner: OwnerWithoutPets;
 };
 
 export type PetWithoutIdProps = Omit<PetProps, 'id'>;
+
+export type FullPetProps = PetProps & {
+    age: number;
+};
 
 export class PetModel {
     constructor(private props: PetProps) {}
@@ -54,7 +58,7 @@ export class PetModel {
         return this.props.owner;
     }
 
-    public toObject(): PetProps {
+    public toCreationObject(): PetProps {
         return {
             id: this.props.id,
             name: this.props.name,
@@ -66,7 +70,14 @@ export class PetModel {
         };
     }
 
+    public toFullObject(): FullPetProps {
+        return {
+            ...this.props,
+            age: this.getPetAge()
+        };
+    }
+
     public getPetAge(): number {
-        return new Date().getFullYear() - this.props.birthDate.getFullYear();
+        return Math.floor((new Date().getTime() - this.props.birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25));
     }
 }
