@@ -5,7 +5,7 @@ import { EmergencyAppointmentProps } from '@/domain/models/db/appointments';
 import { VeterinariansModel } from '@/domain/models/db/veterinarians';
 import { PetsModel } from '@/domain/models/db/pets';
 
-export interface scheduleEmergencyAppointmentUsecase {
+export interface ScheduleEmergencyAppointmentUsecase {
     execute(params: ScheduleEmergencyAppointmentUseCase.Params): Promise<ScheduleEmergencyAppointmentUseCase.Result>;
 }
 export type ResultPayload = {
