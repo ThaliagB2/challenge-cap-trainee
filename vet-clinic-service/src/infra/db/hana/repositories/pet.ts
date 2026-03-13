@@ -46,8 +46,8 @@ export class PetRepositoryImpl implements PetRepository {
         );
     }
 
-    public async findByOwnerId(id: string): Promise<PetModel[]> {
-        const petsQuery = cds.ql.SELECT.from(this.PET).where({ owner_ID: id });
+    public async findByOwnerId(ids: string[]): Promise<PetModel[]> {
+        const petsQuery = cds.ql.SELECT.from(this.PET).where({ owner_ID: { in: ids } });
         const pets: Pets = await cds.run(petsQuery);
 
         if (pets.length === 0) return null;
