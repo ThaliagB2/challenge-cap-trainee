@@ -3,7 +3,7 @@ import cds from '@sap/cds';
 import { OwnerModel } from '@/domain/models/db/owner';
 import { PetModel } from '@/domain/models/db/pet';
 import { OwnerRepository } from '@/domain/repositories';
-import { Owners } from '@models/db/models';
+import { Owner, Owners } from '@models/db/models';
 
 export class OwnerRepositoryImpl implements OwnerRepository {
     private readonly OWNER = 'db.models.Owner';
@@ -14,16 +14,7 @@ export class OwnerRepositoryImpl implements OwnerRepository {
 
         if (owners.length === 0) return null;
 
-        return owners.map((owner) =>
-            OwnerModel.with({
-                id: owner.id as string,
-                firstName: owner.firstName as string,
-                lastName: owner.lastName as string,
-                phone: owner.phone as string,
-                email: owner.email as string,
-                pets: owner.pets as unknown as PetModel[]
-            })
-        );
+        return owners.map((owner) => this.modelOwnerObject(owner));
     }
 
     public async findById(ids: string[]): Promise<OwnerModel[]> {
@@ -32,15 +23,17 @@ export class OwnerRepositoryImpl implements OwnerRepository {
 
         if (owners.length === 0) return null;
 
-        return owners.map((owner) =>
-            OwnerModel.with({
-                id: owner.id as string,
-                firstName: owner.firstName as string,
-                lastName: owner.lastName as string,
-                phone: owner.phone as string,
-                email: owner.email as string,
-                pets: owner.pets as unknown as PetModel[]
-            })
-        );
+        return owners.map((owner) => this.modelOwnerObject(owner));
+    }
+
+    private modelOwnerObject(owner: Owner): OwnerModel {
+        return OwnerModel.with({
+            id: owner.id as string,
+            firstName: owner.firstName as string,
+            lastName: owner.lastName as string,
+            phone: owner.phone as string,
+            email: owner.email as string,
+            pets: owner.pets as unknown as PetModel[]
+        });
     }
 }
