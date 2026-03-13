@@ -336,7 +336,7 @@ classDiagram
 
 **Tasks:**
 
-- [ ] Implementar o use case **`before CREATE Appointments`** em `data/use-cases/entity-events/`:
+- [x] Implementar o use case **`before CREATE Appointments`** em `data/use-cases/entity-events/`:
   - Validar se o Pet informado existe (retornar NotFoundError se não)
   - Validar se o Veterinário informado existe (retornar NotFoundError se não)
   - Validar se ao menos um procedimento foi informado (retornar BadRequestError se não)
@@ -345,12 +345,12 @@ classDiagram
   - Definir o status como `SCHEDULED` caso não tenha sido informado
   - Retornar os dados validados e com o totalCost calculado
 
-- [ ] Implementar o use case **`after READ Pets`** em `data/use-cases/entity-events/`:
+- [x] Implementar o use case **`after READ Pets`** em `data/use-cases/entity-events/`:
   - Para cada pet retornado, calcular a idade a partir do campo birthDate
   - **Fórmula:** `age = floor((dataAtual - birthDate) / 365.25)` — resultado em anos inteiros
   - Adicionar o campo calculado `age` aos dados do pet antes de retornar
 
-- [ ] Implementar o use case da **Action `scheduleEmergencyAppointment`** em `data/use-cases/actions/`:
+- [x] Implementar o use case da **Action `scheduleEmergencyAppointment`** em `data/use-cases/actions/`:
   - Receber: petId, veterinarianId, notes e lista de procedures (description e cost de cada)
   - Validar se o Pet existe (retornar `left` com NotFoundError se não)
   - Validar se o Veterinário existe (retornar `left` com NotFoundError se não)
@@ -362,7 +362,7 @@ classDiagram
   - Retornar `right` com o agendamento criado em caso de sucesso
   - Envolver toda a operação em tratamento de erro, retornando `left` com ServerError em caso de exceção inesperada
 
-- [ ] Implementar o use case da **Function `getVeterinarianSchedule`** em `data/use-cases/functions/`:
+- [x] Implementar o use case da **Function `getVeterinarianSchedule`** em `data/use-cases/functions/`:
   - Receber: veterinarianId e days (número de dias, padrão 7)
   - Validar se o Veterinário existe (retornar `left` com NotFoundError se não)
   - Buscar agendamentos do veterinário dentro do período especificado (da data atual até data atual + days)
@@ -370,7 +370,7 @@ classDiagram
   - Ordenar por data do agendamento (mais próximo primeiro)
   - Retornar `right` com a lista de agendamentos ou `left` com NotFoundError caso não haja agendamentos no período
 
-- [ ] Implementar o use case da **Function `getOwnerExpenseReport`** em `data/use-cases/functions/`:
+- [x] Implementar o use case da **Function `getOwnerExpenseReport`** em `data/use-cases/functions/`:
   - Receber: ownerId
   - Validar se o Owner existe (retornar `left` com NotFoundError se não)
   - Buscar todos os agendamentos **com status COMPLETED** de todos os pets do tutor
