@@ -413,18 +413,18 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
 
 **Tasks:**
 
-- [ ] Criar os controllers para **entity events** em `presentation/entity-events/`:
+- [x] Criar os controllers para **entity events** em `presentation/entity-events/`:
   - Controller para `before CREATE Appointments`
   - Controller para `after READ Pets`
 
-- [ ] Criar o controller para a **Action** em `presentation/actions/`:
+- [x] Criar o controller para a **Action** em `presentation/actions/`:
   - Controller para `scheduleEmergencyAppointment`
 
-- [ ] Criar os controllers para as **Functions** em `presentation/functions/`:
+- [x] Criar os controllers para as **Functions** em `presentation/functions/`:
   - Controller para `getVeterinarianSchedule`
   - Controller para `getOwnerExpenseReport`
 
-- [ ] Todos os controllers devem:
+- [x] Todos os controllers devem:
   - Estender o `BaseControllerImpl` (disponível em `presentation/base/`)
   - Receber o use case correspondente via injeção no construtor
   - Extrair os dados da requisição e repassar para o use case
