@@ -1,11 +1,12 @@
 import { AbstractError } from '@/domain/errors';
-import { FullAppointmentProps } from '@/domain/models/db/appointment';
+import { OwnerExpenseReport } from '@/domain/models/db/appointment';
 import { Either } from '@sweet-monads/either';
 
-export interface GetOwnerExpenseReport {
-    execute(): Promise<GetOwnerExpenseReport.Result>;
+export interface GetOwnerExpenseReportUseCase {
+    execute(params: GetOwnerExpenseReportUseCase.Params): Promise<GetOwnerExpenseReportUseCase.Result>;
 }
 
-export namespace GetOwnerExpenseReport {
-    export type Result = Either<AbstractError, FullAppointmentProps[]>;
+export namespace GetOwnerExpenseReportUseCase {
+    export type Params = string;
+    export type Result = Either<AbstractError, OwnerExpenseReport>;
 }
