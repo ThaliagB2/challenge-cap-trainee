@@ -1,5 +1,5 @@
 import { afterReadProductsUseCase } from '@/main/factories/use-cases/entity-events/products';
-import { AfterReadProductsController } from '@/presentation/entity-events/products';
+import { AfterReadProductsController } from '@/presentation/entity-events/appointments';
 
 const makeAfterReadProductsController = (): AfterReadProductsController => {
     return new AfterReadProductsController(afterReadProductsUseCase);
