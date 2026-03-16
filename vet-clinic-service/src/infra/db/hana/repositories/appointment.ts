@@ -5,7 +5,6 @@ import { AppointmentModel, AppointmentProps } from '@/domain/models/db/appointme
 
 export class AppointmentRepositoryImpl implements AppointmentRepository {
     private readonly ENTITY = 'db_models_Appointments';
-    private readonly PROCEDURES_ENTITY = 'db_models_Procedures';
 
     public async findByPetId(petId: string): Promise<AppointmentModel[]> {
         const petAppointmentQuery = cds.ql.SELECT.from(this.ENTITY).where({ pet_id: petId });
@@ -37,17 +36,6 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         };
 
         await cds.create(this.ENTITY).entries([appointmentData]);
-
-        if (appointment.procedures && appointment.procedures.length > 0) {
-            const proceduresData = appointment.procedures.map((proc) => ({
-                id: proc.id,
-                description: proc.description,
-                cost: Number(proc.cost),
-                appointment_id: appointment.id
-            }));
-
-            await cds.create(this.PROCEDURES_ENTITY).entries(proceduresData);
-        }
     }
 
     public async generateReportByOwnerId(ownerId: string): Promise<AppointmentModel[]> {

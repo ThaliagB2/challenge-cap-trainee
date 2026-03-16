@@ -2,10 +2,11 @@ import { left, right } from '@sweet-monads/either';
 
 import { AppointmentModel } from '@/domain/models/db/appointment';
 import { PetModel } from '@/domain/models/db/pet';
+import { ProcedureModel } from '@/domain/models/db/procedure';
 import { ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
 import { Translator } from '@/domain/utils/translator';
 import { VeterinarianModel } from '@/domain/models/db/veterinarian';
-import { AppointmentRepository, PetRepository, VeterinarianRepository } from '@/domain/repositories';
+import { AppointmentRepository, PetRepository, ProcedureRepository, VeterinarianRepository } from '@/domain/repositories';
 import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
 
 export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergencyAppointmentUseCase {
@@ -13,6 +14,7 @@ export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergenc
         private readonly petRepository: PetRepository,
         private readonly veterinarianRepository: VeterinarianRepository,
         private readonly appointmentRepository: AppointmentRepository,
+        private readonly procedureRepository: ProcedureRepository,
         private readonly translator: Translator
     ) {}
 
@@ -44,13 +46,26 @@ export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergenc
                 return left(new BadRequestError(message));
             }
 
-            await this.appointmentRepository.create(appointment);
+            this.createAppointmentAndProcedures(appointment);
 
             return right(appointment.id);
         } catch (error) {
             const errorData = error as Error;
             return left(new ServerError(errorData.stack, errorData.message));
         }
+    }
+
+    private async createAppointmentAndProcedures(appointment: AppointmentModel): Promise<void> {
+        await this.appointmentRepository.create(appointment);
+
+        const procedures = appointment.procedures.map((procedure) => {
+            const procedureData = {
+                ...procedure,
+                appointment_id: appointment.id
+            };
+            return ProcedureModel.create(procedureData);
+        });
+        await this.procedureRepository.create(procedures);
     }
 
     private async validatePetExists(petId: string): Promise<PetModel> {
