@@ -444,20 +444,20 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
 
 **Tasks:**
 
-- [ ] Criar as **factories de use cases** em `main/factories/use-cases/`:
+- [x] Criar as **factories de use cases** em `main/factories/use-cases/`:
   - Cada factory instância o use case concreto (Data) passando os repositórios concretos (Infra) como dependência
 
-- [ ] Criar as **factories de controllers** em `main/factories/controllers/`:
+- [x] Criar as **factories de controllers** em `main/factories/controllers/`:
   - Cada factory instância o controller (Presentation) passando o use case como dependência
   - A factory do controller chama internamente a factory do use case
 
-- [ ] Atualizar o **arquivo de definição do serviço CDS** (`main/routes/index.cds`):
+- [x] Atualizar o **arquivo de definição do serviço CDS** (`main/routes/index.cds`):
   - Expor as 5 entidades no serviço
   - Definir a Action `scheduleEmergencyAppointment` com seus parâmetros e tipo de retorno
   - Definir a Function `getVeterinarianSchedule` com seus parâmetros e tipo de retorno
   - Definir a Function `getOwnerExpenseReport` com seus parâmetros e tipo de retorno
 
-- [ ] Atualizar o **arquivo de registro de handlers** (`main/routes/index.ts`):
+- [x] Atualizar o **arquivo de registro de handlers** (`main/routes/index.ts`):
   - Registrar o handler `before CREATE` para Appointments
   - Registrar o handler `after READ` para Pets
   - Registrar o handler `on` para a Action `scheduleEmergencyAppointment`
