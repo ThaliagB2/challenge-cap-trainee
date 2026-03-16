@@ -5,7 +5,7 @@ Authorization: Basic dummy:dummy
 Content-Type: application/json
 
 ###
-GET {{baseUrl}}/vet11111-1111-1111-1111-111111111111
+GET {{baseUrl}}/11111111-1111-1111-1111-111111111111
 Authorization: Basic dummy:dummy
 Content-Type: application/json
 

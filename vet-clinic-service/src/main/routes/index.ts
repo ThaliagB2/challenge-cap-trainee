@@ -6,8 +6,8 @@ import { afterReadPetController } from '@/main/factories/controllers/entity-even
 import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointment';
 import { getOwnerExpenseReportController } from '@/main/factories/controllers/functions/get-owner-expense-report';
 import { getVeterinarianScheduleController } from '@/main/factories/controllers/functions/get-veterinarian-schedule';
-import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
 import { PetWithAgeProps } from '@/domain/models/db/pet';
+import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
 import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-schedule';
 
 // eslint-disable-next-line max-lines-per-function
