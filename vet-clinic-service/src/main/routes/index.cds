@@ -1,6 +1,8 @@
 using { db.models } from '../../../../db/models';
 using { db.types.VeterinarianSchedule, db.types.OwnerExpenseReport, db.types.ProcedureInput } from '../../../../db/types';
 
+using from '../annotations';
+
 @path: '/sample'
 @requires: 'authenticated-user'
 service VetClinicService {
