@@ -1,7 +1,7 @@
 import { GetOwnerExpenseReportUseCase } from '@/domain/use-cases/functions/get-owner-expense-report';
 import { BaseControllerImpl, BaseControllerResponse } from '../base/controller';
 
-export class GetOwnerExpenseReport extends BaseControllerImpl {
+export class GetOwnerExpenseReportController extends BaseControllerImpl {
     constructor(private readonly useCase: GetOwnerExpenseReportUseCase) {
         super();
     }
