@@ -14,6 +14,6 @@ export namespace ProcedureRepository {
         procedures: ProcedureModel[];
     };
     export type FindAllResult = ProcedureModel[] | null;
-    export type FindByIdResult = ProcedureModel[] | null;
+    export type FindByIdResult = ProcedureModel | null;
     export type BulkCreateResult = void;
 }

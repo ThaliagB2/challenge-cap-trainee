@@ -10,5 +10,5 @@ export namespace VeterinarianRepository {
         id: string;
     };
     export type FindAllResult = VeterinarianModel[];
-    export type FindByIdResult = VeterinarianModel[];
+    export type FindByIdResult = VeterinarianModel;
 }

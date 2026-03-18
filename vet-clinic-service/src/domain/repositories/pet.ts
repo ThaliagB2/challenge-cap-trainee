@@ -14,6 +14,6 @@ export namespace PetRepository {
         ownerId: string;
     };
     export type FindAllResult = PetModel[];
-    export type FindByIdResult = PetModel[];
+    export type FindByIdResult = PetModel;
     export type FindByOwnerIdResult = PetModel[];
 }
