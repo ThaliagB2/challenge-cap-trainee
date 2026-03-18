@@ -2,6 +2,12 @@
     "name": "vet-clinic-service",
     "version": "0.0.1",
     "private": true,
+    "cds": {
+        "roots": [
+            "src/main/routes",
+            "../db/models"
+        ]
+    },
     "dependencies": {
         "@cap-js/hana": "^2.2.0",
         "@sap-cloud-sdk/http-client": "^4.1.1",
@@ -42,9 +48,10 @@
         "build:ts": "tsc",
         "start": "cds-serve",
         "dev:build-db": "tsx ./src/main/scripts/populate-local-db.ts",
-        "dev:generate-types": "cds-typer -c ./@cds-models ./src/main/routes",
+        "dev:generate-types": "cds-typer ./src/main/routes/index.cds --outputDirectory ./@cds-models",
+        "dev:fix-models": "tsc ./@cds-models/index.ts --outDir ./@cds-models --module commonjs --target es2022 --skipLibCheck --esModuleInterop --allowSyntheticDefaultImports --moduleResolution node",
         "dev:run-api": "NODE_ENV=dev cds-tsx serve --from ./src/main/routes --with-mocks --watch --in-memory?",
-        "dev": "npm-run-all dev:build-db dev:generate-types dev:run-api",
+        "dev": "yarn dev:build-db && yarn dev:generate-types && yarn dev:fix-models && yarn dev:run-api",
         "test:unit": "vitest --dir test/unit || echo 'No unit tests found'",
         "test:coverage": "yarn dev:generate-types && vitest --coverage --run --silent",
         "lint": "eslint ."
