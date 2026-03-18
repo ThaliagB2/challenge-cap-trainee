@@ -9,6 +9,6 @@ export namespace OwnerRepository {
     export type FindByIdParams = {
         id: string;
     };
-    export type FindByIdResult = OwnerModel[];
+    export type FindByIdResult = OwnerModel;
     export type FindAllResult = OwnerModel[];
 }
