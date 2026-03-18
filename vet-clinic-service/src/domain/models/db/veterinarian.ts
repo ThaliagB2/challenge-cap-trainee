@@ -32,27 +32,27 @@ export class VeterinarianModel {
         return new VeterinarianModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get firstName() {
+    public get firstName(): string {
         return this.props.firstName;
     }
 
-    public get description() {
+    public get description(): string {
         return this.props.lastName;
     }
 
-    public get specialty() {
+    public get specialty(): string {
         return this.props.specialty;
     }
 
-    public get state() {
+    public get state(): string {
         return this.props.state;
     }
 
-    public get crmv() {
+    public get crmv(): number {
         return this.props.crmv;
     }
 

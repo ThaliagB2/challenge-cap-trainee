@@ -11,7 +11,7 @@ export type OwnerProps = {
 
 export type OwnerWithoutIdProps = Omit<OwnerProps, 'id'>;
 
-export type OwnerWithoutPets = Omit<OwnerProps, 'pets'>;
+export type OwnerWithoutPetsProps = Omit<OwnerProps, 'pets'>;
 
 export class OwnerModel {
     constructor(private props: OwnerProps) {}
@@ -27,27 +27,27 @@ export class OwnerModel {
         return new OwnerModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get firstName() {
+    public get firstName(): string {
         return this.props.firstName;
     }
 
-    public get lastName() {
+    public get lastName(): string {
         return this.props.lastName;
     }
 
-    public get phone() {
+    public get phone(): string {
         return this.props.phone;
     }
 
-    public get email() {
+    public get email(): string {
         return this.props.email;
     }
 
-    public get pets() {
+    public get pets(): PetProps[] {
         return this.props.pets;
     }
 
@@ -59,6 +59,16 @@ export class OwnerModel {
             phone: this.props.phone,
             email: this.props.email,
             pets: this.props.pets
+        };
+    }
+
+    public toObjectWithoutPets(): OwnerWithoutPetsProps {
+        return {
+            id: this.props.id,
+            firstName: this.props.firstName,
+            lastName: this.props.lastName,
+            phone: this.props.phone,
+            email: this.props.email
         };
     }
 }

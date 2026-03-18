@@ -1,39 +1,30 @@
 import cds from '@sap/cds';
 
-import { OwnerModel } from '@/domain/models/db/owner';
-import { PetModel } from '@/domain/models/db/pet';
+import { OwnerModel, OwnerProps } from '@/domain/models/db/owner';
 import { OwnerRepository } from '@/domain/repositories';
-import { Owner, Owners } from '@models/db/models';
 
 export class OwnerRepositoryImpl implements OwnerRepository {
-    private readonly OWNER = 'db.models.Owner';
+    private readonly ENTITY = 'db.models.Owners';
 
-    public async findAll(): Promise<OwnerModel[]> {
-        const ownerQuery = cds.ql.SELECT.from(this.OWNER);
-        const owners: Owners = await cds.run(ownerQuery);
+    public async findAll(): Promise<OwnerRepository.FindAllResult> {
+        const query = cds.ql.SELECT.from(this.ENTITY);
+        const result: OwnerProps[] = await cds.run(query);
 
-        if (owners.length === 0) return null;
+        if (result.length === 0) {
+            return null;
+        }
 
-        return owners.map((owner) => this.modelOwnerObject(owner));
+        return result.map((r) => OwnerModel.with(r));
     }
 
-    public async findById(ids: string[]): Promise<OwnerModel[]> {
-        const ownerQuery = cds.ql.SELECT.from(this.OWNER).where({ id: { in: ids } });
-        const owners: Owners = await cds.run(ownerQuery);
+    public async findById(params: OwnerRepository.FindByIdParams): Promise<OwnerRepository.FindByIdResult> {
+        const query = cds.ql.SELECT.from(this.ENTITY).where({ id: params.id });
+        const result: OwnerProps[] = await cds.run(query);
 
-        if (owners.length === 0) return null;
+        if (result.length === 0) {
+            return null;
+        }
 
-        return owners.map((owner) => this.modelOwnerObject(owner));
-    }
-
-    private modelOwnerObject(owner: Owner): OwnerModel {
-        return OwnerModel.with({
-            id: owner.id as string,
-            firstName: owner.firstName as string,
-            lastName: owner.lastName as string,
-            phone: owner.phone as string,
-            email: owner.email as string,
-            pets: owner.pets as unknown as PetModel[]
-        });
+        return result.map((r) => OwnerModel.with(r));
     }
 }

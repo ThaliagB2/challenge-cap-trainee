@@ -1,4 +1,4 @@
-import { OwnerWithoutPets } from './owner';
+import { OwnerWithoutPetsProps } from './owner';
 
 export type PetProps = {
     id: string;
@@ -7,7 +7,7 @@ export type PetProps = {
     breed: string;
     birthDate: Date;
     weight: number;
-    owner: OwnerWithoutPets;
+    owner: OwnerWithoutPetsProps;
 };
 
 export type PetWithoutIdProps = Omit<PetProps, 'id'>;
@@ -30,31 +30,31 @@ export class PetModel {
         return new PetModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get name() {
+    public get name(): string {
         return this.props.name;
     }
 
-    public get species() {
+    public get species(): string {
         return this.props.species;
     }
 
-    public get breed() {
+    public get breed(): string {
         return this.props.breed;
     }
 
-    public get birthDate() {
+    public get birthDate(): Date {
         return this.props.birthDate;
     }
 
-    public get weight() {
+    public get weight(): number {
         return this.props.weight;
     }
 
-    public get owner() {
+    public get owner(): OwnerWithoutPetsProps {
         return this.props.owner;
     }
 
@@ -72,12 +72,27 @@ export class PetModel {
 
     public toFullObject(): FullPetProps {
         return {
-            ...this.props,
-            age: this.getPetAge()
+            id: this.props.id,
+            name: this.props.name,
+            species: this.props.species,
+            breed: this.props.breed,
+            birthDate: this.props.birthDate,
+            weight: this.props.weight,
+            age: this.getPetAge(),
+            owner: this.props.owner
         };
     }
 
     public getPetAge(): number {
-        return Math.floor((new Date().getTime() - this.props.birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25));
+        const today = new Date();
+        const birthDate = new Date(this.props.birthDate);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        return age;
     }
 }

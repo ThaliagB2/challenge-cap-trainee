@@ -1,24 +1,19 @@
 namespace db.models;
 
-using {db.models} from '.';
 using {managed} from '@sap/cds/common';
 
-type AppointmentStatus : String enum {
-    SCHEDULED;
-    IN_PROGRESS;
-    COMPLETED;
-    CANCELLED;
-}
+using {db.models} from '.';
+using {db.types} from '../types';
 
 entity Appointments : managed {
     key id           : UUID;
         date         : DateTime;
-        status       : AppointmentStatus;
+        status       : types.AppointmentStatus;
         isEmergency  : Boolean;
         totalCost    : Decimal(12, 2);
         notes        : String(500);
         procedures   : Composition of many models.Procedures on procedures.appointment = $self;
-        owner        : Association to models.Owners;
+        //owner        : Association to models.Owners;
         pet          : Association to models.Pets;
         veterinarian : Association to models.Veterinarians;
 }

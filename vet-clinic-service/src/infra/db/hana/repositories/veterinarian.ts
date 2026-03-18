@@ -1,38 +1,30 @@
 import cds from '@sap/cds';
 
-import { VeterinarianModel } from '@/domain/models/db/veterinarian';
+import { VeterinarianModel, VeterinarianProps } from '@/domain/models/db/veterinarian';
 import { VeterinarianRepository } from '@/domain/repositories';
-import { Veterinarian, Veterinarians } from '@models/db/models';
 
 export class VeterinarianRepositoryImpl implements VeterinarianRepository {
-    private readonly VETERINARIAN = 'db.models.Veterinarian';
+    private readonly ENTITY = 'db.models.Veterinarians';
 
-    public async findAll(): Promise<VeterinarianModel[]> {
-        const veterinariansQuery = cds.ql.SELECT.from(this.VETERINARIAN);
-        const veterinarians: Veterinarians = await cds.run(veterinariansQuery);
+    public async findAll(): Promise<VeterinarianRepository.FindAllResult> {
+        const query = cds.ql.SELECT.from(this.ENTITY);
+        const result: VeterinarianProps[] = await cds.run(query);
 
-        if (veterinarians.length === 0) return null;
+        if (result.length === 0) {
+            return null;
+        }
 
-        return veterinarians.map((vet) => this.modelVeterinarianObject(vet));
+        return result.map((r) => VeterinarianModel.with(r));
     }
 
-    public async findById(ids: string[]): Promise<VeterinarianModel[]> {
-        const veterinariansQuery = cds.ql.SELECT.from(this.VETERINARIAN).where({ id: { in: ids } });
-        const veterinarians: Veterinarians = await cds.run(veterinariansQuery);
+    public async findById(params: VeterinarianRepository.FindByIdParams): Promise<VeterinarianRepository.FindByIdResult> {
+        const query = cds.ql.SELECT.from(this.ENTITY).where({ id: params.id });
+        const result: VeterinarianProps[] = await cds.run(query);
 
-        if (veterinarians.length === 0) return null;
+        if (result.length === 0) {
+            return null;
+        }
 
-        return veterinarians.map((vet) => this.modelVeterinarianObject(vet));
-    }
-
-    private modelVeterinarianObject(vet: Veterinarian): VeterinarianModel {
-        return VeterinarianModel.with({
-            id: vet.id as string,
-            firstName: vet.firstName as string,
-            lastName: vet.lastName as string,
-            specialty: vet.specialty as string,
-            state: vet.state as string,
-            crmv: vet.crmv as number
-        });
+        return result.map((r) => VeterinarianModel.with(r));
     }
 }

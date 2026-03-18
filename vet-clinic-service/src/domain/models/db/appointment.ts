@@ -1,5 +1,4 @@
-import { ValidationResult } from '@/domain/validators/common/validation-result';
-import { AppointmentStatus } from '@models/db/models';
+import { AppointmentStatus } from '@cds-models/db/types';
 import { OwnerProps } from './owner';
 import { PetProps } from './pet';
 import { ProcedureProps } from './procedure';
@@ -18,8 +17,14 @@ export type AppointmentProps = {
     procedures: ProcedureProps[];
 };
 
-export type AppointmentForCreateProps = Omit<AppointmentProps, 'id' | 'totalCost'> & {
+export type AppointmentForCreateProps = Omit<AppointmentProps, 'id' | 'totalCost' | 'owner' | 'pet' | 'veterinarian'> & {
     id?: string;
+    owner?: OwnerProps;
+    pet?: PetProps;
+    veterinarian?: VeterinarianProps;
+    owner_id?: string;
+    pet_id?: string;
+    veterinarian_id?: string;
 };
 
 export type FullAppointmentProps = AppointmentProps & {
@@ -42,51 +47,51 @@ export class AppointmentModel {
             id: crypto.randomUUID(),
             totalCost: 0,
             ...props
-        });
+        } as AppointmentProps);
     }
 
     public static with(props: AppointmentProps): AppointmentModel {
         return new AppointmentModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get date() {
+    public get date(): Date {
         return this.props.date;
     }
 
-    public get status() {
+    public get status(): string {
         return this.props.status;
     }
 
-    public get isEmergency() {
+    public get isEmergency(): boolean {
         return this.props.isEmergency;
     }
 
-    public get totalCost() {
+    public get totalCost(): number {
         return this.props.totalCost;
     }
 
-    public get notes() {
+    public get notes(): string {
         return this.props.notes;
     }
 
-    public get procedures() {
-        return this.props.procedures;
-    }
-
-    public get owner() {
+    public get owner(): OwnerProps {
         return this.props.owner;
     }
 
-    public get pet() {
+    public get pet(): PetProps {
         return this.props.pet;
     }
 
-    public get veterinarian() {
+    public get veterinarian(): VeterinarianProps {
         return this.props.veterinarian;
+    }
+
+    public get procedures(): ProcedureProps[] {
+        return this.props.procedures;
     }
 
     public toCreationObject(): AppointmentProps {
@@ -143,87 +148,6 @@ export class AppointmentModel {
     }
 
     private injectStatus(): string {
-        if (!this.props.status) return AppointmentStatus.SCHEDULED;
-        else return this.props.status;
-    }
-
-    public validate(): ValidationResult {
-        const errors = [];
-
-        // Validar owner
-        const owner = this.validateOwner();
-        if (owner.hasError) errors.push(...owner.errorMessages);
-
-        // Validar pet
-        const pet = this.validatePet();
-        if (pet.hasError) errors.push(...pet.errorMessages);
-
-        // Validar veterinarian
-        const veterinarian = this.validateVeterinarian();
-        if (veterinarian.hasError) errors.push(...veterinarian.errorMessages);
-
-        // Validar procedures
-        const procedures = this.validateProcedures();
-        if (procedures.hasError) errors.push(...procedures.errorMessages);
-
-        return { hasError: errors.length > 0, errorMessages: errors };
-    }
-
-    private validateOwner(): ValidationResult {
-        const owner = this.props.owner;
-        if (!owner) return { hasError: true, errorMessages: ['ownerIsRequired'] };
-        const errors = [];
-        if (!owner.id || owner.id.trim() === '') errors.push('ownerIdIsRequired');
-        if (!owner.firstName || owner.firstName.trim() === '') errors.push('ownerFirstNameIsRequired');
-        if (!owner.lastName || owner.lastName.trim() === '') errors.push('ownerLastNameIsRequired');
-        if (!owner.email || owner.email.trim() === '') errors.push('ownerEmailIsRequired');
-        if (!owner.phone || owner.phone.trim() === '') errors.push('ownerPhoneIsRequired');
-        if (!owner.pets || owner.pets.length === 0) errors.push('ownerPetsAreRequired');
-        return { hasError: errors.length > 0, errorMessages: errors };
-    }
-
-    private validatePet(): ValidationResult {
-        const pet = this.props.pet;
-        if (!pet) return { hasError: true, errorMessages: ['petIsRequired'] };
-        const errors = [];
-        if (!pet.id || pet.id.trim() === '') errors.push('petIdIsRequired');
-        if (!pet.name || pet.name.trim() === '') errors.push('petNameIsRequired');
-        if (!pet.species || pet.species.trim() === '') errors.push('petSpeciesIsRequired');
-        if (!pet.breed || pet.breed.trim() === '') errors.push('petBreedIsRequired');
-        if (!pet.weight) errors.push('petWeightIsRequired');
-        if (pet.weight <= 0) errors.push('validPetWeightIsRequired');
-        if (!pet.birthDate) errors.push('petBirthDateIsRequired');
-        if (pet.birthDate > new Date()) errors.push('validPetBirthDateIsRequired');
-        if (!pet.owner) errors.push('petOwnerIsRequired');
-        return { hasError: errors.length > 0, errorMessages: errors };
-    }
-
-    private validateVeterinarian(): ValidationResult {
-        const vet = this.props.veterinarian;
-        if (!vet) return { hasError: true, errorMessages: ['veterinarianIsRequired'] };
-        const errors = [];
-        if (!vet.id || vet.id.trim() === '') errors.push('veterinarianIdIsRequired');
-        if (!vet.firstName || vet.firstName.trim() === '') errors.push('veterinarianFirstNameIsRequired');
-        if (!vet.lastName || vet.lastName.trim() === '') errors.push('veterinarianLastNameIsRequired');
-        if (!vet.crmv) errors.push('veterinarianCRMVIsRequired');
-        if (vet.crmv <= 0) errors.push('validVeterinarianCRMVIsRequired');
-        if (!vet.state || vet.state.trim() === '') errors.push('veterinarianStateIsRequired');
-        if (!vet.specialty || vet.specialty.trim() === '') errors.push('veterinarianSpecialtyIsRequired');
-        return { hasError: errors.length > 0, errorMessages: errors };
-    }
-
-    private validateProcedures(): ValidationResult {
-        const procedures = this.props.procedures;
-        if (!procedures || procedures.length === 0) return { hasError: true, errorMessages: ['proceduresAreRequired'] };
-        const errors = [];
-        for (const proc of procedures) {
-            if (!proc.id || proc.id.trim() === '') errors.push('procedureIdIsRequired');
-            if (!proc.name || proc.name.trim() === '') errors.push('procedureNameIsRequired');
-            if (!proc.description || proc.description.trim() === '') errors.push('procedureDescriptionIsRequired');
-            if (!proc.cost) errors.push('procedureIdIsRequired');
-            if (proc.cost <= 0) errors.push('validProcedureCostIsRequired');
-            if (!proc.appointment) errors.push('procedureAppointmentIsRequired');
-        }
-        return { hasError: errors.length > 0, errorMessages: errors };
+        return !this.props.status ? AppointmentStatus.SCHEDULED : this.props.status;
     }
 }

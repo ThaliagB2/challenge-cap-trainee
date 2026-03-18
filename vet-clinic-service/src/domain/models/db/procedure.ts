@@ -2,7 +2,6 @@ import { AppointmentProps } from './appointment';
 
 export type ProcedureProps = {
     id: string;
-    name: string;
     description: string;
     cost: number;
     appointment: AppointmentProps;
@@ -13,6 +12,8 @@ export type ProcedureWithoutIdProps = Omit<ProcedureProps, 'id'>;
 export type FullProcedureProps = ProcedureProps & {
     formattedCost: string;
 };
+
+export type FullProcedureWithoutAppointment = Omit<FullProcedureProps, 'appointment'>;
 
 export class ProcedureModel {
     constructor(private props: ProcedureProps) {}
@@ -28,23 +29,19 @@ export class ProcedureModel {
         return new ProcedureModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get name() {
-        return this.props.name;
-    }
-
-    public get description() {
+    public get description(): string {
         return this.props.description;
     }
 
-    public get cost() {
+    public get cost(): number {
         return this.props.cost;
     }
 
-    public get appointment() {
+    public get appointment(): AppointmentProps {
         return this.props.appointment;
     }
 
@@ -55,7 +52,6 @@ export class ProcedureModel {
     public toCreationObject(): ProcedureProps {
         return {
             id: this.props.id,
-            name: this.props.name,
             description: this.props.description,
             cost: this.props.cost,
             appointment: this.props.appointment
@@ -65,6 +61,15 @@ export class ProcedureModel {
     public toFullObject(): FullProcedureProps {
         return {
             ...this.props,
+            formattedCost: this.formattedCost()
+        };
+    }
+
+    public toObjectWithoutAppointment(): FullProcedureWithoutAppointment {
+        return {
+            id: this.props.id,
+            description: this.props.description,
+            cost: this.props.cost,
             formattedCost: this.formattedCost()
         };
     }

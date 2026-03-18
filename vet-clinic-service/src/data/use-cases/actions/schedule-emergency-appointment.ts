@@ -1,4 +1,6 @@
 /* eslint-disable max-lines-per-function */
+import { left, right } from '@sweet-monads/either';
+
 import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
 import { AppointmentModel } from '@/domain/models/db/appointment';
 import { OwnerModel } from '@/domain/models/db/owner';
@@ -9,7 +11,6 @@ import { OwnerRepository, PetRepository, ProcedureRepository, VeterinarianReposi
 import { ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
 import { Translator } from '@/domain/utils/translator';
 import { ValidationResult } from '@/domain/validators/common/validation-result';
-import { left, right } from '@sweet-monads/either';
 
 export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergencyAppointmentUseCase {
     constructor(

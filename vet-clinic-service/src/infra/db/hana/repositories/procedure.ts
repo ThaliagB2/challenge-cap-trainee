@@ -1,43 +1,36 @@
-import { AppointmentModel } from '@/domain/models/db/appointment';
-import { ProcedureModel } from '@/domain/models/db/procedure';
-import { ProcedureRepository } from '@/domain/repositories';
-import { Procedure, Procedures } from '@models/db/models';
 import cds from '@sap/cds';
 
+import { ProcedureModel, ProcedureProps } from '@/domain/models/db/procedure';
+import { ProcedureRepository } from '@/domain/repositories';
+
 export class ProcedureRepositoryImpl implements ProcedureRepository {
-    private readonly PROCEDURE = 'db.models.Procedure';
+    private readonly ENTITY = 'db.models.Procedures';
 
-    public async findAll(): Promise<ProcedureModel[] | null> {
-        const procedureQuery = cds.ql.SELECT.from(this.PROCEDURE);
-        const procedures: Procedures = await cds.run(procedureQuery);
+    public async findAll(): Promise<ProcedureRepository.FindAllResult> {
+        const query = cds.ql.SELECT.from(this.ENTITY);
+        const result: ProcedureProps[] = await cds.run(query);
 
-        if (procedures.length === 0) return null;
+        if (result.length === 0) {
+            return null;
+        }
 
-        return procedures.map((proc) => this.modelProcedureObject(proc));
+        return result.map((r) => ProcedureModel.with(r));
     }
 
-    public async findByIds(ids: string[]): Promise<ProcedureModel[] | null> {
-        const procedureQuery = cds.ql.SELECT.from(this.PROCEDURE).where({ id: { in: ids } });
-        const procedures: Procedures = await cds.run(procedureQuery);
+    public async findById(params: ProcedureRepository.FindByIdsParams): Promise<ProcedureRepository.FindByIdResult> {
+        const query = cds.ql.SELECT.from(this.ENTITY).where({ id: params.id });
+        const result: ProcedureProps[] = await cds.run(query);
 
-        if (procedures.length === 0) return null;
+        if (result.length === 0) {
+            return null;
+        }
 
-        return procedures.map((proc) => this.modelProcedureObject(proc));
+        return result.map((r) => ProcedureModel.with(r));
     }
 
-    public async bulkCreate(procedures: ProcedureModel[]): Promise<void> {
-        const procedureData = procedures.map((proc) => proc.toCreationObject());
-        const query = cds.ql.INSERT.into(this.PROCEDURE).entries(procedureData);
+    public async bulkCreate(params: ProcedureRepository.BulkCreateParams): Promise<ProcedureRepository.BulkCreateResult> {
+        const procedureData = params.procedures.map((proc) => proc.toCreationObject());
+        const query = cds.ql.INSERT.into(this.ENTITY).entries(procedureData);
         await cds.run(query);
-    }
-
-    private modelProcedureObject(procedure: Procedure): ProcedureModel {
-        return ProcedureModel.with({
-            id: procedure.id,
-            name: procedure.name,
-            description: procedure.description,
-            cost: procedure.cost,
-            appointment: procedure.appointment as unknown as AppointmentModel
-        });
     }
 }
