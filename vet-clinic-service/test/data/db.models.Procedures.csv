@@ -1,16 +1,16 @@
-ID,description,cost,appointment_ID
-1,Blood Test,50.00,1
-2,X-Ray,100.00,1
-3,Vaccination,30.00,3
-4,Neutering,200.00,2
-5,Teeth Cleaning,150.00,6
-6,Emergency Surgery,500.00,2
-7,Checkup,100.00,5
-8,Follow-up,90.00,8
-9,Ultrasound,120.00,7
-10,Stitches Removal,80.00,7
-11,General Examination,100.00,5
-12,Heart Checkup,200.00,3
-13,Allergy Test,150.00,4
-14,Fracture Treatment,300.00,6
-15,Physical Therapy,250.00,6
+id,description,cost,appointment_id
+e4ca5f8d-43e5-4eb6-abd5-d967cf72e777,Blood Test,50.00,5ded2b85-8aba-4ef4-855f-b10ef89f116c
+10c1481e-9734-4cfc-a414-f1da6221735f,X-Ray,100.00,4344b875-55f4-401f-954e-4e0d7cb96bca
+b915c9c5-2c44-49de-bfa5-6259332227ab,Vaccination,30.00,b507ec60-db52-46d3-b211-263ae1c475ba
+bfc3ab2f-ccd4-4568-897f-040861909a23,Neutering,200.00,c48c586f-5c9f-482e-80df-54e35269262a
+d8152a6f-5c3e-4608-a076-2e54f60a52e1,Teeth Cleaning,150.00,ad4623b8-b944-4e73-a483-1ddba0d311bb
+a57dc966-80fa-4668-a3cf-9c5442555eca,Emergency Surgery,500.00,629e4a97-40dc-4eb0-abe1-2eebd85ef8a5
+77ee7e2c-930d-4d22-aa4f-aee15de5f3c1,Checkup,100.00,4e0df621-ff77-4e72-a280-9b218e9b5f48
+b1299ab7-4cda-4d76-a8ba-5afd7c312655,Follow-up,90.00,59c7feff-59b8-4bc4-bc08-d137ec6eafac
+9e2df00a-6ad8-4e6d-8ea2-fcc56b62e5b7,Ultrasound,120.00,5ded2b85-8aba-4ef4-855f-b10ef89f116c
+79cd7544-3524-4471-9dd8-117e8f1e194b,Stitches Removal,80.00,4344b875-55f4-401f-954e-4e0d7cb96bca
+26736d1f-dedc-4944-bb70-8045a755a8e9,General Examination,100.00,b507ec60-db52-46d3-b211-263ae1c475ba
+c6d48931-8197-44f3-a06e-61b069f5ea60,Heart Checkup,200.00,c48c586f-5c9f-482e-80df-54e35269262a
+0bc4f015-ea19-47fc-81e1-24823b237401,Allergy Test,150.00,ad4623b8-b944-4e73-a483-1ddba0d311bb
+8d2826ff-80b3-4760-8d49-62e1a55a99ce,Fracture Treatment,300.00,629e4a97-40dc-4eb0-abe1-2eebd85ef8a5
+28a35941-abcd-4a2e-b042-85cff4f9d055,Physical Therapy,250.00,4e0df621-ff77-4e72-a280-9b218e9b5f48
