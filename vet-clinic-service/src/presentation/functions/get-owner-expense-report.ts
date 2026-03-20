@@ -1,8 +1,8 @@
-import { GetOwnerExpenseReportUsecase } from '@/domain/use-cases/functions/get-owner-expense-report';
+import { GetOwnerExpenseReportUseCase } from '@/domain/use-cases/functions/get-owner-expense-report';
 import { BaseControllerImpl, BaseControllerResponse } from '../base/controller';
 
 export class GetOwnerExpenseReport extends BaseControllerImpl {
-    constructor(private readonly useCase: GetOwnerExpenseReportUsecase) {
+    constructor(private readonly useCase: GetOwnerExpenseReportUseCase) {
         super();
     }
 
@@ -11,5 +11,6 @@ export class GetOwnerExpenseReport extends BaseControllerImpl {
         if (result.isLeft()) {
             return this.error(result.value.code, result.value.toErrorDetails());
         }
+        return this.success(result.value);
     }
 }

@@ -1,8 +1,8 @@
-import { GetVeterinarianScheduleUsecase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
+import { GetVeterinarianScheduleUseCase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
 import { BaseControllerImpl, BaseControllerResponse } from '../base/controller';
 
 export class GetVeterinarianSchedule extends BaseControllerImpl {
-    constructor(public readonly useCase: GetVeterinarianScheduleUsecase) {
+    constructor(public readonly useCase: GetVeterinarianScheduleUseCase) {
         super();
     }
 
@@ -11,5 +11,6 @@ export class GetVeterinarianSchedule extends BaseControllerImpl {
         if (result.isLeft()) {
             return this.error(result.value.code, result.value.toErrorDetails());
         }
+        return this.success(result.value);
     }
 }

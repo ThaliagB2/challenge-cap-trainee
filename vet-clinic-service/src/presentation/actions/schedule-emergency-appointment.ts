@@ -1,8 +1,8 @@
-import { ScheduleEmergencyAppointmentUsecase, ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
+import { ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
 import { BaseControllerImpl } from '../base/controller';
 
-export class scheduleEmergencyAppointment extends BaseControllerImpl {
-    constructor(private readonly useCase: ScheduleEmergencyAppointmentUsecase) {
+export class ScheduleEmergencyAppointmentController extends BaseControllerImpl {
+    constructor(private readonly useCase: ScheduleEmergencyAppointmentUseCase) {
         super();
     }
 

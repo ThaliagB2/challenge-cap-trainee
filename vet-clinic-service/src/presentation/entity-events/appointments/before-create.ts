@@ -1,7 +1,7 @@
 import { BeforeCreateAppointmentUseCase } from '@/domain/use-cases/entity-events/appointments';
 import { BaseControllerImpl, BaseControllerResponse } from '@/presentation/base/controller';
 
-export class BeforeCreateAppointments extends BaseControllerImpl {
+export class BeforeCreateAppointmentsController extends BaseControllerImpl {
     constructor(private readonly useCase: BeforeCreateAppointmentUseCase) {
         super();
     }
