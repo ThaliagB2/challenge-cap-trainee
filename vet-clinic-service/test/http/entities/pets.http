@@ -1,0 +1,38 @@
+@baseUrl = http://localhost:4004/sample
+@dummyAuth = Basic ZHVtbXk6ZHVtbXk=
+@ownerId = 81ffd7bc-8523-4d8e-8e27-db44959b2bea
+@petId = fe51eaee-f4b0-4552-9091-059ad5b769b0
+
+### Listar todos os pets (verificar campo age calculado)
+GET {{baseUrl}}/Pets
+Authorization: {{dummyAuth}}
+
+### Buscar pet por ID
+GET {{baseUrl}}/Pets(id={{petId}})
+Authorization: {{dummyAuth}}
+
+### Criar novo pet associado a um proprietário
+POST {{baseUrl}}/Pets
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "name": "Rex",
+  "species": "Dog",
+  "breed": "Dachshund",
+  "birthDate": "2022-06-15",
+  "weight": 12.5,
+  "owner_id": "{{ownerId}}"
+}
+
+### Listar pets com proprietário expandido
+GET {{baseUrl}}/Pets?$expand=owner
+Authorization: {{dummyAuth}}
+
+### Filtrar pets por espécie (Dog)
+GET {{baseUrl}}/Pets?$filter=species eq 'Dog'
+Authorization: {{dummyAuth}}
+
+### Filtrar pets por espécie (Cat)
+GET {{baseUrl}}/Pets?$filter=species eq 'Cat'
+Authorization: {{dummyAuth}}

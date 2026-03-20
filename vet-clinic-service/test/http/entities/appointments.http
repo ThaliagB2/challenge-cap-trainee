@@ -1,0 +1,89 @@
+@baseUrl = http://localhost:4004/sample
+@dummyAuth = Basic ZHVtbXk6ZHVtbXk=
+@petId = fe51eaee-f4b0-4552-9091-059ad5b769b0
+@vetId = 091bb664-e13c-457a-9b65-c633596b52f4
+
+### Listar todos os agendamentos
+GET {{baseUrl}}/Appointments
+Authorization: {{dummyAuth}}
+
+### Listar agendamentos com expansões (pet, veterinarian, procedures)
+GET {{baseUrl}}/Appointments?$expand=pet,veterinarian,procedures
+Authorization: {{dummyAuth}}
+
+### Criar novo agendamento com procedimentos
+POST {{baseUrl}}/Appointments
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "date": "2026-04-15T14:30:00Z",
+  "notes": "Rotina checkup",
+  "pet_id": "{{petId}}",
+  "veterinarian_id": "{{vetId}}",
+  "procedures": [
+    {
+      "description": "Vaccination",
+      "cost": 50.00
+    },
+    {
+      "description": "Physical examination",
+      "cost": 30.00
+    }
+  ]
+}
+
+### Criar agendamento sem pet (deve retornar erro 404)
+POST {{baseUrl}}/Appointments
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "date": "2026-03-20T10:00:00Z",
+  "notes": "Consulta sem pet",
+  "veterinarian_id": "{{vetId}}",
+  "procedures": [
+    {
+      "description": "Vacinação",
+      "cost": 50.00
+    }
+  ]
+}
+
+### Criar agendamento sem veterinário (deve retornar erro 404)
+POST {{baseUrl}}/Appointments
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "date": "2026-03-20T10:00:00Z",
+  "notes": "Consulta sem vet",
+  "pet_id": "{{petId}}",
+  "procedures": [
+    {
+      "description": "Vacinação",
+      "cost": 50.00
+    }
+  ]
+}
+
+### Criar agendamento sem procedimentos (deve retornar erro 400)
+POST {{baseUrl}}/Appointments
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "date": "2026-03-20T10:00:00Z",
+  "notes": "Consulta",
+  "pet_id": "{{petId}}",
+  "veterinarian_id": "{{vetId}}",
+  "procedures": []
+}
+
+### Filtrar agendamentos por status SCHEDULED
+GET {{baseUrl}}/Appointments?$filter=status eq 'SCHEDULED'
+Authorization: {{dummyAuth}}
+
+### Filtrar agendamentos por status COMPLETED
+GET {{baseUrl}}/Appointments?$filter=status eq 'COMPLETED'
+Authorization: {{dummyAuth}}

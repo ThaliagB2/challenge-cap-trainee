@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:4004/sample
+@dummyAuth = Basic ZHVtbXk6ZHVtbXk=
+
+### Listar todos os proprietários
+GET {{baseUrl}}/Owners
+Authorization: {{dummyAuth}}
+
+### Buscar proprietário por ID
+GET {{baseUrl}}/Owners(ID=81ffd7bc-8523-4d8e-8e27-db44959b2bea)
+Authorization: {{dummyAuth}}
+
+### Criar novo proprietário
+POST {{baseUrl}}/Owners
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "firstName": "Roberto",
+  "lastName": "Oliveira",
+  "phone": "11987654321",
+  "email": "roberto.oliveira@email.com"
+}
+
+### Atualizar proprietário
+PATCH {{baseUrl}}/Owners(id=233d8bd7-1794-4390-9bf1-a262762cb20d)
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "phone": "11912345678"
+}
+
+### Remover proprietário
+DELETE {{baseUrl}}/Owners(ID=a3846505-90ad-4b77-abaa-15d21588e4ff)
+Authorization: {{dummyAuth}}
+
+### Listar proprietários com pets expandidos
+GET {{baseUrl}}/Owners?$expand=pets
+Authorization: {{dummyAuth}}
