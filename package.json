@@ -19,6 +19,7 @@
         "build:apps": "npm-run-all build:app-srv",
         "build:app-srv": "cd vet-clinic-service && yarn && yarn build:mta",
         "deploy": "cf deploy mta_archives/vet-clinic-service.mtar --retries 0",
-        "undeploy": "cf undeploy vet-clinic-service --delete-services --delete-service-keys --delete-service-brokers"
+        "undeploy": "cf undeploy vet-clinic-service --delete-services --delete-service-keys --delete-service-brokers",
+        "dev": "cds watch"
     }
 }
