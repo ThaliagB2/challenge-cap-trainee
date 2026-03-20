@@ -6,14 +6,14 @@ import { PetsModel } from '@/domain/models/db/pets';
 import { petsRepository } from '@/domain/repositories';
 
 export class PetsRepositoryImpl implements petsRepository {
-    async findPetsById(id: string): Promise<PetsModel> {
-        const petQuerry = await cds.ql.SELECT.from('pets').where({ id });
-        const pet = await cds.run(petQuerry);
-        if (!pet.length) {
-            throw new Error(`Pet with id ${id} not found`);
+    async findPetsById(id: string): Promise<PetsModel | null> {
+        const petQuerry = cds.ql.SELECT.from('db.models.Pets').where({ id });
+        const pets = await cds.run(petQuerry);
+        if (!pets || pets.length === 0) {
+            return null;
         }
+        const pet = pets[0];
         return PetsModel.create({
-            //rafatorar para tirar [0]
             id: pet.id,
             name: pet.name,
             species: pet.species,

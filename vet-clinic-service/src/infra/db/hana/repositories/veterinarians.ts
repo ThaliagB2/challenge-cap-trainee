@@ -5,7 +5,7 @@ import { veterinariansRepository } from '@/domain/repositories/veterinarians';
 
 export class VeterinariansRepositoryImpl implements veterinariansRepository {
     public async findVeterinarianById(id: string): Promise<VeterinariansModel> {
-        const vetQuerry = cds.ql.SELECT.from('veterinarians').where({ id });
+        const vetQuerry = cds.ql.SELECT.from('db.models.Veterinarians').where({ id });
         const vet = await cds.run(vetQuerry);
         return VeterinariansModel.create({
             id: vet.id,
