@@ -4,7 +4,7 @@ import { ownersProps } from './owners';
 import { PetsProps } from './pets';
 import { ProceduresProps } from './procedures';
 
-export interface VeterinarianSheduleProps {
+export interface VeterinarianScheduleProps {
     id: appointmentsProps['id'];
     date: appointmentsProps['date'];
     status: appointmentsProps['status'];
@@ -17,9 +17,9 @@ export interface VeterinarianSheduleProps {
 }
 
 export class VeterinarianScheduleModel {
-    constructor(private props: VeterinarianSheduleProps) {}
+    constructor(private props: VeterinarianScheduleProps) {}
 
-    public static create(props: VeterinarianSheduleProps): VeterinarianScheduleModel {
+    public static create(props: VeterinarianScheduleProps): VeterinarianScheduleModel {
         return new VeterinarianScheduleModel(props);
     }
 
@@ -59,7 +59,7 @@ export class VeterinarianScheduleModel {
         return this.props.owner;
     }
 
-    public toObject(): VeterinarianSheduleProps {
+    public toObject(): VeterinarianScheduleProps {
         return {
             ...this.props
         };
