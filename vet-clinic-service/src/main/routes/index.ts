@@ -1,70 +1,85 @@
-/* eslint-disable max-lines-per-function */
-import '../config/module-alias';
+import { PetsAgeProps } from '@/domain/models/db/pets';
+import { Request, Service } from '@sap/cds';
+import { scheduleEmergencuAppointmentController } from '../factories/controllers/actions/schedule-emergency-appointment';
+import { beforeCreateAppointmentController } from '../factories/controllers/entity-events/appointments';
+import { afterReadPetController } from '../factories/controllers/entity-events/pets';
+import { getOwnerExpenseReportController } from '../factories/controllers/functions/get-owner-expense-report';
+import { getVeterinarianScheduleController } from '../factories/controllers/functions/get-veterinarian-schedule';
 
-import { Service } from '@sap/cds';
-
-import { Products } from '@models/db/models';
-
-import { translator } from '@/main/factories/utils/translator';
-
-import { bulkCreatePurchaseOrdersController } from '@/main/factories/controllers/actions/bulk-create-purchase-orders';
-import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
-import { beforeCreatePurchaseOrderController } from '@/main/factories/controllers/entity-events/purchase-order';
-import { extractProductsToExcelController } from '@/main/factories/controllers/functions/extract-products-to-excel';
-
+// eslint-disable-next-line max-lines-per-function
 export default (service: Service) => {
-    service.before('*', async (request: any) => {
-        const language = request?.headers['accept-language']?.split(',')[0] || 'en-En';
-        request._language = language;
+    service.before('CREATE', 'Appointments', async (req: Request) => {
+        const params = req.data;
+        const result = await beforeCreateAppointmentController.execute(params);
+
+        if (result.status >= 400) {
+            const errorMensage = result.errorData.details.map((details) => details.message).join('; ');
+            return req.reject(result.status, errorMensage);
+        }
+
+        return result.data;
     });
 
-    service.after('READ', 'Products', (products: Products, request: any) => {
-        return translator.withLanguage(request._language, () => {
-            const result = afterReadProductsController.execute(products);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            request.results = result.data as Products;
-        });
-    });
-
-    service.before('CREATE', 'PurchaseOrders', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await beforeCreatePurchaseOrderController.execute(request.data);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            request.data.total = result.data.total;
-            request.data.items = result.data.items;
-        });
-    });
-
-    service.on('extractProductsToExcel', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await extractProductsToExcelController.execute();
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            const excelBuffer = result.data;
-
-            const res = request._.res;
-            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            res.setHeader('Content-Disposition', 'attachment; filename=produtos.xlsx');
-            res.setHeader('Content-Length', excelBuffer.length);
-            res.setHeader('Cache-Control', 'max-age=0');
-
-            res.end(excelBuffer);
+    service.after('READ', 'Pets', async (petList, req) => {
+        if (!petList) {
             return;
+        }
+
+        const isArray = Array.isArray(petList);
+        const petsArray = isArray ? petList : [petList];
+
+        if (petsArray.length === 0) {
+            return;
+        }
+
+        const result = await afterReadPetController.execute(petsArray);
+
+        if (result.status >= 400) {
+            const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
+            return req.reject(result.status, errorMessages);
+        }
+
+        return result.data.forEach((petWithAge: PetsAgeProps, index: number) => {
+            petsArray[index].age = petWithAge.age;
         });
     });
 
-    service.on('bulkCreatePurchaseOrders', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await bulkCreatePurchaseOrdersController.execute(request.data.payload);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            return result.data;
+    service.on('scheduleEmergencyAppointment', async (req: Request) => {
+        const result = await scheduleEmergencuAppointmentController.execute({
+            date: req.data.date || new Date(),
+            pet_id: req.data.pet_id,
+            veterinarian_id: req.data.veterinarian_id,
+            notes: req.data.notes,
+            procedures: req.data.procedures
         });
+
+        if (result.status >= 400) {
+            const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
+            return req.reject(result.status, errorMessages);
+        }
+
+        return result.data;
+    });
+
+    service.on('getOwnerExpenseReport', async (req: Request) => {
+        const result = await getOwnerExpenseReportController.execute(req.data.ownerId);
+
+        if (result.status >= 400) {
+            const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
+            return req.reject(result.status, errorMessages);
+        }
+
+        return result.data;
+    });
+
+    service.on('getVeterinarianSchedule', async (req: Request) => {
+        const result = await getVeterinarianScheduleController.execute(req.data.veterinarianId, req.data.days || 7);
+
+        if (result.status >= 400) {
+            const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
+            return req.reject(result.status, errorMessages);
+        }
+
+        return result.data;
     });
 };
