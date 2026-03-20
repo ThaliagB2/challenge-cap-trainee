@@ -2,18 +2,18 @@
 import { NotFoundError } from '@/domain/errors';
 import { OwnerExpenseReport } from '@/domain/models/db/get-owner-expense-report';
 import { appointmentsRepository, ownersRepository } from '@/domain/repositories';
-import { getOwnerExpenseReportUsecase } from '@/domain/use-cases/functions/get-owner-expense-report';
+import { GetOwnerExpenseReportUseCase } from '@/domain/use-cases/functions/get-owner-expense-report';
 import { Translator } from '@/domain/utils/translator';
 import { left, right } from '@sweet-monads/either';
 
-export class getOwnerExpenseReportImpl implements getOwnerExpenseReportUsecase {
+export class GetOwnerExpenseReportImpl implements GetOwnerExpenseReportUseCase {
     constructor(
         private readonly ownerRepository: ownersRepository,
         private readonly appointmentsRepository: appointmentsRepository,
         private readonly translator: Translator
     ) {}
 
-    public async execute(ownerId: string): Promise<getOwnerExpenseReportUsecase.Result> {
+    public async execute(ownerId: string): Promise<GetOwnerExpenseReportUseCase.Result> {
         const owner = await this.ownerRepository.findOwnersById(ownerId);
 
         if (!owner) {

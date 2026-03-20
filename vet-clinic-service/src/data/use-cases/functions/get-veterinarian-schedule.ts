@@ -1,22 +1,23 @@
 import { left, right } from '@sweet-monads/either';
 
 import { NotFoundError } from '@/domain/errors';
-import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-shedule';
-import { appointmentsRepository, ownersRepository, petsRepository, veterinariansRepository } from '@/domain/repositories';
-import { getVeterinarianScheduleUsecase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
+import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-schedule';
+import { appointmentsRepository, ownersRepository, petsRepository, proceduresRepository, veterinariansRepository } from '@/domain/repositories';
+import { GetVeterinarianScheduleUseCase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
 import { Translator } from '@/domain/utils/translator';
 
-export class getVeterinarianScheduleUsecaseImpl implements getVeterinarianScheduleUsecase {
+export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianScheduleUseCase {
     constructor(
         private readonly vetRepository: veterinariansRepository,
         private readonly appointmentRepository: appointmentsRepository,
         private readonly ownerRepository: ownersRepository,
         private readonly petRepository: petsRepository,
+        private readonly procedureRepository: proceduresRepository,
         private readonly translator: Translator
     ) {}
 
     // eslint-disable-next-line max-lines-per-function
-    public async execute(veterinarianId: string, days = 7): Promise<getVeterinarianScheduleUsecase.Result> {
+    public async execute(veterinarianId: string, days = 7): Promise<GetVeterinarianScheduleUseCase.Result> {
         const vet = await this.vetRepository.findVeterinarianById(veterinarianId);
         if (!vet) {
             const message = this.translator.translate('Veterinario não encontrado');
@@ -35,6 +36,7 @@ export class getVeterinarianScheduleUsecaseImpl implements getVeterinarianSchedu
             appointments.map(async (appointment) => {
                 const pet = await this.petRepository.findPetsById(appointment.pet_id);
                 const owner = await this.ownerRepository.findOwnersById(pet.owner_id);
+                const procedures = await this.procedureRepository.findByAppointmentId(appointment.id);
 
                 return VeterinarianScheduleModel.create({
                     id: appointment.id,
@@ -43,7 +45,7 @@ export class getVeterinarianScheduleUsecaseImpl implements getVeterinarianSchedu
                     isEmergency: appointment.isEmergency,
                     totalCost: appointment.totalCost,
                     veterinarianId: appointment.veterinarian_id,
-                    procedure: appointment.procedures,
+                    procedure: procedures.map((proc) => proc.toObject()),
                     pet: pet.toObject(),
                     owner: owner.toObject()
                 });
