@@ -1,19 +1,12 @@
 import { Either } from '@sweet-monads/either';
 
 import { AbstractError } from '@/domain/errors';
+import { OwnerExpenseReport } from '@/domain/models/db/get-owner-expense-report';
 
-export interface getOwnerExpenseReportUsecase {
-    execute(ownerId: string): Promise<getOwnerExpenseReportUsecase.Result>;
+export interface GetOwnerExpenseReportUseCase {
+    execute(ownerId: string): Promise<GetOwnerExpenseReportUseCase.Result>;
 }
 
-export namespace getOwnerExpenseReportUsecase {
+export namespace GetOwnerExpenseReportUseCase {
     export type Result = Either<AbstractError, OwnerExpenseReport>;
-    export type OwnerExpenseReport = {
-        ownerId: string;
-        ownerFullName: string;
-        ownerEmail: string;
-        totalSpent: number;
-        totalAppointments: number;
-        totalEmergencyAppointments: number;
-    };
 }

@@ -1,12 +1,12 @@
 import { Either } from '@sweet-monads/either';
 
 import { AbstractError } from '@/domain/errors';
-import { AppointmentsModel } from '@/domain/models/db/appointments';
+import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-schedule';
 
-export interface getVeterinarianScheduleUsecase {
-    execute(veterinarianId: string, days: number): Promise<getVeterinarianScheduleUsecase.Result>;
+export interface GetVeterinarianScheduleUseCase {
+    execute(veterinarianId: string, days: number): Promise<GetVeterinarianScheduleUseCase.Result>;
 }
 
-export namespace getVeterinarianScheduleUsecase {
-    export type Result = Either<AbstractError, AppointmentsModel[]>;
+export namespace GetVeterinarianScheduleUseCase {
+    export type Result = Either<AbstractError, VeterinarianScheduleModel[]>;
 }
