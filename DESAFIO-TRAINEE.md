@@ -479,7 +479,7 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
 
 **Tasks:**
 
-- [ ] Criar arquivo de teste para **Owners** (`test/http/owners.http`):
+- [x] Criar arquivo de teste para **Owners** (`test/http/owners.http`):
   - GET todos os owners
   - GET owner por ID
   - POST criar novo owner
@@ -487,31 +487,31 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
   - DELETE remover owner
   - GET com `$expand` para trazer os pets do owner
 
-- [ ] Criar arquivo de teste para **Pets** (`test/http/pets.http`):
+- [x] Criar arquivo de teste para **Pets** (`test/http/pets.http`):
   - GET todos os pets (verificar se o campo `age` calculado aparece)
   - GET pet por ID
   - POST criar novo pet (associando a um owner existente)
   - GET com `$expand` para trazer o owner do pet
   - GET com `$filter` por species
 
-- [ ] Criar arquivo de teste para **Veterinarians** (`test/http/veterinarians.http`):
+- [x] Criar arquivo de teste para **Veterinarians** (`test/http/veterinarians.http`):
   - GET todos os veterinários
   - GET veterinário por ID
   - POST criar novo veterinário
 
-- [ ] Criar arquivo de teste para **Appointments** (`test/http/appointments.http`):
+- [x] Criar arquivo de teste para **Appointments** (`test/http/appointments.http`):
   - GET todos os agendamentos
   - GET com `$expand` para trazer pet, veterinarian e procedures
   - POST criar agendamento (com procedures no payload — testar a validação do before CREATE)
   - POST com dados inválidos (sem pet, sem procedures) para testar os erros
   - GET com `$filter` por status
 
-- [ ] Criar arquivo de teste para a **Action** (`test/http/actions/schedule-emergency.http`):
+- [x] Criar arquivo de teste para a **Action** (`test/http/actions/schedule-emergency.http`):
   - POST chamando a action `scheduleEmergencyAppointment` com payload válido
   - POST com pet inexistente (esperar erro 404)
   - POST com lista de procedimentos vazia (esperar erro 400)
 
-- [ ] Criar arquivo de teste para as **Functions** (`test/http/functions/`):
+- [x] Criar arquivo de teste para as **Functions** (`test/http/functions/`):
   - Arquivo para `getVeterinarianSchedule`: GET com veterinarianId e days
   - Arquivo para `getOwnerExpenseReport`: GET com ownerId
   - Testar cenários de sucesso e erro (IDs inexistentes)
