@@ -1,6 +1,7 @@
+import { Either } from '@sweet-monads/either';
+
 import { AbstractError } from '@/domain/errors';
 import { AppointmentForCreateProps, AppointmentProps } from '@/domain/models/db/appointment';
-import { Either } from '@sweet-monads/either';
 
 export interface BeforeCreateAppointmentUseCase {
     execute(params: BeforeCreateAppointmentUseCase.Params): Promise<BeforeCreateAppointmentUseCase.Result>;
