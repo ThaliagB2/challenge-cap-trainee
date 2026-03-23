@@ -4,21 +4,18 @@ import { AppointmentModel, AppointmentProps } from '@/domain/models/db/appointme
 import { AppointmentRepository } from '@/domain/repositories';
 
 export class AppointmentRepositoryImpl implements AppointmentRepository {
-    private readonly ENTITY = 'db.models.appointments';
-
-    public async findAll(): Promise<AppointmentRepository.FindAllResult> {
-        const query = cds.ql.SELECT.from(this.ENTITY);
-        const result: AppointmentProps[] = await cds.run(query);
-
-        if (result.length === 0) {
-            return null;
-        }
-
-        return result.map((r) => AppointmentModel.with(r));
-    }
+    private readonly ENTITY = 'db.models.Appointments';
 
     public async findByVeterinarianIdAndDate(params: AppointmentRepository.FindByVeterinarianIdAndDateParams): Promise<AppointmentRepository.FindByVeterinarianIdAndDateResult> {
-        const query = cds.ql.SELECT.from(this.ENTITY).where({ id: params.veterinarianId, date: { in: params.date } });
+        const query = cds.ql.SELECT.from(this.ENTITY).where([
+            { ref: ['veterinarian_id'] },
+            '=',
+            { val: params.veterinarianId },
+            'and',
+            { func: 'date', args: [{ ref: ['date'] }] },
+            'in',
+            { list: params.dates.map((d) => ({ val: d })) }
+        ]);
         const result: AppointmentProps[] = await cds.run(query);
 
         if (result.length === 0) {
@@ -29,7 +26,21 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     public async findByPetId(params: AppointmentRepository.FindByPetIdParams): Promise<AppointmentRepository.FindByPetIdResult> {
-        const query = cds.ql.SELECT.from(this.ENTITY).where({ id: params.petId });
+        const query = cds.ql.SELECT.from(this.ENTITY).where({ pet_id: params.petId });
+        const result: AppointmentProps[] = await cds.run(query);
+
+        if (result.length === 0) {
+            return null;
+        }
+
+        return result.map((r) => AppointmentModel.with(r));
+    }
+
+    public async findByOwnerId(params: AppointmentRepository.FindByOwnerIdParams): Promise<AppointmentRepository.FindByOwnerIdResult> {
+        const query = cds.ql.SELECT.from(this.ENTITY)
+            .where({ status: 'COMPLETED' })
+            .and([{ ref: ['pet_id'] }, 'in', cds.ql.SELECT.from('db.models.Pets').columns('id').where({ owner_id: params.ownerId })]);
+
         const result: AppointmentProps[] = await cds.run(query);
 
         if (result.length === 0) {
