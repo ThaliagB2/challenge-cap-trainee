@@ -6,7 +6,7 @@ import { VeterinarianModel, VeterinarianProps } from '@/domain/models/db/veterin
 export class VeterinarianRepositoryImpl implements VeterinarianRepository {
     private readonly ENTITY = 'db_models_Veterinarians';
 
-    public async findById(id: string): Promise<VeterinarianModel> {
+    public async findById(id: VeterinarianRepository.FindByIdParams): Promise<VeterinarianRepository.FindByIdResult> {
         const veterinarianQuery = cds.ql.SELECT.one.from(this.ENTITY).where({ id });
         const veterinarian: VeterinarianProps = await cds.run(veterinarianQuery);
         if (!veterinarian) {

@@ -18,13 +18,13 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
     ) {}
 
     // eslint-disable-next-line max-lines-per-function
-    public async execute(veterinarianId: string, days: number): Promise<GetVeterinarianScheduleUseCase.Result> {
-        if (!veterinarianId) {
+    public async execute(params: GetVeterinarianScheduleUseCase.Params): Promise<GetVeterinarianScheduleUseCase.Result> {
+        if (!params.veterinarianId) {
             const message = this.translator.translate('veterinarianIsRequired');
             return left(new BadRequestError(message));
         }
 
-        const veterinarianExists = await this.validateVeterinarianExists(veterinarianId);
+        const veterinarianExists = await this.validateVeterinarianExists(params.veterinarianId);
 
         if (!veterinarianExists) {
             const message = this.translator.translate('veterinarianNotFound');
@@ -32,8 +32,8 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         }
 
         const today = new Date();
-        const futureDate = new Date(today.getTime() + days * 24 * 60 * 60 * 1000);
-        const appointments = await this.appointmentRepository.findByVetIdAndDate(veterinarianId, today, futureDate);
+        const futureDate = new Date(today.getTime() + params.days * 24 * 60 * 60 * 1000);
+        const appointments = await this.appointmentRepository.findByVetIdAndDate({ vetId: params.veterinarianId, today, futureDate });
 
         if (appointments.length === 0) {
             const message = this.translator.translate('appointmentsNotFound');

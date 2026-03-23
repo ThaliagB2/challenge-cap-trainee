@@ -6,7 +6,7 @@ import { AppointmentModel, AppointmentProps } from '@/domain/models/db/appointme
 export class AppointmentRepositoryImpl implements AppointmentRepository {
     private readonly ENTITY = 'db_models_Appointments';
 
-    public async findByPetId(petId: string): Promise<AppointmentModel[]> {
+    public async findByPetId(petId: AppointmentRepository.FindByPetIdParams): Promise<AppointmentRepository.FindByPetIdResult> {
         const petAppointmentQuery = cds.ql.SELECT.from(this.ENTITY).where({ pet_id: petId });
         const petAppointment: AppointmentProps[] = await cds.run(petAppointmentQuery);
         return petAppointment.map((appointment) => {
@@ -14,8 +14,8 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         });
     }
 
-    public async findByVetIdAndDate(vetId: string, today: Date, futureDate: Date): Promise<AppointmentModel[]> {
-        const resultQuery = cds.ql.SELECT.from(this.ENTITY).where({ veterinarian_id: vetId }).and('date >=', today).and('date <=', futureDate).orderBy('date');
+    public async findByVetIdAndDate(params: AppointmentRepository.FindByVetIdAndDateParams): Promise<AppointmentRepository.FindByVetIdAndDateResult> {
+        const resultQuery = cds.ql.SELECT.from(this.ENTITY).where({ veterinarian_id: params.vetId }).and('date >=', params.today).and('date <=', params.futureDate).orderBy('date');
         const appointments: AppointmentProps[] = await cds.run(resultQuery);
 
         return appointments.map((appointment) => {
@@ -23,7 +23,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         });
     }
 
-    public async create(appointment: AppointmentModel): Promise<void> {
+    public async create(appointment: AppointmentRepository.CreateParams): Promise<AppointmentRepository.CreateResult> {
         const appointmentData = {
             id: appointment.id,
             date: appointment.date,
@@ -38,7 +38,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         await cds.create(this.ENTITY).entries([appointmentData]);
     }
 
-    public async generateReportByOwnerId(ownerId: string): Promise<AppointmentModel[]> {
+    public async generateReportByOwnerId(ownerId: AppointmentRepository.GenerateReportByOwnerIdParams): Promise<AppointmentRepository.GenerateReportByOwnerIdResult> {
         const appointmentsByOwnerQuery = cds.ql.SELECT.from(this.ENTITY)
             .where({ status: 'COMPLETED' })
             .and('pet_id IN', SELECT('id').from('db_models_Pets').where({ owner_id: ownerId }));

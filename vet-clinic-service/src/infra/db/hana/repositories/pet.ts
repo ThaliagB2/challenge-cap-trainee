@@ -6,7 +6,7 @@ import { PetModel, PetProps } from '@/domain/models/db/pet';
 export class PetRepositoryImpl implements PetRepository {
     private readonly ENTITY = 'db_models_Pets';
 
-    public async findById(id: string): Promise<PetModel> {
+    public async findById(id: PetRepository.FindByIdParams): Promise<PetRepository.FindByIdResult> {
         const petQuery = cds.ql.SELECT.one.from(this.ENTITY).where({ id });
         const pet: PetProps = await cds.run(petQuery);
         if (!pet) {
@@ -14,7 +14,7 @@ export class PetRepositoryImpl implements PetRepository {
         }
         return PetModel.create({ ...pet });
     }
-    public async findByOwnerId(id: string): Promise<PetModel[]> {
+    public async findByOwnerId(id: PetRepository.FindByOwnerIdParams): Promise<PetRepository.FindByOwnerIdResult> {
         const petOwnerQuery = cds.ql.SELECT.from(this.ENTITY).where({ owner_id: id });
         const petOwner: PetProps[] = await cds.run(petOwnerQuery);
         if (petOwner.length === 0) {

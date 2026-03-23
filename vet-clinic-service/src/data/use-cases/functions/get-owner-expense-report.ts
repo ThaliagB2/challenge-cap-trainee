@@ -15,7 +15,7 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
     ) {}
 
     // eslint-disable-next-line max-lines-per-function
-    public async execute(ownerId: string): Promise<GetOwnerExpenseReportUseCase.Result> {
+    public async execute(ownerId: GetOwnerExpenseReportUseCase.Params): Promise<GetOwnerExpenseReportUseCase.Result> {
         if (!ownerId) {
             const message = this.translator.translate('ownerIsRequired');
             return left(new BadRequestError(message));
