@@ -13,7 +13,6 @@ entity Appointments : managed {
         totalCost    : Decimal(12, 2);
         notes        : String(500);
         procedures   : Composition of many models.Procedures on procedures.appointment = $self;
-        //owner        : Association to models.Owners;
         pet          : Association to models.Pets;
         veterinarian : Association to models.Veterinarians;
 }
