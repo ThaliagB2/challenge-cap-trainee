@@ -1,10 +1,8 @@
-import { AppointmentProps } from './appointment';
-
 export type ProcedureProps = {
     id: string;
     description: string;
     cost: number;
-    appointment: AppointmentProps;
+    appointment_id: string;
 };
 
 export type ProcedureWithoutIdProps = Omit<ProcedureProps, 'id'>;
@@ -13,7 +11,7 @@ export type FullProcedureProps = ProcedureProps & {
     formattedCost: string;
 };
 
-export type FullProcedureWithoutAppointment = Omit<FullProcedureProps, 'appointment'>;
+export type FullProcedureWithoutAppointment = Omit<FullProcedureProps, 'appointment_id'>;
 
 export class ProcedureModel {
     constructor(private props: ProcedureProps) {}
@@ -41,8 +39,8 @@ export class ProcedureModel {
         return this.props.cost;
     }
 
-    public get appointment(): AppointmentProps {
-        return this.props.appointment;
+    public get appointment(): string {
+        return this.props.appointment_id;
     }
 
     public formattedCost() {
@@ -54,7 +52,7 @@ export class ProcedureModel {
             id: this.props.id,
             description: this.props.description,
             cost: this.props.cost,
-            appointment: this.props.appointment
+            appointment_id: this.props.appointment_id
         };
     }
 

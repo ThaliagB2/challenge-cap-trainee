@@ -1,4 +1,4 @@
-import { PetProps } from './pet';
+import { PetProps } from '@/domain/models/db/pet';
 
 export type OwnerProps = {
     id: string;

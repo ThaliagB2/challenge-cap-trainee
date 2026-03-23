@@ -1,8 +1,6 @@
 import { AppointmentStatus } from '@cds-models/db/types';
-import { OwnerProps } from './owner';
-import { PetProps } from './pet';
-import { ProcedureProps } from './procedure';
-import { VeterinarianProps } from './veterinarian';
+
+import { ProcedureProps } from '@/domain/models/db/procedure';
 
 export type AppointmentProps = {
     id: string;
@@ -11,42 +9,54 @@ export type AppointmentProps = {
     isEmergency: boolean;
     totalCost: number;
     notes: string;
-    owner: OwnerProps;
-    pet: PetProps;
-    veterinarian: VeterinarianProps;
+    pet_id: string;
+    veterinarian_id: string;
     procedures: ProcedureProps[];
 };
 
-export type AppointmentForCreateProps = Omit<AppointmentProps, 'id' | 'totalCost' | 'owner' | 'pet' | 'veterinarian'> & {
+export type AppointmentForCreateProps = Omit<AppointmentProps, 'id' | 'totalCost'> & {
     id?: string;
-    owner?: OwnerProps;
-    pet?: PetProps;
-    veterinarian?: VeterinarianProps;
-    owner_id?: string;
-    pet_id?: string;
-    veterinarian_id?: string;
+    totalCost?: number;
 };
 
 export type FullAppointmentProps = AppointmentProps & {
     formattedTotalCost: string;
 };
 
-export type OwnerExpenseReport = {
-    ownerId: string;
-    ownerName: string;
-    totalExpense: number;
-    appointmentCount: number;
-    averageCost: number;
-};
-
 export class AppointmentModel {
     constructor(private props: AppointmentProps) {}
 
     public static create(props: AppointmentForCreateProps): AppointmentModel {
+        const id = crypto.randomUUID();
+        const totalCost = props.procedures.reduce((sum, proc) => sum + proc.cost, 0);
+
         return new AppointmentModel({
+            ...props,
+            id: id,
+            totalCost: totalCost,
+            procedures: props.procedures?.map((proc) => ({
+                ...proc,
+                id: crypto.randomUUID(),
+                appointment_id: id
+            }))
+        } as AppointmentProps);
+    }
+
+    public static createEmergencyAppointment(props: AppointmentForCreateProps): AppointmentModel {
+        const id = crypto.randomUUID();
+        const totalCost = parseFloat((props.procedures.reduce((sum, proc) => sum + proc.cost, 0) * 1.5).toFixed(2));
+
+        return new AppointmentModel({
+            ...props,
             id: crypto.randomUUID(),
-            totalCost: 0,
-            ...props
+            totalCost: totalCost,
+            isEmergency: true,
+            status: AppointmentStatus.IN_PROGRESS,
+            procedures: props.procedures?.map((proc) => ({
+                ...proc,
+                id: crypto.randomUUID(),
+                appointment_id: id
+            }))
         } as AppointmentProps);
     }
 
@@ -78,16 +88,12 @@ export class AppointmentModel {
         return this.props.notes;
     }
 
-    public get owner(): OwnerProps {
-        return this.props.owner;
+    public get pet_id(): string {
+        return this.props.pet_id;
     }
 
-    public get pet(): PetProps {
-        return this.props.pet;
-    }
-
-    public get veterinarian(): VeterinarianProps {
-        return this.props.veterinarian;
+    public get veterinarian_id(): string {
+        return this.props.veterinarian_id;
     }
 
     public get procedures(): ProcedureProps[] {
@@ -98,56 +104,24 @@ export class AppointmentModel {
         return {
             id: this.props.id,
             date: this.props.date,
-            status: this.injectStatus(),
+            status: this.props.status,
             isEmergency: this.props.isEmergency,
-            totalCost: this.calculateTotalCost(),
+            totalCost: this.props.totalCost,
             notes: this.props.notes,
-            procedures: this.props.procedures,
-            owner: this.props.owner,
-            pet: this.props.pet,
-            veterinarian: this.props.veterinarian
-        };
-    }
-
-    public toCreationObjectForEmergencyAppointment(): AppointmentProps {
-        return {
-            id: this.props.id,
-            date: this.props.date,
-            status: AppointmentStatus.IN_PROGRESS,
-            isEmergency: true,
-            totalCost: this.calculateTotalCostWithEmergencyTax(),
-            notes: this.props.notes,
-            procedures: this.props.procedures,
-            owner: this.props.owner,
-            pet: this.props.pet,
-            veterinarian: this.props.veterinarian
+            pet_id: this.props.pet_id,
+            veterinarian_id: this.props.veterinarian_id,
+            procedures: this.props.procedures
         };
     }
 
     public toFullObject(): FullAppointmentProps {
         return {
             ...this.props,
-            formattedTotalCost: this.formattedTotalCost()
+            formattedTotalCost: this.toFormatTotalCost()
         };
     }
 
-    private formattedTotalCost() {
+    private toFormatTotalCost() {
         return this.props.totalCost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    private calculateTotalCost(): number {
-        let totalAmount = 0;
-        this.props.procedures.forEach((procedure) => {
-            totalAmount += procedure.cost;
-        });
-        return totalAmount;
-    }
-
-    private calculateTotalCostWithEmergencyTax(): number {
-        return this.calculateTotalCost() * 1.5;
-    }
-
-    private injectStatus(): string {
-        return !this.props.status ? AppointmentStatus.SCHEDULED : this.props.status;
     }
 }

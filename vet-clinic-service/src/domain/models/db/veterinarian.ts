@@ -13,8 +13,8 @@ export type FullVeterinarianProps = VeterinarianProps & {
     formattedCrmv: string;
 };
 
-export type SearchVeterinarianScheduleParams = {
-    veterinarianId: string;
+export type GetVeterinarianScheduleParams = {
+    veterinarian_id: string;
     days?: number;
 };
 
