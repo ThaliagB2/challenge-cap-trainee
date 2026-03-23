@@ -1,0 +1,82 @@
+@baseUrl = http://localhost:4004/sample
+@dummyUser = Basic dummy:dummy
+@newOwnerId = 7a62b6cb-5faf-4206-bdfa-b9a52159dbd4
+@petId1 = b4c124ae-4331-4007-b1ac-013fac6e0220
+@petId2 = 34c3098d-e9c9-443d-8459-268f7e949337
+
+###
+
+# GET todos os owners
+GET {{baseUrl}}/Owners
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# GET owner por ID - Exemplo: novo usuário Cristiano Ronaldo
+GET {{baseUrl}}/Owners(id={{newOwnerId}})
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# POST criar novo owner
+POST {{baseUrl}}/Owners
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "id": "{{newOwnerId}}",
+    "firstName": "Cristiano",
+    "lastName": "Ronaldo",
+    "phone": "11912345678",
+    "email": "email@email.com",
+    "pets": [
+        {
+            "id": "{{petId1}}",
+            "name": "Fofinho",
+            "species": "cachorro",
+            "breed": "Cani Corso",
+            "birthDate": "2026-01-10",
+            "weight": 10.5,
+            "owner_id": "{{newOwnerId}}"
+        },
+        {
+            "id": "{{petId2}}",
+            "name": "Bilbo",
+            "species": "cachorro",
+            "breed": "Bulldog",
+            "birthDate": "2026-01-10",
+            "weight": 2.7,
+            "owner_id": "{{newOwnerId}}"
+        }
+    ]
+}
+
+###
+
+# PATCH atualizar owner
+PATCH {{baseUrl}}/Owners(id={{newOwnerId}})
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "firstName": "Ronaldo",
+    "lastName": "Fenômeno"
+}
+
+###
+
+# DELETE remover owner
+DELETE {{baseUrl}}/Owners(id={{newOwnerId}})
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# GET com `$expand` para trazer os pets do owner
+GET {{baseUrl}}/Owners?$expand=pets
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###

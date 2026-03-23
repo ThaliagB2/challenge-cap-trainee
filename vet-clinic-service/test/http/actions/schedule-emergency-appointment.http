@@ -1,0 +1,65 @@
+@baseUrl = http://localhost:4004/sample
+@dummyUser = Basic dummy:dummy
+@newAppointmentId = f35b5949-a887-41c1-b13b-66e7a8c44a31
+@petId = 7214d7fb-80bf-4f30-bbe5-a6fc9d99d312
+@vetId = e4aa42ea-5d0b-4873-a1f6-d0f548ac78a2
+
+###
+
+# POST chamando a action `scheduleEmergencyAppointment` com payload válido
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "payload": {
+        "notes": "Acidente | Cirurgia de Emergência",
+        "pet_id": "{{petId}}",
+        "veterinarian_id": "{{vetId}}",
+        "procedures": [
+            {
+                "description": "Banho e Tosa",
+                "cost": "75.90"
+            }
+        ]
+    }
+}
+
+###
+
+# POST com pet inexistente (esperar erro 404)
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "payload": {
+        "notes": "Acidente | Cirurgia de Emergência",
+        "pet_id": "{{vetId}}",
+        "veterinarian_id": "{{vetId}}",
+        "procedures": [
+            {
+                "description": "Banho e Tosa",
+                "cost": "75.90"
+            }
+        ]
+    }
+}
+
+###
+
+# POST com lista de procedimentos vazia (esperar erro 400)
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "payload": {
+        "notes": "Acidente | Cirurgia de Emergência",
+        "pet_id": "{{vetId}}",
+        "veterinarian_id": "{{vetId}}",
+        "procedures": []
+    }
+}
+
+###

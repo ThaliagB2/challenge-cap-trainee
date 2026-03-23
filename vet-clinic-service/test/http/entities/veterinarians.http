@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:4004/sample
+@dummyUser = Basic dummy:dummy
+@newVetId = 290fea65-f21a-408f-80ce-da6616b6f026
+
+###
+
+# GET todos os veterinários
+GET {{baseUrl}}/Veterinarians
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# GET veterinário por ID
+GET {{baseUrl}}/Veterinarians(id={{newVetId}})
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# POST criar novo veterinário
+POST {{baseUrl}}/Veterinarians
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "id": "{{newVetId}}",
+    "firstName": "Gustavo",
+    "lastName": "Pires",
+    "specialty": "Oncologista",
+    "state": "ES",
+    "crmv": "54321"
+}
+
+###

@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:4004/sample
+@dummyUser = Basic dummy:dummy
+@ownerId = 03510747-1025-42a3-b73a-059bfe21520e
+
+###
+
+# GET com ownerId
+GET {{baseUrl}}/getOwnerExpenseReport
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "payload": {
+        "owner_id": "{{ownerId}}"
+    }
+}
+
+###
+
+# GET com ownerId inexistente (404)
+GET {{baseUrl}}/getOwnerExpenseReport
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "payload": {
+        "owner_id": "03510747-1025-42a3-b73a-059bfe21520f"
+    }
+}
+
+###  

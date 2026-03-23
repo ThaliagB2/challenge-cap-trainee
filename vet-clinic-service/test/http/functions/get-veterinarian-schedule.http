@@ -1,0 +1,33 @@
+@baseUrl = http://localhost:4004/sample
+@dummyUser = Basic dummy:dummy
+@vetId = e4aa42ea-5d0b-4873-a1f6-d0f548ac78a2
+
+###
+
+# GET com veterinarianId e days
+GET {{baseUrl}}/getVeterinarianSchedule
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "payload": {
+        "veterinarian_id": "{{vetId}}",
+        "days": 3
+    }
+}
+
+###
+
+# GET com veterinarianId inexistente (404)
+GET {{baseUrl}}/getVeterinarianSchedule
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "payload": {
+        "veterinarian_id": "e4aa42ea-5d0b-4873-a1f6-d0f548ac78a1",
+        "days": 7
+    }
+}
+
+###

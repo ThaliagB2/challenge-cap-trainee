@@ -1,0 +1,53 @@
+@baseUrl = http://localhost:4004/sample
+@dummyUser = Basic dummy:dummy
+@newPetId = 270c2226-59b8-41ef-8fda-022cc734a709
+
+// Owner: João Moraes
+@ownerId = 03510747-1025-42a3-b73a-059bfe21520e
+
+###
+
+# GET todos os pets (verificar se o campo `age` calculado aparece)
+GET {{baseUrl}}/Pets
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# GET pet por ID
+GET {{baseUrl}}/Pets(id={{newPetId}})
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# POST criar novo pet (associando a um owner existente)
+POST {{baseUrl}}/Pets
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "id": "{{newPetId}}",
+    "name": "Jededaia",
+    "species": "Cachorro",
+    "breed": "Fila",
+    "birthDate": "2025-01-10",
+    "weight": 15.5,
+    "owner_id": "{{ownerId}}"
+}
+
+###
+
+# GET com `$expand` para trazer o owner do pet
+GET {{baseUrl}}/Pets?$expand=owner
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# GET com `$filter` por species
+GET {{baseUrl}}/Pets?$filter=species eq 'Cachorro'
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###

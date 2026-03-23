@@ -1,0 +1,71 @@
+@baseUrl = http://localhost:4004/sample
+@dummyUser = Basic dummy:dummy
+@newAppointmentId = fdd06fad-53e7-4645-b351-d18d7c98a4f0
+@petId = 7214d7fb-80bf-4f30-bbe5-a6fc9d99d312
+@vetId = e4aa42ea-5d0b-4873-a1f6-d0f548ac78a2
+@newProcId = 9a990364-766c-4531-b227-5ef7c7dad65f
+
+###
+
+# GET todos os agendamentos
+GET {{baseUrl}}/Appointments
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# GET com `$expand` para trazer pet, veterinarian e procedures
+GET {{baseUrl}}/Appointments?$expand=pet,veterinarian,procedures
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
+
+# POST criar agendamento (com procedures no payload — testar a validação do before CREATE)
+POST {{baseUrl}}/Appointments
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "id": "{{newAppointmentId}}",
+    "date": "2026-03-13",
+    "status": "COMPLETED",
+    "isEmergency": false,
+    "totalCost": 7000,
+    "notes": "Cuidado! Cachorro velhinho",
+    "pet_id": "{{petId}}",
+    "veterinarian_id": "{{vetId}}",
+    "procedures": [
+        {
+            "id": "{{newProcId}}",
+            "description": "Banho e Tosa",
+            "cost": "75.90"
+        }
+    ]
+}
+
+###
+
+# POST com dados inválidos (sem pet, sem procedures) para testar os erros
+POST {{baseUrl}}/Appointments
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+{
+    "id": "{{newAppointmentId}}",
+    "date": "2026-03-13",
+    "status": "COMPLETED",
+    "isEmergency": false,
+    "totalCost": 7000,
+    "notes": "Cuidado! Cachorro velhinho",
+    "veterinarian_id": "{{vetId}}"
+}
+
+###
+
+# GET com `$filter` por status
+GET {{baseUrl}}/Appointments?$filter=status eq 'IN_PROGRESS'
+Content-Type: application/json
+Authorization: {{dummyUser}}
+
+###
