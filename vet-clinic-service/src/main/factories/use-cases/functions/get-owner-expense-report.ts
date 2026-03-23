@@ -5,5 +5,5 @@ import { translator } from '@/main/factories/utils/translator';
 export const makeGetOwnerExpenseReportUseCase = () => {
     const ownerRepository = new OwnerRepositoryImpl();
     const appointmentRepository = new AppointmentRepositoryImpl();
-    return new GetOwnerExpenseReportUseCaseImpl(ownerRepository, appointmentRepository, translator);
+    return new GetOwnerExpenseReportUseCaseImpl(translator, ownerRepository, appointmentRepository);
 };
