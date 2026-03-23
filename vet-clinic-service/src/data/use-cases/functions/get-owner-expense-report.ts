@@ -1,60 +1,61 @@
-import { NotFoundError, ServerError } from '@/domain/errors';
-import { AppointmentProps, OwnerExpenseReport } from '@/domain/models/db/appointment';
+import { left, right } from '@sweet-monads/either';
+
+import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
+import { AppointmentModel } from '@/domain/models/db/appointment';
 import { OwnerModel } from '@/domain/models/db/owner';
+import { OwnerExpenseReportModel } from '@/domain/models/db/owner-expense-report';
 import { AppointmentRepository, OwnerRepository } from '@/domain/repositories';
 import { GetOwnerExpenseReportUseCase } from '@/domain/use-cases/functions/get-owner-expense-report';
 import { Translator } from '@/domain/utils/translator';
-import { AppointmentStatus } from '@models/db/models';
-import { left, right } from '@sweet-monads/either';
 
 export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUseCase {
     constructor(
+        private readonly translator: Translator,
         private readonly ownerRepository: OwnerRepository,
-        private readonly appointmentRepository: AppointmentRepository,
-        private readonly translator: Translator
-    ) {}
+        private readonly appointmentRepository: AppointmentRepository
+    ) {
+        this.translator = translator;
+        this.ownerRepository = ownerRepository;
+        this.appointmentRepository = appointmentRepository;
+    }
 
     public async execute(params: GetOwnerExpenseReportUseCase.Params): Promise<GetOwnerExpenseReportUseCase.Result> {
         try {
-            // Validação Owner
-            const [owner] = await this.getOwner(params);
-            if (!owner) return left(new NotFoundError(this.translator.translate('noOwnerFound')));
+            if (!params.owner_id) {
+                return left(new BadRequestError('ownerIdIsRequired'));
+            }
 
-            // const completedAppointments = (await this.appointmentRepository.findAll()).filter((appointment) => appointment.status === AppointmentStatus.COMPLETED);
-            // const ownersPetsCompletedAppointments = Array.from({ length: owner.pets.length }, (_, i) => {
-            //     const pet = owner.pets[i];
-            //     return completedAppointments.filter((appointment) => appointment.pet.id === pet.id);
-            // });
+            const owner = await this.ownerRepository.findById({ id: params.owner_id });
+            if (!owner) {
+                const message = this.translator.translate('ownerNotFound');
+                return left(new NotFoundError(message));
+            }
 
-            const ownersPetsAppointments = await Promise.all(owner.pets.map((pet) => this.appointmentRepository.findByPetId(pet.id)));
-            if (!ownersPetsAppointments.length) return left(new NotFoundError(this.translator.translate('noOwnersPetAppointmentsFound')));
-
-            const completedOwnersPetsAppointments = ownersPetsAppointments.flat().filter((appointment) => appointment.status === AppointmentStatus.COMPLETED);
-            if (!completedOwnersPetsAppointments.length) return left(new NotFoundError(this.translator.translate('noCompletedOwnersPetAppointmentsFound')));
-
-            const fullCompletedOwnersPetsAppointments = completedOwnersPetsAppointments.map((app) => app.toCreationObject());
-
-            return right(this.getOwnerExpenseReport(fullCompletedOwnersPetsAppointments, owner));
+            const ownerPetsAppointments = await this.appointmentRepository.findByOwnerId({ ownerId: params.owner_id });
+            if (ownerPetsAppointments.length === 0) {
+                const message = this.translator.translate('ownersPetsAppointmentsNotFound');
+                return left(new NotFoundError(message));
+            }
+            const ownerExpenseReport = this.generateOwnerExpenseReport(ownerPetsAppointments, owner);
+            return right(ownerExpenseReport.toFullObject());
         } catch (error) {
             const errorData = error as Error;
             return left(new ServerError(errorData.stack, errorData.message));
         }
     }
 
-    private async getOwner(ownerId: string): Promise<OwnerModel[]> {
-        return this.ownerRepository.findById([ownerId]);
-    }
-
-    private getOwnerExpenseReport(appointments: AppointmentProps[], owner: OwnerModel): OwnerExpenseReport {
+    private generateOwnerExpenseReport(appointments: AppointmentModel[], owner: OwnerModel): OwnerExpenseReportModel {
+        const ownersId = owner.id;
+        const ownersName = `${owner.firstName} ` + `${owner.lastName}`;
         const totalExpense = appointments.reduce((sum, app) => sum + app.totalCost, 0);
         const appointmentCount = appointments.length;
         const averageCost = totalExpense / appointmentCount;
-        return {
-            ownerId: owner.id,
-            ownerName: `${owner.firstName} ${owner.lastName}`,
+        return OwnerExpenseReportModel.create({
+            ownerId: ownersId,
+            ownerFullName: ownersName,
             totalExpense: totalExpense,
             appointmentCount: appointmentCount,
             averageCost: averageCost
-        };
+        });
     }
 }

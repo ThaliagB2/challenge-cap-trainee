@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { left, right } from '@sweet-monads/either';
 
 import { ServerError } from '@/domain/errors/server';
@@ -24,14 +25,16 @@ export class AfterReadPetsUseCaseImpl implements AfterReadPetsUseCase {
             breed: pet.breed,
             weight: pet.weight,
             birthDate: new Date(pet.birthDate),
-            owner: OwnerModel.with({
-                id: pet.owner.id,
-                email: pet.owner.email,
-                firstName: pet.owner.firstName,
-                lastName: pet.owner.lastName,
-                phone: pet.owner.phone,
-                pets: []
-            })
+            owner: pet.owner
+                ? OwnerModel.with({
+                    id: pet.owner.id,
+                    email: pet.owner.email,
+                    firstName: pet.owner.firstName,
+                    lastName: pet.owner.lastName,
+                    phone: pet.owner.phone,
+                    pets: []
+                }).toObjectWithoutPets()
+                : undefined
         }).toFullObject();
     }
 }
