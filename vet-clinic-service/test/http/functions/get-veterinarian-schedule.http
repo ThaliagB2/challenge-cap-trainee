@@ -12,7 +12,7 @@ Authorization: {{dummyUser}}
 {
     "payload": {
         "veterinarian_id": "{{vetId}}",
-        "days": 3
+        "days": 5
     }
 }
 
