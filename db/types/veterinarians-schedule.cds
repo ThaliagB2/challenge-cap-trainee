@@ -11,7 +11,7 @@ type ExpectedResults: {
         petId: models.Pets:id;
         name: models.Pets:name;
         species: models.Pets:species;
-        bread: models.Pets:breed;
+        breed: models.Pets:breed;
         birthDate: models.Pets:birthDate;
         weight: models.Pets: weight;
     };
