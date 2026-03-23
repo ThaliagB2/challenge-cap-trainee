@@ -1,21 +1,19 @@
 /* eslint-disable max-lines-per-function */
-import '../config/module-alias';
-
 import { Service } from '@sap/cds';
 
-import { Pets, Products } from '@models/db/models';
-
-import { translator } from '@/main/factories/utils/translator';
+import '@/main/config/module-alias';
 
 import { bulkCreatePurchaseOrdersController } from '@/main/factories/controllers/actions/bulk-create-purchase-orders';
+import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
+import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
+import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets';
 import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
 import { beforeCreatePurchaseOrderController } from '@/main/factories/controllers/entity-events/purchase-order';
 import { extractProductsToExcelController } from '@/main/factories/controllers/functions/extract-products-to-excel';
-import { scheduleEmergencyAppointmentController } from '../factories/controllers/actions/schedule-emergency-appointment';
-import { beforeCreateAppointmentController } from '../factories/controllers/entity-events/appointments';
-import { afterReadPetsController } from '../factories/controllers/entity-events/pets';
-import { getOwnerExpenseReportController } from '../factories/controllers/functions/get-owner-expense-report';
-import { getVeterinarianScheduleController } from '../factories/controllers/functions/get-veterinarian-schedule';
+import { getOwnerExpenseReportController } from '@/main/factories/controllers/functions/get-owner-expense-report';
+import { getVeterinarianScheduleController } from '@/main/factories/controllers/functions/get-veterinarian-schedule';
+import { translator } from '@/main/factories/utils/translator';
+import { Pets, Products } from '@models/db/models';
 
 export default (service: Service) => {
     service.before('*', async (request: any) => {
