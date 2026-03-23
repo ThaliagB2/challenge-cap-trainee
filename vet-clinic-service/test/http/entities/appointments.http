@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:4004/sample
+@baseUrl = http://localhost:4004/sample/Appointments
 @dummyAuth = Basic ZHVtbXk6ZHVtbXk=
 @petId = fe51eaee-f4b0-4552-9091-059ad5b769b0
 @vetId = 091bb664-e13c-457a-9b65-c633596b52f4

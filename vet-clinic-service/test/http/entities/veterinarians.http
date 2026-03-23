@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:4004/sample
+@baseUrl = http://localhost:4004/sample/Veterinarians
 @dummyAuth = Basic ZHVtbXk6ZHVtbXk=
 @vetId = 091bb664-e13c-457a-9b65-c633596b52f4
 

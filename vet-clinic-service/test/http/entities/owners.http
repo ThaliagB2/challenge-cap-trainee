@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:4004/sample
+@baseUrl = http://localhost:4004/sample/Owners
 @dummyAuth = Basic ZHVtbXk6ZHVtbXk=
 
 ### Listar todos os proprietários
