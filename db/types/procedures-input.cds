@@ -1,8 +1,8 @@
 namespace db.types.ProceduresInput;
 
 type ProceduresParamsInput {
-    pet_id: String;
-    veterinarian_id: String;
+    petId: String;
+    veterinarianId: String;
     notes: String;
     procedures: array of {
         cost: Decimal(10, 2);
