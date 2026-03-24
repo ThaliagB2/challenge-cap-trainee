@@ -2,6 +2,7 @@ using { db.models } from '../models';
 
 namespace db.types.VeterinariansSchedule;
 
+
 type ExpectedResults: {
     appointmentId: models.Appointments:id;
     date: models.Appointments:date;
@@ -22,4 +23,9 @@ type ExpectedResults: {
         email: models.Owners:email;
         phone: models.Owners:phone;
     };
+}
+
+type VeterinarianParams: {
+    veterinarianId: String;
+    days: Integer
 }
