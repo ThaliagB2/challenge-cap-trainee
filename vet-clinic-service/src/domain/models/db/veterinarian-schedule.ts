@@ -1,25 +1,23 @@
-import { data } from '@sap/cds';
-import { appointmentsProps } from './appointments';
-import { ownersProps } from './owners';
-import { PetsProps } from './pets';
+import { AppointmentsProps } from './appointments';
+import { OwnersProps } from './owners';
 import { ProceduresProps } from './procedures';
 
-export interface VeterinarianScheduleProps {
-    id: appointmentsProps['id'];
-    date: appointmentsProps['date'];
-    status: appointmentsProps['status'];
-    isEmergency: appointmentsProps['isEmergency'];
-    totalCost: appointmentsProps['totalCost'];
-    veterinarianId: appointmentsProps['veterinarian_id'];
+export type VeterinarianScheduleProps = {
+    id: AppointmentsProps['id'];
+    date: AppointmentsProps['date'];
+    status: AppointmentsProps['status'];
+    isEmergency: AppointmentsProps['isEmergency'];
+    totalCost: AppointmentsProps['totalCost'];
+    veterinarian_id: AppointmentsProps['veterinarian_id'];
     procedure: ProceduresProps[];
-    pet: PetsProps;
-    owner: ownersProps;
-}
+    pet_id: AppointmentsProps['pet_id'];
+    owner_id: OwnersProps['id'];
+};
 
 export class VeterinarianScheduleModel {
     constructor(private props: VeterinarianScheduleProps) {}
 
-    public static create(props: VeterinarianScheduleProps): VeterinarianScheduleModel {
+    public static with(props: VeterinarianScheduleProps): VeterinarianScheduleModel {
         return new VeterinarianScheduleModel(props);
     }
 
@@ -27,7 +25,7 @@ export class VeterinarianScheduleModel {
         return this.props.id;
     }
 
-    public get date(): data {
+    public get date(): Date {
         return this.props.date;
     }
 
@@ -43,20 +41,20 @@ export class VeterinarianScheduleModel {
         return this.props.totalCost;
     }
 
-    public get veterinarianId(): string {
-        return this.props.veterinarianId;
+    public get veterinarian_id(): string {
+        return this.props.veterinarian_id;
     }
 
     public get procedure(): ProceduresProps[] {
         return this.props.procedure;
     }
 
-    public get pet(): PetsProps {
-        return this.props.pet;
+    public get pet_id(): string {
+        return this.props.pet_id;
     }
 
-    public get owner(): ownersProps {
-        return this.props.owner;
+    public get owner_id(): string {
+        return this.props.owner_id;
     }
 
     public toObject(): VeterinarianScheduleProps {
