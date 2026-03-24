@@ -7,15 +7,21 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
     private readonly ENTITY = 'db.models.Appointments';
 
     public async findByVeterinarianIdAndDate(params: AppointmentRepository.FindByVeterinarianIdAndDateParams): Promise<AppointmentRepository.FindByVeterinarianIdAndDateResult> {
-        const query = cds.ql.SELECT.from(this.ENTITY).where([
-            { ref: ['veterinarian_id'] },
-            '=',
-            { val: params.veterinarianId },
-            'and',
-            { func: 'date', args: [{ ref: ['date'] }] },
-            'in',
-            { list: params.dates.map((d) => ({ val: d })) }
-        ]);
+        const query = cds.ql.SELECT.from(this.ENTITY)
+            .columns((a: any) => {
+                a('*');
+                a.procedures('*');
+            })
+            .where([
+                { ref: ['veterinarian_id'] },
+                '=',
+                { val: params.veterinarianId },
+                'and',
+                { func: 'date', args: [{ ref: ['date'] }] },
+                'in',
+                { list: params.dates.map((d) => ({ val: d })) }
+            ]);
+
         const result: AppointmentProps[] = await cds.run(query);
 
         if (result.length === 0) {
