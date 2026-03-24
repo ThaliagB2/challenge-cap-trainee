@@ -1,15 +1,15 @@
 /* eslint-disable max-lines-per-function */
 import { NotFoundError } from '@/domain/errors';
 import { OwnerExpenseReport } from '@/domain/models/db/get-owner-expense-report';
-import { appointmentsRepository, ownersRepository } from '@/domain/repositories';
+import { AppointmentsRepository, OwnersRepository } from '@/domain/repositories';
 import { GetOwnerExpenseReportUseCase } from '@/domain/use-cases/functions/get-owner-expense-report';
 import { Translator } from '@/domain/utils/translator';
 import { left, right } from '@sweet-monads/either';
 
 export class GetOwnerExpenseReportImpl implements GetOwnerExpenseReportUseCase {
     constructor(
-        private readonly ownerRepository: ownersRepository,
-        private readonly appointmentsRepository: appointmentsRepository,
+        private readonly ownerRepository: OwnersRepository,
+        private readonly appointmentsRepository: AppointmentsRepository,
         private readonly translator: Translator
     ) {}
 
@@ -21,7 +21,7 @@ export class GetOwnerExpenseReportImpl implements GetOwnerExpenseReportUseCase {
             return left(new NotFoundError(menssage));
         }
 
-        const shedulings = await this.appointmentsRepository.findByOwnerIdAndStatus(ownerId, 'COMPLETED');
+        const shedulings = await this.appointmentsRepository.findByOwnerIdAndStatus({ ownerId, status: 'COMPLETED' });
 
         if (shedulings.length === 0) {
             const message = this.translator.translate('owner_não_possui_agendamentos');
