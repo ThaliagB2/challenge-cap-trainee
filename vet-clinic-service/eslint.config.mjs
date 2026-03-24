@@ -7,7 +7,7 @@ import pluginJs from '@eslint/js';
 
 export default [
     {
-        ignores: ['.vscode', '@cds-models', 'node_modules', 'test']
+        ignores: ['./gen/*.{js,ts}', '.vscode', '@cds-models', 'node_modules', 'test']
     },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
