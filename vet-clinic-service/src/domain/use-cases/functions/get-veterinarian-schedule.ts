@@ -4,9 +4,13 @@ import { AbstractError } from '@/domain/errors';
 import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-schedule';
 
 export interface GetVeterinarianScheduleUseCase {
-    execute(veterinarianId: string, days: number): Promise<GetVeterinarianScheduleUseCase.Result>;
+    execute(params: GetVeterinarianScheduleUseCase.Params): Promise<GetVeterinarianScheduleUseCase.Result>;
 }
 
 export namespace GetVeterinarianScheduleUseCase {
     export type Result = Either<AbstractError, VeterinarianScheduleModel[]>;
+    export type Params = {
+        veterinarianId: string;
+        days?: number;
+    };
 }
