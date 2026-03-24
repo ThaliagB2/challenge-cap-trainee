@@ -1,5 +1,3 @@
-import { OwnerWithoutPetsProps } from '@/domain/models/db/owner';
-
 export type PetProps = {
     id: string;
     name: string;
@@ -7,7 +5,7 @@ export type PetProps = {
     breed: string;
     birthDate: Date;
     weight: number;
-    owner: OwnerWithoutPetsProps;
+    owner_id: string;
 };
 
 export type PetWithoutIdProps = Omit<PetProps, 'id'>;
@@ -54,8 +52,8 @@ export class PetModel {
         return this.props.weight;
     }
 
-    public get owner(): OwnerWithoutPetsProps {
-        return this.props.owner;
+    public get owner_id(): string {
+        return this.props.owner_id;
     }
 
     public toCreationObject(): PetProps {
@@ -66,7 +64,7 @@ export class PetModel {
             breed: this.props.breed,
             birthDate: this.props.birthDate,
             weight: this.props.weight,
-            owner: this.props.owner
+            owner_id: this.props.owner_id
         };
     }
 
@@ -79,7 +77,7 @@ export class PetModel {
             birthDate: this.props.birthDate,
             weight: this.props.weight,
             age: this.getPetAge(),
-            owner: this.props.owner
+            owner_id: this.props.owner_id
         };
     }
 
