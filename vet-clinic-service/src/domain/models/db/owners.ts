@@ -1,15 +1,15 @@
-export type ownersProps = {
+export type OwnersProps = {
     id: string;
     firstName: string;
     lastName: string;
-    phone: number;
+    phone: string;
     email: string;
 };
 
 export class OwnersModel {
-    constructor(private props: ownersProps) {}
+    constructor(private props: OwnersProps) {}
 
-    public static create(props: ownersProps): OwnersModel {
+    public static create(props: OwnersProps): OwnersModel {
         return new OwnersModel(props);
     }
 
@@ -29,7 +29,7 @@ export class OwnersModel {
         return `${this.props.firstName} ${this.props.lastName}`;
     }
 
-    public get phone(): number {
+    public get phone(): string {
         return this.props.phone;
     }
 
@@ -37,7 +37,7 @@ export class OwnersModel {
         return this.props.email;
     }
 
-    public toObject(): ownersProps {
+    public toObject(): OwnersProps {
         return {
             id: this.props.id,
             firstName: this.props.firstName,

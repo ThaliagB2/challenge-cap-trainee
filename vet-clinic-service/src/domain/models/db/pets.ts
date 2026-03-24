@@ -61,14 +61,14 @@ export class PetsModel {
         };
     }
     // Método para calcular a idade do pet com base na data de nascimento
-    public calculatebirthDate(): number {
+    public calculateAge(): number {
         const today = new Date();
-        const birthPet = new Date();
-        let yerPet = today.getFullYear() - birthPet.getFullYear();
-        const month = today.getMonth() - birthPet.getMonth();
-        if (month < 0 || (month === 0 && today.getDate() < birthPet.getDate())) {
-            yerPet--;
+        const birthDate = new Date(this.props.birthDate);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const month = today.getMonth() - birthDate.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
         }
-        return yerPet;
+        return age;
     }
 }

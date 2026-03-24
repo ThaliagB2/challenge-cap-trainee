@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import { ProceduresProps } from './procedures';
 
-export type appointmentsProps = {
+export type AppointmentsProps = {
     id: string;
     date: Date;
     status: string;
@@ -21,13 +21,23 @@ export type EmergencyAppointmentProps = {
     procedures: ProceduresProps[];
 };
 
-export type AppointmentCreateProps = Omit<appointmentsProps, 'id'> & { id?: string };
+export type AppointmentCreateProps = Omit<AppointmentsProps, 'id'> & { id?: string };
 
 export class AppointmentsModel {
-    constructor(private props: appointmentsProps) {}
+    constructor(private props: AppointmentsProps) {}
 
-    public static create(props: appointmentsProps): AppointmentsModel {
+    public static with(props: AppointmentsProps): AppointmentsModel {
         return new AppointmentsModel(props);
+    }
+
+    public static create(props: EmergencyAppointmentProps): AppointmentsModel {
+        const id = randomUUID();
+        const totalCost = props.procedures.reduce((total, procedure) => total + procedure.cost, 0) * 1.5;
+        return new AppointmentsModel({
+            ...props,
+            id: id,
+            totalCost: totalCost
+        } as AppointmentsProps);
     }
 
     public static createEmergency(props: EmergencyAppointmentProps): AppointmentsModel {
@@ -82,7 +92,7 @@ export class AppointmentsModel {
         return this.props.procedures;
     }
 
-    public toObject(): appointmentsProps {
+    public toObject(): AppointmentsProps {
         return {
             id: this.props.id,
             date: this.props.date,
@@ -97,12 +107,7 @@ export class AppointmentsModel {
     }
 
     // Método para calcular o custo total com base nos procedimentos
-    public calculateCust(): number {
+    public calculateCost(): number {
         return this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
-    }
-    // Método para calcular o custo total com base nos procedimentos, aplicando um fator de emergência
-    public calculateTotalCost(): number {
-        const baseCost = this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
-        return baseCost * 1.5;
     }
 }
