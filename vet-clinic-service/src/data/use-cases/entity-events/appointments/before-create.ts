@@ -3,13 +3,13 @@ import { left, right } from '@sweet-monads/either';
 import { BadRequestError, NotFoundError } from '@/domain/errors';
 import { PetsModel } from '@/domain/models/db/pets';
 import { VeterinariansModel } from '@/domain/models/db/veterinarians';
-import { petsRepository, veterinariansRepository } from '@/domain/repositories';
+import { PetsRepository, VeterinariansRepository } from '@/domain/repositories';
 import { BeforeCreateAppointmentUseCase } from '@/domain/use-cases/entity-events/appointments';
 
 export class BeforeCreateAppointmentsUseCaseImpl implements BeforeCreateAppointmentUseCase {
     constructor(
-        private readonly petRepository: petsRepository,
-        private readonly vetRepository: veterinariansRepository
+        private readonly petRepository: PetsRepository,
+        private readonly vetRepository: VeterinariansRepository
     ) {
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;

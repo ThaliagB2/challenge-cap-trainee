@@ -1,14 +1,15 @@
 import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
 import { AppointmentsModel } from '@/domain/models/db/appointments';
-import { appointmentsRepository, petsRepository, veterinariansRepository } from '@/domain/repositories';
+import { AppointmentsRepository, PetsRepository, ProceduresRepository, VeterinariansRepository } from '@/domain/repositories';
 import { ResultPayload, ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
 import { left, right } from '@sweet-monads/either';
+import { randomUUID } from 'crypto';
 
 export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergencyAppointmentUseCase {
     constructor(
-        private readonly petRepository: petsRepository,
-        private readonly vetRepository: veterinariansRepository,
-        private readonly appointmentRepository: appointmentsRepository
+        private readonly petRepository: PetsRepository,
+        private readonly vetRepository: VeterinariansRepository,
+        private readonly appointmentRepository: AppointmentsRepository
     ) {}
 
     public async execute(params: ScheduleEmergencyAppointmentUseCase.Params): Promise<ScheduleEmergencyAppointmentUseCase.Result> {
@@ -27,11 +28,11 @@ export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergenc
                 return left(new BadRequestError('Lista de Procedimentos esta vazia'));
             }
 
-            params.procedures = params.procedures.map(p => ({ ...p, id: randomUUID() }));
+            params.procedures = params.procedures.map((p) => ({ ...p, id: randomUUID() }));
             params.date = new Date();
 
             const appointment = AppointmentsModel.createEmergency(params);
-            await this.appointmentRepository.create([appointment]);
+            await this.appointmentRepository.create(appointment);
             return right({
                 appointment: appointment.id,
                 hasError: false
