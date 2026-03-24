@@ -14,8 +14,7 @@ export namespace AppointmentsRepository {
     export type CreateParams = AppointmentsModel[];
     export type FindVetIdandDateParams = {
         vetId: string;
-        date: number;
-        futureDate: Date;
+        dates: string[];
     };
     export type FindByOwnerIdAndStatusParams = {
         ownerId: string;
