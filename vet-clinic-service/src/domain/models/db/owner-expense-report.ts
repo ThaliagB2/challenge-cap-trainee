@@ -1,6 +1,6 @@
 export type OwnerExpenseReportProps = {
     ownerId: string;
-    ownerFullName: string;
+    ownerName: string;
     totalExpense: number;
     appointmentCount: number;
     averageCost: number;
@@ -14,7 +14,7 @@ export type FullOwnerExpenseReportProps = OwnerExpenseReportProps & {
 export class OwnerExpenseReportModel {
     constructor(private props: OwnerExpenseReportProps) {}
 
-    public static create(props: OwnerExpenseReportProps): OwnerExpenseReportModel {
+    public static with(props: OwnerExpenseReportProps): OwnerExpenseReportModel {
         return new OwnerExpenseReportModel(props);
     }
 
@@ -23,7 +23,7 @@ export class OwnerExpenseReportModel {
     }
 
     public get ownerFullName(): string {
-        return this.props.ownerFullName;
+        return this.props.ownerName;
     }
 
     public get totalExpense(): number {

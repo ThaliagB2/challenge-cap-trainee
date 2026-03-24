@@ -50,9 +50,9 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
         const totalExpense = appointments.reduce((sum, app) => sum + app.totalCost, 0);
         const appointmentCount = appointments.length;
         const averageCost = totalExpense / appointmentCount;
-        return OwnerExpenseReportModel.create({
+        return OwnerExpenseReportModel.with({
             ownerId: ownersId,
-            ownerFullName: ownersName,
+            ownerName: ownersName,
             totalExpense: totalExpense,
             appointmentCount: appointmentCount,
             averageCost: averageCost
