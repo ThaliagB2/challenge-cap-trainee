@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:4004/sample/Veterinarians
+@baseUrl = http://localhost:4004/sample
 @dummyAuth = Basic ZHVtbXk6ZHVtbXk=
 @vetId = 091bb664-e13c-457a-9b65-c633596b52f4
 
@@ -21,3 +21,7 @@ Authorization: {{dummyAuth}}
   "specialty": "Dentistry",
   "crmv": "CRMV99999"
 }
+
+### Buscar Novo Veterinario Criado (basta trocar o id)
+GET {{baseUrl}}/Veterinarians(id={{vetId}})
+Authorization: {{dummyAuth}}

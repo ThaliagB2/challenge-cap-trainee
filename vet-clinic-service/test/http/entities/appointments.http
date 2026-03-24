@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:4004/sample/Appointments
+@baseUrl = http://localhost:4004/sample
 @dummyAuth = Basic ZHVtbXk6ZHVtbXk=
 @petId = fe51eaee-f4b0-4552-9091-059ad5b769b0
 @vetId = 091bb664-e13c-457a-9b65-c633596b52f4
@@ -33,7 +33,7 @@ Authorization: {{dummyAuth}}
   ]
 }
 
-### Criar agendamento sem pet (deve retornar erro 404)
+### Criar agendamento sem pet (deve retornar erro 404) // não esta retornando erro 
 POST {{baseUrl}}/Appointments
 Content-Type: application/json
 Authorization: {{dummyAuth}}
@@ -50,7 +50,7 @@ Authorization: {{dummyAuth}}
   ]
 }
 
-### Criar agendamento sem veterinário (deve retornar erro 404)
+### Criar agendamento sem veterinário (deve retornar erro 404) não esta retornando erro 
 POST {{baseUrl}}/Appointments
 Content-Type: application/json
 Authorization: {{dummyAuth}}

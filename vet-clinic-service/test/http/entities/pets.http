@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:4004/sample/Pets
+@baseUrl = http://localhost:4004/sample
 @dummyAuth = Basic ZHVtbXk6ZHVtbXk=
 @ownerId = 81ffd7bc-8523-4d8e-8e27-db44959b2bea
 @petId = fe51eaee-f4b0-4552-9091-059ad5b769b0
