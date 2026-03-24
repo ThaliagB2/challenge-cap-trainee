@@ -32,7 +32,7 @@ export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergenc
             params.date = new Date();
 
             const appointment = AppointmentsModel.createEmergency(params);
-            await this.appointmentRepository.create(appointment);
+            await this.appointmentRepository.create([appointment]);
             return right({
                 appointment: appointment.id,
                 hasError: false
