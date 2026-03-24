@@ -56,7 +56,7 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         });
         return right(orderedDates);
     }
-
+    // metodo que gera um array de datas a partir da data atual, com o numero de dias definido no parametro
     private getDatesArray(days: number): string[] {
         return Array.from({ length: days }, (_, i) => {
             const date = new Date();
