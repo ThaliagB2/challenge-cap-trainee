@@ -1,11 +1,13 @@
 import cds from '@sap/cds';
 
 import { OwnersModel } from '@/domain/models/db/owners';
-import { ownersRepository } from '@/domain/repositories';
+import { OwnersRepository, OwnerRepository } from '@/domain/repositories';
 
-export class OwnersRepositoryImpl implements ownersRepository {
-    public async findOwnersById(id: string): Promise<OwnersModel> {
-        const ownerQuerry = cds.ql.SELECT.from('db.models.Owners').where({ id });
+export class OwnersRepositoryImpl implements OwnersRepository {
+    private readonly ENTITY = 'db.models.Owners';
+    //refatorado
+    public async findOwnersById(id: OwnerRepository.FindByIParams): Promise<OwnerRepository.FindByIdResult> {
+        const ownerQuerry = cds.ql.SELECT.from(this.ENTITY).where({ id });
         const owner = await cds.run(ownerQuerry);
         return OwnersModel.create({
             id: owner.id,
@@ -14,10 +16,5 @@ export class OwnersRepositoryImpl implements ownersRepository {
             phone: owner.phone,
             email: owner.email
         });
-    }
-    //Buscar todos os agendamentos com status COMPLETED de todos os pets do tutor
-    public async getCompletedAppointments(ownerId: string): Promise<any[]> {
-        const completedAppointments = await cds.ql.SELECT.from('appointments').where({ status: 'COMPLETED', ownerId });
-        return completedAppointments;
     }
 }

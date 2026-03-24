@@ -1,42 +1,27 @@
 import cds from '@sap/cds';
 
-import { Pets } from '@models/db/models';
-
-import { PetsModel } from '@/domain/models/db/pets';
-import { petsRepository } from '@/domain/repositories';
-
-export class PetsRepositoryImpl implements petsRepository {
-    async findPetsById(id: string): Promise<PetsModel | null> {
-        const petQuerry = cds.ql.SELECT.from('db.models.Pets').where({ id });
-        const pets = await cds.run(petQuerry);
-        if (!pets || pets.length === 0) {
+import { PetsModel, PetsProps } from '@/domain/models/db/pets';
+import { PetsRepository, PetRepository } from '@/domain/repositories';
+//variavel global
+export class PetsRepositoryImpl implements PetsRepository {
+    private readonly ENTITY = 'db.models.Pets';
+    // refatorado
+    public async findPetsById(id: PetRepository.FindByIdParams): Promise<PetRepository.FindPetsByIdResult> {
+        const petQuerry = cds.ql.SELECT.from(this.ENTITY).where({ id });
+        const pet: PetsProps = await cds.run(petQuerry);
+        if (!pet) {
             return null;
         }
-        const pet = pets[0];
         return PetsModel.create({
-            id: pet.id,
-            name: pet.name,
-            species: pet.species,
-            birthDate: pet.birthDate,
-            breed: pet.breed,
-            weight: pet.weight,
-            owner_id: pet.owner_id
+            ...pet
         });
     }
 
-    async findOwnersById(id: string): Promise<PetsModel[]> {
+    public async findOwnersById(id: PetRepository.FindByIdParams): Promise<PetRepository.FindOwnersByIdResult> {
         const petOwnerQuerry = await cds.ql.SELECT.from('pets').where({ owner_id: id });
-        const petOwner: Pets = await cds.run(petOwnerQuerry);
+        const petOwner: PetsProps[] = await cds.run(petOwnerQuerry);
         return petOwner.map((pet) => {
-            return PetsModel.create({
-                id: pet.id,
-                name: pet.name,
-                species: pet.species,
-                birthDate: new Date(pet.birthDate),
-                breed: pet.breed,
-                weight: pet.weight,
-                owner_id: pet.owner_id
-            });
+            return PetsModel.create({ ...pet });
         });
     }
 }

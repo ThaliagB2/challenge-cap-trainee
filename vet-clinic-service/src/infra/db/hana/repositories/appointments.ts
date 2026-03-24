@@ -1,16 +1,15 @@
 import cds from '@sap/cds';
 
-import { Appointments } from '@models/db/models';
+import { AppointmentsModel, AppointmentsProps } from '@/domain/models/db/appointments';
+import { ProceduresProps } from '@/domain/models/db/procedures';
+import { AppointmentsRepository } from '@/domain/repositories';
 
-import { AppointmentsModel } from '@/domain/models/db/appointments';
-import { appointmentsRepository } from '@/domain/repositories';
-
-export class AppointmentsRepositoryImpl implements appointmentsRepository {
+export class AppointmentsRepositoryImpl implements AppointmentsRepository {
     private readonly ENTITY = 'db.models.Appointments';
 
-    public async findPetById(petId: string): Promise<AppointmentsModel[]> {
+    public async findPetById(petId: AppointmentsRepository.FindPetByIdParams): Promise<AppointmentsRepository.Result> {
         const petAppointmentsQuerry = cds.ql.SELECT.from(this.ENTITY).where({ pet_id: petId });
-        const petAppointments: Appointments = await cds.run(petAppointmentsQuerry);
+        const petAppointments: AppointmentsProps[] = await cds.run(petAppointmentsQuerry);
         return this.mapToAppointmentsModel(petAppointments);
     }
 
@@ -18,29 +17,41 @@ export class AppointmentsRepositoryImpl implements appointmentsRepository {
         const appointmentData = appointment.map((appointment) => appointment.toObject());
         await cds.create(this.ENTITY).entries(appointmentData);
     }
+    // Refatorar e retirar logica de negocio
+    public async findVetIdandDate(params: AppointmentsRepository.FindVetIdandDateParams): Promise<AppointmentsRepository.Result> {
+        const query = cds.ql.SELECT.from(this.ENTITY).where([
+            { ref: ['veterinarian_id'] },
+            '=',
+            { val: params.vetId },
+            'and',
+            { func: 'date', args: [{ ref: ['date'] }] },
+            'in',
+            { list: params.dates.map((d) => ({ val: d })) }
+        ]);
 
-    public async findVetIdandDate(vetId: string, days: number): Promise<AppointmentsModel[]> {
-        const today = new Date();
-        const futureDays = new Date();
-        futureDays.setDate(today.getDate() + days);
-        const vetAppointmentsQuerry = cds.ql.SELECT.from(this.ENTITY).where({ veterinarian_id: vetId, date: { '>=': today, '<=': futureDays } });
-        const vetAppointmentsResult: Appointments = await cds.run(vetAppointmentsQuerry);
-        return this.mapToAppointmentsModel(vetAppointmentsResult);
+        const result: AppointmentsProps[] = await cds.run(query);
+
+        if (result.length === 0) {
+            return null;
+        }
+        return this.mapToAppointmentsModel(result);
     }
 
-    public async findByOwnerIdAndStatus(ownerId: string): Promise<AppointmentsModel[]> {
+    //refatorado
+    // Metodo que busca owners e pets com o status 'COMPLETED'
+    public async findByOwnerIdAndStatus(Params: AppointmentsRepository.FindByOwnerIdAndStatusParams): Promise<AppointmentsRepository.Result> {
         const query = cds.ql.SELECT.from(this.ENTITY)
             .where({ status: 'COMPLETED' })
-            .and('pet_id IN', cds.ql.SELECT.from('db.models.Pets').columns('id').where({ owner_id: ownerId }));
+            .and('pet_id IN', cds.ql.SELECT.from('db.models.Pets').columns('id').where({ owner_id: Params.ownerId }));
 
-        const appointmentsResult: Appointments = await cds.run(query);
+        const appointmentsResult: AppointmentsProps[] = await cds.run(query);
 
         return this.mapToAppointmentsModel(appointmentsResult);
     }
 
-    private mapToAppointmentsModel(appointmentsResult: Appointments): AppointmentsModel[] {
+    private mapToAppointmentsModel(appointmentsResult: AppointmentsProps[]): AppointmentsRepository.Result {
         return appointmentsResult.map((appointment) => {
-            return AppointmentsModel.create({
+            return AppointmentsModel.with({
                 id: String(appointment.id),
                 date: new Date(appointment.date),
                 status: appointment.status ?? 'SCHEDULED',
@@ -53,8 +64,8 @@ export class AppointmentsRepositoryImpl implements appointmentsRepository {
             });
         });
     }
-
-    private mapProcedures(procedures: any[]): any[] {
+    // tipo any refatorado
+    private mapProcedures(procedures: ProceduresProps[]): ProceduresProps[] {
         return procedures.map((procedure) => ({
             id: procedure.id,
             description: procedure.description,
