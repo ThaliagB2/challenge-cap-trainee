@@ -34,7 +34,7 @@ export class BeforeCreateAppointmentsUseCaseImpl implements BeforeCreateAppointm
             params.status = 'SCHEDULED';
         }
 
-        const calculateTotalCost = params.procedures.reduce((total, procedure) => total + procedure.cost, 0);
+        const calculateTotalCost = params.procedures.reduce<number>((total, procedure) => total + procedure.cost, 0);
         params.totalCost = calculateTotalCost;
 
         return right(params);
