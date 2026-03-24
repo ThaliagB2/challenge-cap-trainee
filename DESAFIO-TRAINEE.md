@@ -528,16 +528,16 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
 
 **Tasks:**
 
-- [ ] Executar `yarn dev` e verificar que o servidor sobe sem erros
-- [ ] Executar todos os testes HTTP e verificar que as respostas estão corretas
-- [ ] Verificar que os dados CSV estão sendo carregados corretamente
-- [ ] Verificar que o campo calculado `age` aparece no retorno de Pets
-- [ ] Verificar que a Action de emergência calcula o custo com a taxa de 50%
-- [ ] Verificar que as Functions retornam os dados corretos e tratam erros
-- [ ] Verificar que os erros retornam os códigos HTTP corretos (400, 404, 500)
+- [x] Executar `yarn dev` e verificar que o servidor sobe sem erros
+- [x] Executar todos os testes HTTP e verificar que as respostas estão corretas
+- [x] Verificar que os dados CSV estão sendo carregados corretamente
+- [x] Verificar que o campo calculado `age` aparece no retorno de Pets
+- [x] Verificar que a Action de emergência calcula o custo com a taxa de 50%
+- [x] Verificar que as Functions retornam os dados corretos e tratam erros
+- [x] Verificar que os erros retornam os códigos HTTP corretos (400, 404, 500)
 - [ ] Executar `yarn lint` e corrigir qualquer problema de formatação
-- [ ] Revisar o histórico de commits para garantir que seguem o padrão Conventional Commits em inglês
-- [ ] Verificar que nenhuma camada está violando a regra de dependência da Clean Architecture
+- [x] Revisar o histórico de commits para garantir que seguem o padrão Conventional Commits em inglês
+- [x] Verificar que nenhuma camada está violando a regra de dependência da Clean Architecture
 
 ---
 
