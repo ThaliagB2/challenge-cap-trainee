@@ -6,4 +6,4 @@ export const makeScheduleEmergencyAppointmentController = () => {
     return new ScheduleEmergencyAppointmentController(useCase);
 };
 
-export const scheduleEmergencuAppointmentController = makeScheduleEmergencyAppointmentController();
+export const scheduleEmergencyAppointmentController = makeScheduleEmergencyAppointmentController();
