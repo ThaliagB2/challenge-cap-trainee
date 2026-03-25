@@ -1,7 +1,8 @@
 import cds from '@sap/cds';
 
-import { AppointmentModel, AppointmentProps } from '@/domain/models/db/appointment';
 import { AppointmentRepository } from '@/domain/repositories';
+
+import { AppointmentModel, AppointmentProps } from '@/domain/models/db/appointment';
 
 export class AppointmentRepositoryImpl implements AppointmentRepository {
     private readonly ENTITY = 'db.models.Appointments';
@@ -12,15 +13,8 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
                 a('*');
                 a.procedures('*');
             })
-            .where([
-                { ref: ['veterinarian_id'] },
-                '=',
-                { val: params.veterinarianId },
-                'and',
-                { func: 'date', args: [{ ref: ['date'] }] },
-                'in',
-                { list: params.dates.map((d) => ({ val: d })) }
-            ]);
+            .where({ veterinarian_id: params.veterinarianId })
+            .and('date(date) in', params.dates);
 
         const result: AppointmentProps[] = await cds.run(query);
 
@@ -33,20 +27,6 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
 
     public async findByPetId(params: AppointmentRepository.FindByPetIdParams): Promise<AppointmentRepository.FindByPetIdResult> {
         const query = cds.ql.SELECT.from(this.ENTITY).where({ pet_id: params.petId });
-        const result: AppointmentProps[] = await cds.run(query);
-
-        if (result.length === 0) {
-            return null;
-        }
-
-        return result.map((r) => AppointmentModel.with(r));
-    }
-
-    public async findByOwnerId(params: AppointmentRepository.FindByOwnerIdParams): Promise<AppointmentRepository.FindByOwnerIdResult> {
-        const query = cds.ql.SELECT.from(this.ENTITY)
-            .where({ status: 'COMPLETED' })
-            .and([{ ref: ['pet_id'] }, 'in', cds.ql.SELECT.from('db.models.Pets').columns('id').where({ owner_id: params.ownerId })]);
-
         const result: AppointmentProps[] = await cds.run(query);
 
         if (result.length === 0) {
