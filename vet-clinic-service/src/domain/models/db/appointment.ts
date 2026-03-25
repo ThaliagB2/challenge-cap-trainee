@@ -1,6 +1,7 @@
 import { AppointmentStatus } from '@cds-models/db/types';
 
 import { ProcedureProps } from '@/domain/models/db/procedure';
+import { ValidationResult } from '@/domain/validators/common/validation-result';
 
 export type AppointmentProps = {
     id: string;
@@ -119,6 +120,41 @@ export class AppointmentModel {
             ...this.props,
             formattedTotalCost: this.toFormatTotalCost()
         };
+    }
+
+    public validateFields(params: AppointmentForCreateProps): ValidationResult {
+        const errors = [];
+        if (!params.notes) {
+            errors.push('notesAreRequired');
+        }
+        if (!params.pet_id) {
+            errors.push('petIdIsRequired');
+        }
+        if (!params.veterinarian_id) {
+            errors.push('vetIdIsRequired');
+        }
+        if (!params.procedures || params.procedures.length === 0) {
+            errors.push('proceduresAreRequired');
+        }
+
+        return { hasError: errors.length > 0, errorMessages: errors };
+    }
+
+    public validateProcedures(procedures: ProcedureProps[]): ValidationResult {
+        if (!procedures || procedures.length === 0) {
+            return { hasError: true, errorMessages: ['proceduresAreRequired'] };
+        }
+
+        const errors = [];
+        for (const proc of procedures) {
+            if (!proc.description || proc.description.trim() === '') {
+                errors.push('procedureDescriptionIsRequired');
+            }
+            if (!proc.cost || proc.cost <= 0) {
+                errors.push('validProcedureCostIsRequired');
+            }
+        }
+        return { hasError: errors.length > 0, errorMessages: errors };
     }
 
     private toFormatTotalCost() {

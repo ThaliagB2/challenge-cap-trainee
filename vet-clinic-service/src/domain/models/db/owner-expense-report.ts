@@ -1,3 +1,6 @@
+import { AppointmentModel } from './appointment';
+import { OwnerModel } from './owner';
+
 export type OwnerExpenseReportProps = {
     ownerId: string;
     ownerName: string;
@@ -11,8 +14,22 @@ export type FullOwnerExpenseReportProps = OwnerExpenseReportProps & {
     formattedAverageCost: string;
 };
 
+export type OwnerExpenseReportForCreateProps = Omit<OwnerExpenseReportProps, 'ownerId' | 'ownerName' | 'totalExpense' | 'appointmentCount' | 'averageCost'> & {
+    ownerId: string;
+};
+
 export class OwnerExpenseReportModel {
     constructor(private props: OwnerExpenseReportProps) {}
+
+    public static create(props: OwnerExpenseReportForCreateProps): OwnerExpenseReportModel {
+        return new OwnerExpenseReportModel({
+            ownerId: props.ownerId,
+            ownerName: '',
+            totalExpense: 0,
+            appointmentCount: 0,
+            averageCost: 0
+        });
+    }
 
     public static with(props: OwnerExpenseReportProps): OwnerExpenseReportModel {
         return new OwnerExpenseReportModel(props);
@@ -48,6 +65,19 @@ export class OwnerExpenseReportModel {
             formattedTotalExpense: this.toFormatTotalExpense(),
             formattedAverageCost: this.toFormatAverageCost()
         };
+    }
+
+    public generateOwnerExpenseReport(appointments: AppointmentModel[], owner: OwnerModel): OwnerExpenseReportModel {
+        const totalExpense = appointments.reduce((sum, app) => sum + app.totalCost, 0);
+        const appointmentCount = appointments.length;
+        const averageCost = totalExpense / appointmentCount;
+        return OwnerExpenseReportModel.with({
+            ownerId: owner.id,
+            ownerName: `${owner.firstName} ` + `${owner.lastName}`,
+            totalExpense: totalExpense,
+            appointmentCount: appointmentCount,
+            averageCost: averageCost
+        });
     }
 
     private toFormatTotalExpense(): string {
