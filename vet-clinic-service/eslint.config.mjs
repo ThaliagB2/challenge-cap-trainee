@@ -1,16 +1,17 @@
 import globals from 'globals';
 
-import prettier from 'eslint-plugin-prettier';
-import tseslint from 'typescript-eslint';
-
 import pluginJs from '@eslint/js';
+import prettier from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
+import tseslint from 'typescript-eslint';
 
 export default [
     {
-        ignores: ['./gen/*.{js,ts}', '.vscode', '@cds-models', 'node_modules', 'test']
+        ignores: ['gen', '.vscode', '@cds-models', 'node_modules']
     },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
+    prettierConfig, // <-- desativa regras do ESLint que conflitam com Prettier
     {
         plugins: {
             prettier
@@ -31,7 +32,7 @@ export default [
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/no-namespace': 'off',
             '@typescript-eslint/no-unused-vars': [
-                'warn',
+                'error',
                 {
                     caughtErrors: 'all',
                     caughtErrorsIgnorePattern: '^ignore',
@@ -40,13 +41,8 @@ export default [
             ],
             '@typescript-eslint/no-var-requires': 'off',
             'eol-last': 'error',
-            indent: [
-                'error',
-                4,
-                {
-                    SwitchCase: 1
-                }
-            ],
+            // indent, quotes, semi, object-curly-spacing e quote-props removidos
+            // pois agora são controlados pelo Prettier via prettier/prettier
             'linebreak-style': 'off',
             'max-len': [
                 'error',
@@ -60,10 +56,13 @@ export default [
             ],
             'max-lines-per-function': ['warn', 30],
             'no-console': 'error',
-            'object-curly-spacing': ['error', 'always'],
-            quotes: ['error', 'single'],
-            'quote-props': ['error', 'as-needed'],
-            semi: ['error', 'always']
+            'sort-imports': [
+                'error',
+                {
+                    memberSyntaxSortOrder: ['single', 'all', 'multiple', 'none'],
+                    allowSeparatedGroups: true
+                }
+            ]
         }
     },
     {
