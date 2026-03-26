@@ -9,5 +9,5 @@ export interface AfterReadPetUseCase {
 
 export namespace AfterReadPetUseCase {
     export type Params = PetsProps[];
-    export type Result = Promise<Either<AbstractError, PetsAgeProps[]>>;
+    export type Result = Either<AbstractError, PetsAgeProps[]>;
 }

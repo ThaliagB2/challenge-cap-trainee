@@ -2,28 +2,17 @@ import { PetsModel } from '@/domain/models/db/pets';
 import { AfterReadPetUseCase } from '@/domain/use-cases/entity-events/pets';
 import { right } from '@sweet-monads/either';
 
-type PetDataWithAge = ReturnType<PetsModel['toObject']> & { age: number };
-// tirar duvida se pode deixar esse tipo nessa camada
-
 export class AfterReadPetsUseCaseImpl implements AfterReadPetUseCase {
-    constructor() {}
+    public async execute(params: AfterReadPetUseCase.Params) {
+        const result = params.map((pet) => {
+            const normalizedPet = {
+                ...pet,
+                birthDate: pet.birthDate instanceof Date ? pet.birthDate : new Date(pet.birthDate)
+            };
 
-    public async execute(params: AfterReadPetUseCase.Params): Promise<AfterReadPetUseCase.Result> {
-        const petAge = params.map((pet) => this.calculateAge(pet));
-        return right(petAge);
-    }
+            return PetsModel.create(normalizedPet).withAge();
+        });
 
-    private calculateAge(pet: Omit<PetDataWithAge, 'age'>): PetDataWithAge {
-        const birthDate = new Date(pet.birthDate).getTime();
-        const today = new Date().getTime();
-
-        //Fórmula: age = floor((dataAtual - birthDate) / 365.25)
-        const agePetsYars = (today - birthDate) / (1000 * 60 * 60 * 24 * 365.25);
-        const age = Math.floor(agePetsYars);
-
-        return {
-            ...pet,
-            age
-        };
+        return right(result);
     }
 }
