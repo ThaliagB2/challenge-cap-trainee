@@ -1,8 +1,8 @@
 import { left, right } from '@sweet-monads/either';
 
 import { NotFoundError } from '@/domain/errors';
-import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-schedule';
-import { AppointmentsRepository, OwnersRepository, PetsRepository, ProceduresRepository, VeterinariansRepository } from '@/domain/repositories';
+import { VeterinarianScheduleModel } from '@/domain/models/db/get-veterinarian-schedule';
+import { AppointmentsRepository, PetsRepository, VeterinariansRepository } from '@/domain/repositories';
 import { GetVeterinarianScheduleUseCase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
 import { Translator } from '@/domain/utils/translator';
 
@@ -10,9 +10,7 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
     constructor(
         private readonly vetRepository: VeterinariansRepository,
         private readonly appointmentRepository: AppointmentsRepository,
-        private readonly ownerRepository: OwnersRepository,
         private readonly petRepository: PetsRepository,
-        private readonly procedureRepository: ProceduresRepository,
         private readonly translator: Translator
     ) {}
 
@@ -20,15 +18,15 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
     public async execute(params: GetVeterinarianScheduleUseCase.Params): Promise<GetVeterinarianScheduleUseCase.Result> {
         const vet = await this.vetRepository.findVeterinarianById(params.veterinarianId);
         if (!vet) {
-            const message = this.translator.translate('Veterinario não encontrado');
+            const message = this.translator.translate('Veterinario_não_encontrado');
             return left(new NotFoundError(message));
         }
         const days = !params.days ? 7 : params.days;
-        const dataArray = this.getDatesArray(days);
+        const dataArray = VeterinarianScheduleModel.getDatesArray(days);
         const appointments = await this.appointmentRepository.findVetIdandDate({ vetId: params.veterinarianId, dates: dataArray });
 
         if (appointments.length === 0) {
-            const message = this.translator.translate('Agendamentos não encontrados neste periodo');
+            const message = this.translator.translate('Agendamentos_não_encontrados_neste_periodo');
             return left(new NotFoundError(message));
         }
 
@@ -49,20 +47,9 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
                 });
             })
         );
-        const orderedDates = schedule.sort((a, b) => {
-            const dateA = new Date(String(a.date)).getTime();
-            const dateB = new Date(String(b.date)).getTime();
-            return dateA - dateB;
-        });
-        return right(orderedDates);
-    }
-    // metodo que gera um array de datas a partir da data atual, com o numero de dias definido no parametro
-    private getDatesArray(days: number): string[] {
-        return Array.from({ length: days }, (_, i) => {
-            const date = new Date();
-            date.setDate(date.getDate() + i);
-            date.setHours(0, 0, 0, 0);
-            return date.toISOString();
-        });
+
+        const orderedSchedule = VeterinarianScheduleModel.orderByDate(schedule);
+
+        return right(orderedSchedule);
     }
 }
