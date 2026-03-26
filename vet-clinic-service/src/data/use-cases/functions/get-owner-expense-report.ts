@@ -6,7 +6,6 @@ import { OwnerExpenseReportModel } from '@/domain/models/db/owner-expense-report
 import { OwnerModel } from '@/domain/models/db/owner';
 import { PetProps } from '@/domain/models/db/pet';
 import { Translator } from '@/domain/utils/translator';
-import { ValidationResult } from '@/domain/validators/common/validation-result';
 import { AppointmentRepository, OwnerRepository } from '@/domain/repositories';
 import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
 
@@ -31,15 +30,13 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
             const ownerExpenseReportModel = OwnerExpenseReportModel.create({ ownerId: ownerId });
 
             const owner = await this.getOwner(ownerId);
-            if (this.isValidationResult(owner)) {
-                const message = this.translator.translate('ownerNotFound');
-                return left(new NotFoundError(message));
+            if (!owner) {
+                return left(new NotFoundError(this.translator.translate('ownerNotFound')));
             }
 
             const ownerPetsAppointments = await this.getOwnerPetsAppointments(owner.pets);
-            if (this.isValidationResult(ownerPetsAppointments)) {
-                const message = this.translator.translate('ownersPetsAppointmentsNotFound');
-                return left(new NotFoundError(message));
+            if (!ownerPetsAppointments) {
+                return left(new NotFoundError(this.translator.translate('ownersPetsAppointmentsNotFound')));
             }
 
             const ownerExpenseReport = ownerExpenseReportModel.generateOwnerExpenseReport(ownerPetsAppointments, owner);
@@ -50,21 +47,12 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
         }
     }
 
-    private isValidationResult(value: ValidationResult | OwnerModel | AppointmentModel[]): value is ValidationResult {
-        return 'hasError' in value;
-    }
-
-    private async getOwner(ownerId: string): Promise<OwnerModel | ValidationResult> {
-        const errors = [];
+    private async getOwner(ownerId: string): Promise<OwnerModel> {
         const owner = await this.ownerRepository.findById({ id: ownerId });
-        if (!owner) {
-            errors.push(this.translator.translate('ownerNotFound'));
-            return { hasError: errors.length > 0, errorMessages: errors };
-        }
         return owner;
     }
 
-    private async getOwnerPetsAppointments(pets: PetProps[]): Promise<AppointmentModel[] | ValidationResult> {
+    private async getOwnerPetsAppointments(pets: PetProps[]): Promise<AppointmentModel[]> {
         const appointments = await Promise.all(pets.map((pet) => this.appointmentRepository.findByPetId({ petId: pet.id })));
         return appointments.flat().filter((app) => app.status === 'COMPLETED');
     }

@@ -3,6 +3,7 @@ import { PetProps } from './pet';
 import { ProcedureProps } from './procedure';
 import { VeterinarianProps } from './veterinarian';
 
+// COLOCAR DENTRO DA MODEL DE appointments
 export type VeterinarianScheduleProps = {
     appointment_id: string;
     date: Date;
@@ -16,10 +17,33 @@ export type VeterinarianScheduleProps = {
     procedures: ProcedureProps[];
 };
 
+export type VeterinarianScheduleForCreateProps = Omit<
+    VeterinarianScheduleProps,
+    'appointment_id' | 'date' | 'status' | 'isEmergency' | 'totalCost' | 'notes' | 'veterinarian' | 'pet' | 'owner' | 'procedures'
+> & {
+    veterianarian_id: string;
+    days?: Date;
+};
+
 export class VeterinarianScheduleModel {
     constructor(private props: VeterinarianScheduleProps) {}
 
-    public static with(props: VeterinarianScheduleProps): VeterinarianScheduleModel {
+    public static createDraft(): VeterinarianScheduleModel {
+        return new VeterinarianScheduleModel({
+            appointment_id: '',
+            date: new Date(),
+            status: '',
+            isEmergency: false,
+            totalCost: '',
+            notes: '',
+            veterinarian: {} as VeterinarianProps,
+            pet: {} as PetProps,
+            owner: {} as OwnerProps,
+            procedures: []
+        });
+    }
+
+    public static create(props: VeterinarianScheduleProps): VeterinarianScheduleModel {
         return new VeterinarianScheduleModel(props);
     }
 
@@ -65,5 +89,16 @@ export class VeterinarianScheduleModel {
 
     public toCreationObject(): VeterinarianScheduleProps {
         return { ...this.props };
+    }
+
+    public getDatesArray(daysParam?: number): string[] {
+        const STANDARD_DAYS = 7;
+        const days = !daysParam ? STANDARD_DAYS : daysParam;
+        return Array.from({ length: days }, (_, i) => {
+            const date = new Date();
+            date.setDate(date.getDate() + i);
+            date.setHours(0, 0, 0, 0);
+            return date.toISOString().split('T')[0];
+        });
     }
 }

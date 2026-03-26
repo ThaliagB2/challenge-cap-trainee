@@ -1,11 +1,12 @@
-/* eslint-disable max-lines-per-function */
 import { left, right } from '@sweet-monads/either';
 
-import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
-import { VeterinarianScheduleModel, VeterinarianScheduleProps } from '@/domain/models/db/veterinarian-schedule';
-import { AppointmentRepository, OwnerRepository, PetRepository, VeterinarianRepository } from '@/domain/repositories';
+import { FullAppointmentProps } from '@/domain/models/db/appointment';
 import { GetVeterinarianScheduleUseCase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
 import { Translator } from '@/domain/utils/translator';
+import { VeterinarianModel } from '@/domain/models/db/veterinarian';
+import { AppointmentRepository, OwnerRepository, PetRepository, VeterinarianRepository } from '@/domain/repositories';
+import { NotFoundError, ServerError } from '@/domain/errors';
+import { VeterinarianScheduleModel, VeterinarianScheduleProps } from '@/domain/models/db/veterinarian-schedule';
 
 export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianScheduleUseCase {
     constructor(
@@ -24,44 +25,26 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
 
     public async execute(params: GetVeterinarianScheduleUseCase.Params): Promise<GetVeterinarianScheduleUseCase.Result> {
         try {
-            if (!params.veterinarian_id) {
-                return left(new BadRequestError('veterinarianIdIsRequired'));
+            const vetId = params.veterinarian_id;
+            if (!vetId) {
+                return left(new NotFoundError(this.translator.translate('veterinarianIdIsRequired')));
             }
 
-            const veterinarian = await this.veterinarianRepository.findById({ id: params.veterinarian_id });
+            const vetScheduleModel = VeterinarianScheduleModel.createDraft();
+
+            const veterinarian = await this.getVeterinarian(vetId);
             if (!veterinarian) {
-                const message = this.translator.translate('noVeterinarianFound');
-                return left(new NotFoundError(message));
+                return left(new NotFoundError(this.translator.translate('noVeterinarianFound')));
             }
 
-            const days = !params.days ? 7 : params.days;
-            const datesArray = this.getDatesArray(days);
+            const datesArray = vetScheduleModel.getDatesArray(params.days);
 
-            const vetAppointments = await this.appointmentRepository.findByVeterinarianIdAndDate({ veterinarianId: params.veterinarian_id, dates: datesArray });
-            if (!vetAppointments) {
+            const appointments = await this.getSortedVeterinarianAppointments(vetId, datesArray);
+            if (!appointments) {
                 return left(new NotFoundError(this.translator.translate('veterinarianScheduleNotFound')));
             }
 
-            const vetAppointmentsObject = vetAppointments.map((vetSchedule) => vetSchedule.toFullObject());
-            const sorted = vetAppointmentsObject.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-            const veterinarianSchedule: VeterinarianScheduleProps[] = await Promise.all(
-                sorted.map(async (s) => {
-                    const pet = await this.petRepository.findById({ id: s.pet_id });
-                    const owner = await this.ownerRepository.findById({ id: pet.owner_id });
-                    return VeterinarianScheduleModel.with({
-                        appointment_id: s.id,
-                        date: s.date,
-                        status: s.status,
-                        isEmergency: s.isEmergency,
-                        totalCost: s.formattedTotalCost,
-                        notes: s.notes,
-                        veterinarian: veterinarian.toCreationObject(),
-                        owner: owner.toCreationObject(),
-                        pet: pet.toCreationObject(),
-                        procedures: s.procedures
-                    }).toCreationObject();
-                })
-            );
+            const veterinarianSchedule = await this.generateVeterianarianSchedule(appointments, veterinarian);
             return right(veterinarianSchedule);
         } catch (error) {
             const errorData = error as Error;
@@ -69,12 +52,36 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         }
     }
 
-    private getDatesArray(days: number): string[] {
-        return Array.from({ length: days }, (_, i) => {
-            const date = new Date();
-            date.setDate(date.getDate() + i);
-            date.setHours(0, 0, 0, 0);
-            return date.toISOString().split('T')[0];
-        });
+    private async getVeterinarian(vetId: string): Promise<VeterinarianModel> {
+        return await this.veterinarianRepository.findById({ id: vetId });
+    }
+
+    private async getSortedVeterinarianAppointments(vetId: string, datesArray: string[]): Promise<FullAppointmentProps[]> {
+        const vetRepositories = (await this.appointmentRepository.findByVeterinarianIdAndDate({ veterinarianId: vetId, dates: datesArray })).map((app) => app.toFullObject());
+        return vetRepositories.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    }
+
+    private async generateVeterianarianSchedule(appointments: FullAppointmentProps[], veterinarian: VeterinarianModel): Promise<VeterinarianScheduleProps[]> {
+        const veterinarianSchedule = await Promise.all(
+            appointments.map(async (app) => {
+                const pet = await this.petRepository.findById({ id: app.pet_id });
+                const owner = await this.ownerRepository.findById({ id: pet.owner_id });
+
+                return VeterinarianScheduleModel.create({
+                    appointment_id: app.id,
+                    date: app.date,
+                    status: app.status,
+                    isEmergency: app.isEmergency,
+                    totalCost: app.formattedTotalCost,
+                    notes: app.notes,
+                    veterinarian: veterinarian.toCreationObject(),
+                    owner: owner.toCreationObject(),
+                    pet: pet.toCreationObject(),
+                    procedures: app.procedures
+                }).toCreationObject();
+            })
+        );
+
+        return veterinarianSchedule;
     }
 }
