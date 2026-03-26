@@ -49,6 +49,13 @@ export class PetsModel {
         return this.props.owner_id;
     }
 
+    public withAge(): PetsAgeProps {
+        return {
+            ...this.toObject(),
+            age: this.calculateAge()
+        };
+    }
+
     public toObject(): PetsProps {
         return {
             id: this.props.id,

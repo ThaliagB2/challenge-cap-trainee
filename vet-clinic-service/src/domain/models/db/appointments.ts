@@ -21,23 +21,13 @@ export type EmergencyAppointmentProps = {
     procedures: ProceduresProps[];
 };
 
-export type AppointmentCreateProps = Omit<AppointmentsProps, 'id'> & { id?: string };
+export type AppointmentCreateProps = Omit<AppointmentsProps, 'id' | 'totalCost'> & { id?: string };
 
 export class AppointmentsModel {
     constructor(private props: AppointmentsProps) {}
 
     public static with(props: AppointmentsProps): AppointmentsModel {
         return new AppointmentsModel(props);
-    }
-
-    public static create(props: EmergencyAppointmentProps): AppointmentsModel {
-        const id = randomUUID();
-        const totalCost = props.procedures.reduce((total, procedure) => total + procedure.cost, 0) * 1.5;
-        return new AppointmentsModel({
-            ...props,
-            id: id,
-            totalCost: totalCost
-        } as AppointmentsProps);
     }
 
     public static createEmergency(props: EmergencyAppointmentProps): AppointmentsModel {
@@ -109,5 +99,17 @@ export class AppointmentsModel {
     // Método para calcular o custo total com base nos procedimentos
     public calculateCost(): number {
         return this.props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
+    }
+
+    public static createRegular(props: AppointmentCreateProps): AppointmentsModel {
+        const id = props.id ?? randomUUID();
+        const totalCost = props.procedures.reduce((total, procedure) => total + procedure.cost, 0);
+        return new AppointmentsModel({
+            ...props,
+            id,
+            status: props.status ?? 'SCHEDULED',
+            isEmergency: false,
+            totalCost
+        });
     }
 }
