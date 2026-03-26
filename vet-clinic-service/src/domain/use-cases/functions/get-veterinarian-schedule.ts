@@ -1,7 +1,7 @@
 import { Either } from '@sweet-monads/either';
 
 import { AbstractError } from '@/domain/errors';
-import { VeterinarianScheduleProps } from '@/domain/models/db/veterinarian-schedule';
+import { AppointmentModel } from '@/domain/models/db/appointment';
 
 export interface GetVeterinarianScheduleUseCase {
     execute(params: GetVeterinarianScheduleUseCase.Params): Promise<GetVeterinarianScheduleUseCase.Result>;
@@ -12,5 +12,5 @@ export namespace GetVeterinarianScheduleUseCase {
         veterinarian_id: string;
         days?: number;
     };
-    export type Result = Either<AbstractError, VeterinarianScheduleProps[]>;
+    export type Result = Either<AbstractError, Promise<AppointmentModel[]>>;
 }

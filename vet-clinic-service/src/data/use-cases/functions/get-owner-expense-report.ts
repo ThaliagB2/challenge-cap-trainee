@@ -2,7 +2,6 @@ import { left, right } from '@sweet-monads/either';
 
 import { AppointmentModel } from '@/domain/models/db/appointment';
 import { GetOwnerExpenseReportUseCase } from '@/domain/use-cases/functions/get-owner-expense-report';
-import { OwnerExpenseReportModel } from '@/domain/models/db/owner-expense-report';
 import { OwnerModel } from '@/domain/models/db/owner';
 import { PetProps } from '@/domain/models/db/pet';
 import { Translator } from '@/domain/utils/translator';
@@ -27,7 +26,7 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
                 return left(new BadRequestError('ownerIdIsRequired'));
             }
 
-            const ownerExpenseReportModel = OwnerExpenseReportModel.create({ ownerId: ownerId });
+            const ownerExpenseReport = AppointmentModel.createOwnerExpenseReportDraft({ ownerId: ownerId });
 
             const owner = await this.getOwner(ownerId);
             if (!owner) {
@@ -39,8 +38,7 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
                 return left(new NotFoundError(this.translator.translate('ownersPetsAppointmentsNotFound')));
             }
 
-            const ownerExpenseReport = ownerExpenseReportModel.generateOwnerExpenseReport(ownerPetsAppointments, owner);
-            return right(ownerExpenseReport.toFullObject());
+            return right(ownerExpenseReport.generateOwnerExpenseReport(ownerPetsAppointments, owner));
         } catch (error) {
             const errorData = error as Error;
             return left(new ServerError(errorData.stack, errorData.message));
