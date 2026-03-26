@@ -1,7 +1,7 @@
 import cds from '@sap/cds';
 
-import { VeterinarianModel, VeterinarianProps } from '@/domain/models/db/veterinarian';
 import { VeterinarianRepository } from '@/domain/repositories';
+import { VeterinarianModel, VeterinarianProps } from '@/domain/models/db/veterinarian';
 
 export class VeterinarianRepositoryImpl implements VeterinarianRepository {
     private readonly ENTITY = 'db.models.Veterinarians';

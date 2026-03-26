@@ -17,12 +17,8 @@ export type FullPetProps = PetProps & {
 export class PetModel {
     constructor(private props: PetProps) {}
 
-    // Ajustar aqui a questão do create e do with, precisa refatorar corretamente como funciona de acordo com o CAP - ver REPO Natura
-    public static create(props: PetWithoutIdProps): PetModel {
-        return new PetModel({
-            id: crypto.randomUUID(),
-            ...props
-        });
+    public static create(props: PetProps): PetModel {
+        return new PetModel(props);
     }
 
     public static with(props: PetProps): PetModel {

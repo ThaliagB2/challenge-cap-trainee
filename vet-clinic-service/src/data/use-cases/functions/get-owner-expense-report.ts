@@ -38,7 +38,7 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
                 return left(new NotFoundError(this.translator.translate('ownersPetsAppointmentsNotFound')));
             }
 
-            return right(ownerExpenseReport.generateOwnerExpenseReport(ownerPetsAppointments, owner));
+            return right(ownerExpenseReport.createOwnerExpenseReport(ownerPetsAppointments, owner));
         } catch (error) {
             const errorData = error as Error;
             return left(new ServerError(errorData.stack, errorData.message));

@@ -129,6 +129,36 @@ export class AppointmentModel {
         } as VeterinarianScheduleProps);
     }
 
+    public createOwnerExpenseReport(appointments: AppointmentModel[], owner: OwnerModel): AppointmentModel {
+        const totalExpense = appointments.reduce((sum, app) => sum + app.totalCost, 0);
+        const appointmentCount = appointments.length;
+        const averageCost = totalExpense / appointmentCount;
+        return new AppointmentModel({
+            ownerId: owner.id,
+            ownerName: `${owner.firstName} ` + `${owner.lastName}`,
+            totalExpense: totalExpense,
+            appointmentCount: appointmentCount,
+            averageCost: averageCost,
+            formattedTotalExpense: this.formatNumberToLocalCurrency(totalExpense),
+            formattedAverageCost: this.formatNumberToLocalCurrency(averageCost)
+        } as OwnerExpenseReportProps);
+    }
+
+    public createVeterianarianSchedule(appointment: FullAppointmentProps, veterinarian: VeterinarianModel, owner: OwnerModel, pet: PetModel): AppointmentModel {
+        return new AppointmentModel({
+            appointment_id: appointment.id,
+            date: appointment.date,
+            status: appointment.status,
+            isEmergency: appointment.isEmergency,
+            totalCost: appointment.formattedTotalCost,
+            notes: appointment.notes,
+            veterinarian: veterinarian.toCreationObject(),
+            owner: owner.toCreationObject(),
+            pet: pet.toCreationObject(),
+            procedures: appointment.procedures
+        } as VeterinarianScheduleProps);
+    }
+
     public static with(props: AppointmentProps): AppointmentModel {
         return new AppointmentModel(props);
     }
@@ -223,36 +253,6 @@ export class AppointmentModel {
             }
         }
         return { hasError: errors.length > 0, errorMessages: errors };
-    }
-
-    public generateOwnerExpenseReport(appointments: AppointmentModel[], owner: OwnerModel): AppointmentModel {
-        const totalExpense = appointments.reduce((sum, app) => sum + app.totalCost, 0);
-        const appointmentCount = appointments.length;
-        const averageCost = totalExpense / appointmentCount;
-        return new AppointmentModel({
-            ownerId: owner.id,
-            ownerName: `${owner.firstName} ` + `${owner.lastName}`,
-            totalExpense: totalExpense,
-            appointmentCount: appointmentCount,
-            averageCost: averageCost,
-            formattedTotalExpense: this.formatNumberToLocalCurrency(totalExpense),
-            formattedAverageCost: this.formatNumberToLocalCurrency(averageCost)
-        } as OwnerExpenseReportProps);
-    }
-
-    public generateVeterianarianSchedule(appointment: FullAppointmentProps, veterinarian: VeterinarianModel, owner: OwnerModel, pet: PetModel): AppointmentModel {
-        return new AppointmentModel({
-            appointment_id: appointment.id,
-            date: appointment.date,
-            status: appointment.status,
-            isEmergency: appointment.isEmergency,
-            totalCost: appointment.formattedTotalCost,
-            notes: appointment.notes,
-            veterinarian: veterinarian.toCreationObject(),
-            owner: owner.toCreationObject(),
-            pet: pet.toCreationObject(),
-            procedures: appointment.procedures
-        } as VeterinarianScheduleProps);
     }
 
     public getDatesArray(daysParam?: number): string[] {

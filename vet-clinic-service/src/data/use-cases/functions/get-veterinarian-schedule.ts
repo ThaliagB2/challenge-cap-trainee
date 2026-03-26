@@ -68,7 +68,7 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
             appointments.map(async (app) => {
                 const pet = await this.petRepository.findById({ id: app.pet_id });
                 const owner = await this.ownerRepository.findById({ id: pet.owner_id });
-                return appointmentModel.generateVeterianarianSchedule(app, veterinarian, owner, pet);
+                return appointmentModel.createVeterianarianSchedule(app, veterinarian, owner, pet);
             })
         );
         return veterinarianSchedule;
