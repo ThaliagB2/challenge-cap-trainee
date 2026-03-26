@@ -1,7 +1,7 @@
 import { Either } from '@sweet-monads/either';
 
 import { AbstractError } from '@/domain/errors';
-import { VeterinarianScheduleModel } from '@/domain/models/db/veterinarian-schedule';
+import { VeterinarianScheduleModel } from '@/domain/models/db/get-veterinarian-schedule';
 
 export interface GetVeterinarianScheduleUseCase {
     execute(params: GetVeterinarianScheduleUseCase.Params): Promise<GetVeterinarianScheduleUseCase.Result>;
