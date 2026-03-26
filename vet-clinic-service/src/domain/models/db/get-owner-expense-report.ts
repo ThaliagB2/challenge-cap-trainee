@@ -13,6 +13,12 @@ export class OwnerExpenseReport {
         return new OwnerExpenseReport(props);
     }
 
+    public static averageCost(totalExpenses: number, appointmentCount: number): number {
+        if (appointmentCount === 0) return 0;
+
+        return totalExpenses / appointmentCount;
+    }
+
     public get ownerId(): string {
         return this.props.ownerId;
     }
