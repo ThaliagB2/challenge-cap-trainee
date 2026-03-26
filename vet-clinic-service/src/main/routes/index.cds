@@ -1,5 +1,5 @@
 using { db.models } from '../../../../db/models';
-using { db.types.VeterinariansSchedule, db.types.OwnerExpanceReports, db.types.ProceduresInput } from '../../../../db/types';
+using { db.types.VeterinariansSchedule, db.types.OwnerExpenseReports, db.types.ProceduresInput } from '../../../../db/types';
 
 
 @path: '/sample'
@@ -14,9 +14,9 @@ service VetClinicService {
     entity Appointments as projection on models.Appointments;
     entity Procedures as projection on models.Procedures;
 
-    action scheduleEmergencyAppointment(params: ProceduresInput.ProceduresParamsInput);
+    action scheduleEmergencyAppointment(params: ProceduresInput.ProceduresParamsInput) returns String;
 }
 extend service VetClinicService with {
-    function getVeterinarianSchedule(veterinarianId: String, days: Integer) returns array of VeterinariansSchedule.ExpectedResults;
-    function getOwnerExpenceReport(ownerId: String) returns OwnerExpanceReports.ExpectedResults;
+    function getVeterinarianSchedule(params: VeterinariansSchedule.VeterinarianParams) returns array of VeterinariansSchedule.ExpectedResults;
+    function getOwnerExpenseReport(ownerId: String) returns OwnerExpenseReports.ExpectedResults;
 };

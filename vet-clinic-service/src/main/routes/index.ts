@@ -1,6 +1,6 @@
 import { PetsAgeProps } from '@/domain/models/db/pets';
 import { Request, Service } from '@sap/cds';
-import { scheduleEmergencuAppointmentController } from '../factories/controllers/actions/schedule-emergency-appointment';
+import { scheduleEmergencyAppointmentController } from '../factories/controllers/actions/schedule-emergency-appointment';
 import { beforeCreateAppointmentController } from '../factories/controllers/entity-events/appointments';
 import { afterReadPetController } from '../factories/controllers/entity-events/pets';
 import { getOwnerExpenseReportController } from '../factories/controllers/functions/get-owner-expense-report';
@@ -16,8 +16,6 @@ export default (service: Service) => {
             const errorMensage = result.errorData.details.map((details) => details.message).join('; ');
             return req.reject(result.status, errorMensage);
         }
-
-        return result.data;
     });
 
     service.after('READ', 'Pets', async (petList, req) => {
@@ -45,7 +43,7 @@ export default (service: Service) => {
     });
 
     service.on('scheduleEmergencyAppointment', async (req: Request) => {
-        const result = await scheduleEmergencuAppointmentController.execute({
+        const result = await scheduleEmergencyAppointmentController.execute({
             date: req.data.date || new Date(),
             pet_id: req.data.pet_id,
             veterinarian_id: req.data.veterinarian_id,
