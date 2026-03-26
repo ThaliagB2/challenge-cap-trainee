@@ -18,7 +18,7 @@ export class PetsRepositoryImpl implements PetsRepository {
     }
 
     public async findOwnersById(id: PetRepository.FindByIdParams): Promise<PetRepository.FindOwnersByIdResult> {
-        const petOwnerQuerry = await cds.ql.SELECT.from('pets').where({ owner_id: id });
+        const petOwnerQuerry = await cds.ql.SELECT.from(this.ENTITY).where({ owner_id: id });
         const petOwner: PetsProps[] = await cds.run(petOwnerQuerry);
         return petOwner.map((pet) => {
             return PetsModel.create({ ...pet });
