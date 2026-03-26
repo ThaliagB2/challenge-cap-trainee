@@ -6,8 +6,9 @@ import { AppointmentsRepository } from '@/domain/repositories';
 
 export class AppointmentsRepositoryImpl implements AppointmentsRepository {
     private readonly ENTITY = 'db.models.Appointments';
+    private readonly ENTITY_PETS = 'db.models.Pets';
 
-    public async findPetById(petId: AppointmentsRepository.FindPetByIdParams): Promise<AppointmentsRepository.Result> {
+    public async findPetById(petId: AppointmentsRepository.FindPetByIdAndOwnerParams): Promise<AppointmentsRepository.Result> {
         const petAppointmentsQuerry = cds.ql.SELECT.from(this.ENTITY).where({ pet_id: petId });
         const petAppointments: AppointmentsProps[] = await cds.run(petAppointmentsQuerry);
         return this.mapToAppointmentsModel(petAppointments);
@@ -17,7 +18,6 @@ export class AppointmentsRepositoryImpl implements AppointmentsRepository {
         const appointmentData = appointment.map((appointment) => appointment.toObject());
         await cds.create(this.ENTITY).entries(appointmentData);
     }
-    // Refatorar e retirar logica de negocio
     public async findVetIdandDate(params: AppointmentsRepository.FindVetIdandDateParams): Promise<AppointmentsRepository.Result> {
         const query = cds.ql.SELECT.from(this.ENTITY).where([
             { ref: ['veterinarian_id'] },
@@ -37,16 +37,28 @@ export class AppointmentsRepositoryImpl implements AppointmentsRepository {
         return this.mapToAppointmentsModel(result);
     }
 
-    //refatorado
     // Metodo que busca owners e pets com o status 'COMPLETED'
-    public async findByOwnerIdAndStatus(Params: AppointmentsRepository.FindByOwnerIdAndStatusParams): Promise<AppointmentsRepository.Result> {
-        const query = cds.ql.SELECT.from(this.ENTITY)
-            .where({ status: 'COMPLETED' })
-            .and('pet_id IN', cds.ql.SELECT.from('db.models.Pets').columns('id').where({ owner_id: Params.ownerId }));
+    // Dividido em duas chamadas de banco: primeiro busca os pets do owner, depois os appointments
+    public async findPetsByOwnerId(params: AppointmentsRepository.FindPetByIdAndOwnerParams): Promise<AppointmentsRepository.PetIdsResult> {
+        const petsQuery = cds.ql.SELECT.from(this.ENTITY_PETS).columns('id').where({ owner_id: params });
+        const pets: { id: string }[] = await cds.run(petsQuery);
+        return pets.map((pet) => String(pet.id));
+    }
 
-        const appointmentsResult: AppointmentsProps[] = await cds.run(query);
+    public async findByPetIdsAndStatus(petIds: string[], status: string): Promise<AppointmentsRepository.Result> {
+        if (petIds.length === 0) {
+            return [];
+        }
+
+        const appointmentsQuery = cds.ql.SELECT.from(this.ENTITY).where({ status, pet_id: { in: petIds } });
+        const appointmentsResult: AppointmentsProps[] = await cds.run(appointmentsQuery);
 
         return this.mapToAppointmentsModel(appointmentsResult);
+    }
+
+    public async findByOwnerIdAndStatus(Params: AppointmentsRepository.FindByOwnerIdAndStatusParams): Promise<AppointmentsRepository.Result> {
+        const petIds = await this.findPetsByOwnerId(Params.ownerId);
+        return this.findByPetIdsAndStatus(petIds, Params.status);
     }
 
     private mapToAppointmentsModel(appointmentsResult: AppointmentsProps[]): AppointmentsRepository.Result {
