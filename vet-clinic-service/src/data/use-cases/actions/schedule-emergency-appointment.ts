@@ -1,72 +1,48 @@
-import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
-import { AppointmentsModel } from '@/domain/models/db/appointments';
-import { AppointmentsRepository, PetsRepository, ProceduresRepository, VeterinariansRepository } from '@/domain/repositories';
-import { ResultPayload, ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
 import { left, right } from '@sweet-monads/either';
 import { randomUUID } from 'crypto';
+
+import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
+import { AppointmentsModel } from '@/domain/models/db/appointments';
+import { AppointmentsRepository, PetsRepository, VeterinariansRepository } from '@/domain/repositories';
+import { ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions/schedule-emergency-appointment';
+import { Translator } from '@/domain/utils/translator';
 
 export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergencyAppointmentUseCase {
     constructor(
         private readonly petRepository: PetsRepository,
         private readonly vetRepository: VeterinariansRepository,
-        private readonly appointmentRepository: AppointmentsRepository
+        private readonly appointmentRepository: AppointmentsRepository,
+        private readonly translator: Translator
     ) {}
 
     public async execute(params: ScheduleEmergencyAppointmentUseCase.Params): Promise<ScheduleEmergencyAppointmentUseCase.Result> {
         try {
-            const PetExist = await this.ValidatePet(params.pet_id);
-            if (PetExist.hasError) {
-                return left(new NotFoundError('Pet não encontrado'));
+            const pet = await this.petRepository.findPetsById(params.pet_id);
+            if (!pet) {
+                return left(new NotFoundError(this.translator.translate('petNotFound')));
             }
 
-            const VetExist = await this.ValidateVet(params.veterinarian_id);
-            if (VetExist.hasError) {
-                return left(new NotFoundError('Veterinario não encontrado'));
+            const vet = await this.vetRepository.findVeterinarianById(params.veterinarian_id);
+            if (!vet) {
+                return left(new NotFoundError(this.translator.translate('veterinarianNotFound')));
             }
 
             if (params.procedures.length === 0) {
-                return left(new BadRequestError('Lista de Procedimentos esta vazia'));
+                return left(new BadRequestError(this.translator.translate('emptyProceduresList')));
             }
 
-            params.procedures = params.procedures.map((p) => ({ ...p, id: randomUUID() }));
-            params.date = new Date();
-
-            const appointment = AppointmentsModel.createEmergency(params);
-            await this.appointmentRepository.create([appointment]);
-            return right({
-                appointment: appointment.id,
-                hasError: false
+            const appointment = AppointmentsModel.createEmergency({
+                ...params,
+                date: new Date(),
+                procedures: params.procedures.map((p) => ({ ...p, id: randomUUID() }))
             });
-        } catch {
-            return left(new ServerError('Erro ao agendar consulta de emergência'));
-        }
-    }
 
-    private async ValidatePet(petId: string): Promise<ResultPayload> {
-        const pet = await this.petRepository.findPetsById(petId);
-        if (!pet) {
-            return {
-                hasError: true,
-                errorMessage: 'Pet não encontrado'
-            };
-        }
-        return {
-            pet,
-            hasError: false
-        };
-    }
+            await this.appointmentRepository.create([appointment]);
 
-    private async ValidateVet(veterinarianId: string): Promise<ResultPayload> {
-        const vet = await this.vetRepository.findVeterinarianById(veterinarianId);
-        if (!vet) {
-            return {
-                hasError: true,
-                errorMessage: 'Veterinario não encontrado'
-            };
+            return right({ appointment: appointment.id, hasError: false });
+        } catch (error) {
+            const errorData = error as Error;
+            return left(new ServerError(errorData.stack, errorData.message));
         }
-        return {
-            vet,
-            hasError: false
-        };
     }
 }
