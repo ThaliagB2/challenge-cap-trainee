@@ -1,40 +1,26 @@
 @baseUrl = http://localhost:4004/sample
 @dummyAuth = Basic ZHVtbXk6ZHVtbXk=
 
-### Listar todos os proprietários
+### GET todos os owners
 GET {{baseUrl}}/Owners
 Authorization: {{dummyAuth}}
 
-### Criar novo proprietário
+### POST criar novo owner
 POST {{baseUrl}}/Owners
 Content-Type: application/json
 Authorization: {{dummyAuth}}
 
 {
-  "firstName": "Kel",
-  "lastName": "Oliveira",
+  "firstName": "João",
+  "lastName": "Silva",
   "phone": "11987654321",
-  "email": "kel.oliveira@email.com"
+  "email": "joao.silva@email.com"
 }
 
-### Buscar proprietário por ID
-GET {{baseUrl}}/Owners(ID=7bab5455-4d11-47f3-88b9-bf53a6e409e0)
+### GET owner específico por ID
+GET {{baseUrl}}/Owners(81ffd7bc-8523-4d8e-8e27-db44959b2bea)
 Authorization: {{dummyAuth}}
 
-
-### Atualizar proprietário
-PATCH {{baseUrl}}/Owners(id=79a80ca2-6fbc-4157-8e6f-12ba3dab7b78)
-Content-Type: application/json
-Authorization: {{dummyAuth}}
-
-{
-  "phone": "11977593282"
-}
-
-### Remover proprietário
-DELETE {{baseUrl}}/Owners(ID=79a80ca2-6fbc-4157-8e6f-12ba3dab7b78) // esta dando erro
-Authorization: {{dummyAuth}}
-
-### Listar proprietários com pets expandidos
+### GET com $expand para trazer os pets do owner
 GET {{baseUrl}}/Owners?$expand=pets
 Authorization: {{dummyAuth}}

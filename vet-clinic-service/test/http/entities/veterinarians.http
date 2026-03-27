@@ -1,16 +1,11 @@
 @baseUrl = http://localhost:4004/sample
 @dummyAuth = Basic ZHVtbXk6ZHVtbXk=
-@vetId = 091bb664-e13c-457a-9b65-c633596b52f4
 
-### Listar todos os veterinários
+### GET todos os veterinários
 GET {{baseUrl}}/Veterinarians
 Authorization: {{dummyAuth}}
 
-### Buscar veterinário por ID
-GET {{baseUrl}}/Veterinarians(id={{vetId}})
-Authorization: {{dummyAuth}}
-
-### Criar novo veterinário
+### POST criar novo veterinário
 POST {{baseUrl}}/Veterinarians
 Content-Type: application/json
 Authorization: {{dummyAuth}}
@@ -21,7 +16,3 @@ Authorization: {{dummyAuth}}
   "specialty": "Dentistry",
   "crmv": "CRMV99999"
 }
-
-### Buscar Novo Veterinario Criado (basta trocar o id)
-GET {{baseUrl}}/Veterinarians(id={{vetId}})
-Authorization: {{dummyAuth}}
