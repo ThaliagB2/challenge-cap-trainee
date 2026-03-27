@@ -6,8 +6,8 @@ export class GetOwnerExpenseReport extends BaseControllerImpl {
         super();
     }
 
-    public async execute(ownerId: string): Promise<BaseControllerResponse> {
-        const result = await this.useCase.execute(ownerId);
+    public async execute(params: GetOwnerExpenseReportUseCase.Params): Promise<BaseControllerResponse> {
+        const result = await this.useCase.execute(params);
         if (result.isLeft()) {
             return this.error(result.value.code, result.value.toErrorDetails());
         }

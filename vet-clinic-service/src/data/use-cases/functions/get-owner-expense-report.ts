@@ -13,15 +13,15 @@ export class GetOwnerExpenseReportImpl implements GetOwnerExpenseReportUseCase {
         private readonly translator: Translator
     ) {}
 
-    public async execute(ownerId: string): Promise<GetOwnerExpenseReportUseCase.Result> {
-        const owner = await this.ownerRepository.findOwnersById(ownerId);
+    public async execute(params: GetOwnerExpenseReportUseCase.Params): Promise<GetOwnerExpenseReportUseCase.Result> {
+        const owner = await this.ownerRepository.findOwnersById({ id: params.ownerId });
 
         if (!owner) {
             const menssage = this.translator.translate('owner_não_encontrado');
             return left(new NotFoundError(menssage));
         }
 
-        const petIds = await this.appointmentsRepository.findPetsByOwnerId(ownerId);
+        const petIds = await this.appointmentsRepository.findPetsByOwnerId(params.ownerId);
 
         if (petIds.length === 0) {
             const message = this.translator.translate('owner_não_possui_agendamentos');
@@ -43,7 +43,7 @@ export class GetOwnerExpenseReportImpl implements GetOwnerExpenseReportUseCase {
 
         // Retornar right com os dados do relatório (ownerId, ownerName, totalExpenses, appointmentCount, averageCost)
         const reportData = OwnerExpenseReport.create({
-            ownerId,
+            ownerId: params.ownerId,
             ownerNameFull: owner.fullName,
             totalExpenses,
             appointmentCount,
