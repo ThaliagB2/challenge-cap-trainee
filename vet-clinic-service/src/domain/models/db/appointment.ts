@@ -70,7 +70,7 @@ export class AppointmentModel {
 
     public static create(props: AppointmentForCreateProps): AppointmentModel {
         const id = crypto.randomUUID();
-        const totalCost = props.procedures.reduce((sum, proc) => sum + proc.cost, 0);
+        const totalCost = props.procedures?.reduce((sum, proc) => sum + proc.cost, 0);
 
         return new AppointmentModel({
             ...props,

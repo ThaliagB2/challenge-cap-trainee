@@ -33,7 +33,7 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
 
             const veterinarian = await this.getVeterinarian(vetId);
             if (!veterinarian) {
-                return left(new NotFoundError(this.translator.translate('noVeterinarianFound')));
+                return left(new NotFoundError(this.translator.translate('veterinarianNotFound')));
             }
 
             const datesArray = appointmentModel.getDatesArray(params.days);
@@ -42,8 +42,9 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
             if (!appointments) {
                 return left(new NotFoundError(this.translator.translate('veterinarianScheduleNotFound')));
             }
+            const sortedAppointmentsObj = appointments.map((app) => app.toFullObject()).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-            return right(this.generateVeterianarianSchedule(appointmentModel, appointments, veterinarian));
+            return right(this.generateVeterianarianSchedule(appointmentModel, sortedAppointmentsObj, veterinarian));
         } catch (error) {
             const errorData = error as Error;
             return left(new ServerError(errorData.stack, errorData.message));
@@ -54,9 +55,8 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         return await this.veterinarianRepository.findById({ id: vetId });
     }
 
-    private async getSortedVeterinarianAppointments(vetId: string, datesArray: string[]): Promise<FullAppointmentProps[]> {
-        const vetRepositories = (await this.appointmentRepository.findByVeterinarianIdAndDate({ veterinarianId: vetId, dates: datesArray })).map((app) => app.toFullObject());
-        return vetRepositories.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    private async getSortedVeterinarianAppointments(vetId: string, datesArray: string[]): Promise<AppointmentModel[]> {
+        return await this.appointmentRepository.findByVeterinarianIdAndDate({ veterinarianId: vetId, dates: datesArray });
     }
 
     private async generateVeterianarianSchedule(
