@@ -1,6 +1,6 @@
 import { GetVeterinarianScheduleUseCaseImpl } from '@/data/use-cases/functions/get-veterinarian-schedule';
-import { AppointmentRepositoryImpl, OwnerRepositoryImpl, PetRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
 import { translator } from '@/main/factories/utils/translator';
+import { AppointmentRepositoryImpl, OwnerRepositoryImpl, PetRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
 
 export const makeGetVeterinarianScheduleUseCase = () => {
     const veterinarianRepository = new VeterinarianRepositoryImpl();
