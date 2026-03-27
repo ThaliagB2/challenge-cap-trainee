@@ -17,6 +17,6 @@ service VetClinicService {
     action scheduleEmergencyAppointment(params: ProceduresInput.ProceduresParamsInput) returns String;
 }
 extend service VetClinicService with {
-    function getVeterinarianSchedule(params: VeterinariansSchedule.VeterinarianParams) returns array of VeterinariansSchedule.ExpectedResults;
-    function getOwnerExpenseReport(ownerId: String) returns OwnerExpenseReports.ExpectedResults;
-};
+    function getVeterinarianSchedule(payload: VeterinariansSchedule.VeterinarianParams) returns array of VeterinariansSchedule.ExpectedResults;
+    function getOwnerExpenseReport(payload: OwnerExpenseReports.OwnerParams) returns OwnerExpenseReports.ExpectedResult;
+}

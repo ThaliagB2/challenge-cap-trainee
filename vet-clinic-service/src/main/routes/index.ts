@@ -44,11 +44,11 @@ export default (service: Service) => {
 
     service.on('scheduleEmergencyAppointment', async (req: Request) => {
         const result = await scheduleEmergencyAppointmentController.execute({
-            date: req.data.date || new Date(),
-            pet_id: req.data.pet_id,
-            veterinarian_id: req.data.veterinarian_id,
-            notes: req.data.notes,
-            procedures: req.data.procedures
+            date: req.data.params.date || new Date(),
+            pet_id: req.data.params.petId,
+            veterinarian_id: req.data.params.veterinarianId,
+            notes: req.data.params.notes,
+            procedures: req.data.params.procedures
         });
 
         if (result.status >= 400) {
@@ -60,7 +60,7 @@ export default (service: Service) => {
     });
 
     service.on('getOwnerExpenseReport', async (req: Request) => {
-        const result = await getOwnerExpenseReportController.execute(req.data.ownerId);
+        const result = await getOwnerExpenseReportController.execute(req.data.payload);
 
         if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
@@ -71,7 +71,7 @@ export default (service: Service) => {
     });
 
     service.on('getVeterinarianSchedule', async (req: Request) => {
-        const result = await getVeterinarianScheduleController.execute(req.data.veterinarianId, req.data.days || 7);
+        const result = await getVeterinarianScheduleController.execute(req.data.payload);
 
         if (result.status >= 400) {
             const errorMessages = result.errorData?.details.map((detail) => detail.message).join('; ');
