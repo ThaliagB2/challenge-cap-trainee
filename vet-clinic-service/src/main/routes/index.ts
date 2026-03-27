@@ -1,19 +1,20 @@
 /* eslint-disable max-lines-per-function */
-import { Service } from '@sap/cds';
+import { Request, Service } from '@sap/cds';
 
 import '@/main/config/module-alias';
 
-import { bulkCreatePurchaseOrdersController } from '@/main/factories/controllers/actions/bulk-create-purchase-orders';
-import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
-import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
+import { PetProps } from '@/domain/models/db/pet';
+import { Products } from '@models/db/models';
 import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets';
 import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
+import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
 import { beforeCreatePurchaseOrderController } from '@/main/factories/controllers/entity-events/purchase-order';
+import { bulkCreatePurchaseOrdersController } from '@/main/factories/controllers/actions/bulk-create-purchase-orders';
 import { extractProductsToExcelController } from '@/main/factories/controllers/functions/extract-products-to-excel';
 import { getOwnerExpenseReportController } from '@/main/factories/controllers/functions/get-owner-expense-report';
 import { getVeterinarianScheduleController } from '@/main/factories/controllers/functions/get-veterinarian-schedule';
+import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
 import { translator } from '@/main/factories/utils/translator';
-import { Pets, Products } from '@models/db/models';
 
 export default (service: Service) => {
     service.before('*', async (request: any) => {
@@ -32,14 +33,12 @@ export default (service: Service) => {
         });
     });
 
-    service.before('CREATE', 'Appointments', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await beforeCreateAppointmentController.execute(request.data);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            request.data = result.data;
-        });
+    service.before('CREATE', 'Appointments', async (request: Request) => {
+        const result = await beforeCreateAppointmentController.execute(request.data);
+        if (result.status >= 400) {
+            return request.reject(result.status, result.errorData.details.join('\n'));
+        }
+        return result.data;
     });
 
     service.on('extractProductsToExcel', async (request: any) => {
@@ -71,34 +70,28 @@ export default (service: Service) => {
         });
     });
 
-    service.on('scheduleEmergencyAppointment', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await scheduleEmergencyAppointmentController.execute(request.data.payload);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            return result.data;
-        });
+    service.on('scheduleEmergencyAppointment', async (request: Request) => {
+        const result = await scheduleEmergencyAppointmentController.execute(request.data.payload);
+        if (result.status >= 400) {
+            return request.reject(result.status, result.errorData.details.join('\n'));
+        }
+        return result.data;
     });
 
-    service.on('getVeterinarianSchedule', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await getVeterinarianScheduleController.execute(request.data.payload);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            return result.data;
-        });
+    service.on('getVeterinarianSchedule', async (request: Request) => {
+        const result = await getVeterinarianScheduleController.execute(request.data.payload);
+        if (result.status >= 400) {
+            return request.reject(result.status, result.errorData.details.join('\n'));
+        }
+        return result.data;
     });
 
-    service.on('getOwnerExpenseReport', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await getOwnerExpenseReportController.execute(request.data.payload);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            return result.data;
-        });
+    service.on('getOwnerExpenseReport', async (request: Request) => {
+        const result = await getOwnerExpenseReportController.execute(request.data.payload);
+        if (result.status >= 400) {
+            return request.reject(result.status, result.errorData.details.join('\n'));
+        }
+        return result.data;
     });
 
     service.after('READ', 'Products', (products: Products, request: any) => {
@@ -111,13 +104,11 @@ export default (service: Service) => {
         });
     });
 
-    service.after('READ', 'Pets', (pets: Pets, request: any) => {
-        return translator.withLanguage(request._language, () => {
-            const result = afterReadPetsController.execute(pets);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            request.results = result.data as Pets;
-        });
+    service.after('READ', 'Pets', (pets: PetProps[], request: Request) => {
+        const result = afterReadPetsController.execute(pets);
+        if (result.status >= 400) {
+            return request.reject(result.status, result.errorData.details.join('\n'));
+        }
+        return result.data;
     });
 };
