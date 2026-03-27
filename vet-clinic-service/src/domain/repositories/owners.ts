@@ -5,6 +5,6 @@ export interface OwnersRepository {
 }
 
 export namespace OwnerRepository {
-    export type FindByIParams = string;
+    export type FindByIParams = { id: string };
     export type FindByIdResult = OwnersModel;
 }

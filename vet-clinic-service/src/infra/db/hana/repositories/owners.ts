@@ -6,8 +6,8 @@ import { OwnersRepository, OwnerRepository } from '@/domain/repositories';
 export class OwnersRepositoryImpl implements OwnersRepository {
     private readonly ENTITY = 'db.models.Owners';
     //refatorado
-    public async findOwnersById(id: OwnerRepository.FindByIParams): Promise<OwnerRepository.FindByIdResult> {
-        const ownerQuerry = cds.ql.SELECT.from(this.ENTITY).where({ id });
+    public async findOwnersById(params: OwnerRepository.FindByIParams): Promise<OwnerRepository.FindByIdResult> {
+        const ownerQuerry = cds.ql.SELECT.one.from(this.ENTITY).where({ id: params.id });
         const owner = await cds.run(ownerQuerry);
         return OwnersModel.create({
             id: owner.id,
