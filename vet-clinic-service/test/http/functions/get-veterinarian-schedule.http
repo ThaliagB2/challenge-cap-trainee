@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:4004/sample
+@dummyAuth = Basic ZHVtbXk6ZHVtbXk=
+
+### GET chamando a function com veterinarianId e days (usando veterinarian do agendamento de emergência)
+GET {{baseUrl}}/getVeterinarianSchedule
+Authorization: {{dummyAuth}}
+Content-Type: application/json
+
+{
+    "payload": {
+        "veterinarianId": "091bb664-e13c-457a-9b65-c633596b52f4",
+        "days": 30
+    }
+}

@@ -1,0 +1,44 @@
+@baseUrl = http://localhost:4004/sample
+@dummyAuth = Basic ZHVtbXk6ZHVtbXk=
+
+### POST chamando a action scheduleEmergencyAppointment com payload válido
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "params": {
+    "petId": "fe51eaee-f4b0-4552-9091-059ad5b769b0",
+    "veterinarianId": "091bb664-e13c-457a-9b65-c633596b52f4",
+    "notes": "Emergency consultation",
+    "procedures": [
+      {
+        "description": "Emergency surgery",
+        "cost": 200.00
+      },
+      {
+        "description": "Medication",
+        "cost": 50.00
+      }
+    ]
+  }
+}
+
+### GET agendamento de emergência criado (substitua pelo ID retornado acima)
+GET {{baseUrl}}/Appointments(672a8c55-f08f-416b-ad86-41006556b690)
+Authorization: {{dummyAuth}}
+
+
+### POST com lista de procedimentos vazia (esperar erro 400)
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Content-Type: application/json
+Authorization: {{dummyAuth}}
+
+{
+  "params": {
+    "petId": "fe51eaee-f4b0-4552-9091-059ad5b769b0",
+    "veterinarianId": "091bb664-e13c-457a-9b65-c633596b52f4",
+    "notes": "Emergency without procedures",
+    "procedures": []
+  }
+}

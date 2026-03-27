@@ -1,0 +1,13 @@
+@baseUrl = http://localhost:4004/sample
+@dummyAuth = Basic ZHVtbXk6ZHVtbXk=
+
+### GET chamando a function com ownerId
+GET {{baseUrl}}/getOwnerExpenseReport
+Authorization: {{dummyAuth}}
+Content-Type: application/json
+
+{
+    "payload": {
+        "ownerId": "81ffd7bc-8523-4d8e-8e27-db44959b2bea"
+    }
+}
