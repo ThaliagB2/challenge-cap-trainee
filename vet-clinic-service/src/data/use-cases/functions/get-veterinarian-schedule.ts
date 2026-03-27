@@ -22,10 +22,14 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
             return left(new NotFoundError(message));
         }
         const days = !params.days ? 7 : params.days;
-        const dataArray = VeterinarianScheduleModel.getDatesArray(days);
-        const appointments = await this.appointmentRepository.findVetIdandDate({ vetId: params.veterinarianId, dates: dataArray });
+        const { startDate, endDate } = VeterinarianScheduleModel.getDateRange(days);
+        const appointments = await this.appointmentRepository.findVetIdandDate({
+            vetId: params.veterinarianId,
+            startDate,
+            endDate
+        });
 
-        if (appointments.length === 0) {
+        if (!appointments || appointments.length === 0) {
             const message = this.translator.translate('Agendamentos_não_encontrados_neste_periodo');
             return left(new NotFoundError(message));
         }
@@ -41,9 +45,10 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
                     isEmergency: appointment.isEmergency,
                     totalCost: appointment.totalCost,
                     veterinarian_id: appointment.veterinarian_id,
-                    procedure: appointment.procedures,
+                    procedures: appointment.procedures,
                     pet_id: appointment.pet_id,
-                    owner_id: pet.owner_id
+                    owner_id: pet.owner_id,
+                    notes: appointment.notes
                 });
             })
         );

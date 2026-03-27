@@ -6,8 +6,8 @@ export class GetVeterinarianSchedule extends BaseControllerImpl {
         super();
     }
 
-    public async execute(veterinarianId: string, days: number): Promise<BaseControllerResponse> {
-        const result = await this.useCase.execute({ veterinarianId, days });
+    public async execute(params: GetVeterinarianScheduleUseCase.Params): Promise<BaseControllerResponse> {
+        const result = await this.useCase.execute(params);
         if (result.isLeft()) {
             return this.error(result.value.code, result.value.toErrorDetails());
         }

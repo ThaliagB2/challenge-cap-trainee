@@ -8,12 +8,12 @@ export type VeterinarianScheduleProps = {
     status: AppointmentsProps['status'];
     isEmergency: AppointmentsProps['isEmergency'];
     totalCost: AppointmentsProps['totalCost'];
+    notes: AppointmentsProps['notes'];
     veterinarian_id: AppointmentsProps['veterinarian_id'];
-    procedure: ProceduresProps[];
+    procedures: ProceduresProps[];
     pet_id: AppointmentsProps['pet_id'];
     owner_id: OwnersProps['id'];
 };
-
 export class VeterinarianScheduleModel {
     constructor(private props: VeterinarianScheduleProps) {}
 
@@ -21,14 +21,15 @@ export class VeterinarianScheduleModel {
         return new VeterinarianScheduleModel(props);
     }
 
-    // metodo que gera um array de datas a partir da data atual, com o numero de dias definido no parametros
-    public static getDatesArray(days: number): string[] {
-        return Array.from({ length: days }, (_, i) => {
-            const date = new Date();
-            date.setDate(date.getDate() + i);
-            date.setHours(0, 0, 0, 0);
-            return date.toISOString();
-        });
+    public static getDateRange(days: number): { startDate: string; endDate: string } {
+        const start = new Date();
+        const end = new Date();
+        end.setDate(end.getDate() + days);
+
+        return {
+            startDate: start.toISOString().slice(0, 10),
+            endDate: end.toISOString().slice(0, 10)
+        };
     }
     // [...schedule] cria uma copia do array e .sort organiza de forma cressente.
     // Esse metodo serve para organizar os agendamentos do veterinario.
@@ -65,7 +66,7 @@ export class VeterinarianScheduleModel {
     }
 
     public get procedure(): ProceduresProps[] {
-        return this.props.procedure;
+        return this.props.procedures;
     }
 
     public get pet_id(): string {
