@@ -14,11 +14,18 @@ export type VeterinarianScheduleProps = {
     pet_id: AppointmentsProps['pet_id'];
     owner_id: OwnersProps['id'];
 };
+
+const DEFAULT_DAYS = 7;
+
 export class VeterinarianScheduleModel {
     constructor(private props: VeterinarianScheduleProps) {}
 
     public static with(props: VeterinarianScheduleProps): VeterinarianScheduleModel {
         return new VeterinarianScheduleModel(props);
+    }
+
+    public static resolveDays(days?: number): number {
+        return days ?? DEFAULT_DAYS;
     }
 
     public static getDateRange(days: number): { startDate: string; endDate: string } {

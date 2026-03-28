@@ -21,7 +21,9 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
             const message = this.translator.translate('Veterinario_não_encontrado');
             return left(new NotFoundError(message));
         }
-        const days = !params.days ? 7 : params.days;
+
+        const days = VeterinarianScheduleModel.resolveDays(params.days);
+
         const { startDate, endDate } = VeterinarianScheduleModel.getDateRange(days);
         const appointments = await this.appointmentRepository.findVetIdandDate({
             vetId: params.veterinarianId,
