@@ -7,17 +7,11 @@ import { AppointmentsRepository } from '@/domain/repositories';
 export class AppointmentsRepositoryImpl implements AppointmentsRepository {
     private readonly ENTITY = 'db.models.Appointments';
     private readonly ENTITY_PETS = 'db.models.Pets';
-
-    public async findPetById(petId: AppointmentsRepository.FindPetByIdAndOwnerParams): Promise<AppointmentsRepository.Result> {
-        const petAppointmentsQuerry = cds.ql.SELECT.from(this.ENTITY).where({ pet_id: petId });
-        const petAppointments: AppointmentsProps[] = await cds.run(petAppointmentsQuerry);
-        return this.mapToAppointmentsModel(petAppointments);
-    }
-
     public async create(appointment: AppointmentsModel[]): Promise<void> {
         const appointmentData = appointment.map((appointment) => appointment.toObject());
         await cds.create(this.ENTITY).entries(appointmentData);
     }
+    // não estou conseguindo acessar os procedures, eu teria que usar o any
     public async findVetIdandDate(params: AppointmentsRepository.FindVetIdandDateParams): Promise<AppointmentsRepository.Result> {
         const query = cds.ql.SELECT.from(this.ENTITY).where([
             { ref: ['veterinarian_id'] },
@@ -25,15 +19,16 @@ export class AppointmentsRepositoryImpl implements AppointmentsRepository {
             { val: params.vetId },
             'and',
             { func: 'date', args: [{ ref: ['date'] }] },
-            'in',
-            { list: params.dates.map((d) => ({ val: d })) }
+            '>=',
+            { val: params.startDate },
+            'and',
+            { func: 'date', args: [{ ref: ['date'] }] },
+            '<=',
+            { val: params.endDate }
         ]);
 
         const result: AppointmentsProps[] = await cds.run(query);
-
-        if (result.length === 0) {
-            return null;
-        }
+        if (result.length === 0) return null;
         return this.mapToAppointmentsModel(result);
     }
 

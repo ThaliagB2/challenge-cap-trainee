@@ -1,7 +1,6 @@
 import { AppointmentsModel } from '../models/db/appointments';
 
 export interface AppointmentsRepository {
-    findPetById(petId: AppointmentsRepository.FindPetByIdAndOwnerParams): Promise<AppointmentsRepository.Result>;
     create(appointment: AppointmentsRepository.CreateParams): Promise<AppointmentsRepository.CreateResult>;
     findVetIdandDate(params: AppointmentsRepository.FindVetIdandDateParams): Promise<AppointmentsRepository.Result>;
     findPetsByOwnerId(params: AppointmentsRepository.FindPetByIdAndOwnerParams): Promise<AppointmentsRepository.PetIdsResult>;
@@ -16,7 +15,8 @@ export namespace AppointmentsRepository {
     export type CreateParams = AppointmentsModel[];
     export type FindVetIdandDateParams = {
         vetId: string;
-        dates: string[];
+        startDate: string;
+        endDate: string;
     };
     export type FindByOwnerIdAndStatusParams = {
         ownerId: string;
