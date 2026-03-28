@@ -35,7 +35,7 @@ export class GetOwnerExpenseReportImpl implements GetOwnerExpenseReportUseCase {
             return left(new NotFoundError(message));
         }
 
-        const totalExpenses = shedulings.reduce((total, appointment) => total + appointment.totalCost, 0);
+        const totalExpenses = OwnerExpenseReport.totalExpenses(shedulings);
 
         const appointmentCount = shedulings.length;
 

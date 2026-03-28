@@ -19,6 +19,10 @@ export class OwnerExpenseReport {
         return totalExpenses / appointmentCount;
     }
 
+    public static totalExpenses(appointments: { totalCost: number }[]): number {
+        return appointments.reduce((total, appointment) => total + appointment.totalCost, 0);
+    }
+
     public get ownerId(): string {
         return this.props.ownerId;
     }
