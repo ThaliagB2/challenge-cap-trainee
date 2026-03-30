@@ -1,10 +1,10 @@
 import { OwnersModel } from '@/domain/models/db/owners';
 
 export interface OwnersRepository {
-    findOwnersById(id: OwnerRepository.FindByIParams): Promise<OwnerRepository.FindByIdResult>;
+    findOwnersById(id: OwnersRepository.FindByIParams): Promise<OwnersRepository.FindByIdResult>;
 }
 
-export namespace OwnerRepository {
+export namespace OwnersRepository {
     export type FindByIParams = { id: string };
-    export type FindByIdResult = OwnersModel;
+    export type FindByIdResult = OwnersModel | null;
 }
