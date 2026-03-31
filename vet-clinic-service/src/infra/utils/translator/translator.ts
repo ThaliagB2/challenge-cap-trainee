@@ -1,5 +1,5 @@
-import { ResourceManager } from '@sap/textbundle';
 import { AsyncLocalStorage } from 'async_hooks';
+import { ResourceManager } from '@sap/textbundle';
 
 import { Translator } from '@/domain/utils/translator';
 

@@ -1,7 +1,7 @@
 import { BadRequestError } from '@/domain/errors';
 import { BulkCreatePurchaseOrdersUseCase } from '@/domain/use-cases/actions/bulk-create-purchase-orders';
-import { describe, expect, it } from 'vitest';
 import { makeSut } from './shared-helpers';
+import { describe, expect, it } from 'vitest';
 
 describe('BulkCreatePurchaseOrdersUseCase - Edge Cases', () => {
     it('should handle mixed valid and invalid purchase orders', async () => {

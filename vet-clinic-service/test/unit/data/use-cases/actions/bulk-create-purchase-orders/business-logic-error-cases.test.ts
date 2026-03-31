@@ -1,7 +1,7 @@
 import { BadRequestError } from '@/domain/errors';
-import { describe, expect, it } from 'vitest';
-import { makeSut } from './shared-helpers';
 import { ProductRepositoryStub } from './stubs';
+import { makeSut } from './shared-helpers';
+import { describe, expect, it } from 'vitest';
 
 describe('BulkCreatePurchaseOrdersUseCase - Business Logic Error Cases', () => {
     it('should return error when product does not exist', async () => {

@@ -1,6 +1,6 @@
 import { ScheduleEmergencyAppointmentUseCaseImpl } from '@/data/use-cases/actions/schedule-emergency-appointment';
-import { AppointmentRepositoryImpl, PetRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
 import { translator } from '@/main/factories/utils/translator';
+import { AppointmentRepositoryImpl, PetRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
 
 export const makeScheduleEmergencyAppointmentUseCase = () => {
     const veterinarianRepository = new VeterinarianRepositoryImpl();

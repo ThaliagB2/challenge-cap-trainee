@@ -1,8 +1,8 @@
 import { left, right } from '@sweet-monads/either';
 
-import { ServerError } from '@/domain/errors/server';
-import { ProductModel } from '@/domain/models/db/product';
 import { AfterReadProductsUseCase } from '@/domain/use-cases/entity-events/products';
+import { ProductModel } from '@/domain/models/db/product';
+import { ServerError } from '@/domain/errors/server';
 
 export class AfterReadProductsUseCaseImpl implements AfterReadProductsUseCase {
     public execute(products: AfterReadProductsUseCase.Params): AfterReadProductsUseCase.Result {

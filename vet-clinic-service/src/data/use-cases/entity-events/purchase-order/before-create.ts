@@ -1,11 +1,11 @@
 import { left, right } from '@sweet-monads/either';
 
 import { BadRequestError } from '@/domain/errors/bad-request';
-import { ServerError } from '@/domain/errors/server';
-import { ProductModel } from '@/domain/models/db/product';
-import { PurchaseOrderModel } from '@/domain/models/db/purchase-order';
-import { ProductRepository } from '@/domain/repositories';
 import { BeforeCreatePurchaseOrderUseCase } from '@/domain/use-cases/entity-events/purchase-order';
+import { ProductModel } from '@/domain/models/db/product';
+import { ProductRepository } from '@/domain/repositories';
+import { PurchaseOrderModel } from '@/domain/models/db/purchase-order';
+import { ServerError } from '@/domain/errors/server';
 import { Translator } from '@/domain/utils/translator';
 import { ValidationResult } from '@/domain/validators/common/validation-result';
 

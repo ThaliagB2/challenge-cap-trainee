@@ -1,7 +1,7 @@
-import { BulkCreatePurchaseOrdersUseCaseImpl } from '@/data/use-cases/actions/bulk-create-purchase-orders';
-import { ProductRepository, PurchaseOrderRepository } from '@/domain/repositories';
 import { BulkCreatePurchaseOrdersUseCase } from '@/domain/use-cases/actions/bulk-create-purchase-orders';
+import { BulkCreatePurchaseOrdersUseCaseImpl } from '@/data/use-cases/actions/bulk-create-purchase-orders';
 import { Translator } from '@/domain/utils/translator';
+import { ProductRepository, PurchaseOrderRepository } from '@/domain/repositories';
 import { ProductRepositoryStub, PurchaseOrderRepositoryStub, TranslatorStub } from './stubs';
 
 export type SutTypes = {

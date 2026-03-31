@@ -1,5 +1,5 @@
-import { makeBeforeCreatePurchaseOrderUseCase } from '@/main/factories/use-cases/entity-events/purchase-order';
 import { BeforeCreatePurchaseOrderController } from '@/presentation/entity-events/purchase-order';
+import { makeBeforeCreatePurchaseOrderUseCase } from '@/main/factories/use-cases/entity-events/purchase-order';
 
 export const makeBeforeCreatePurchaseOrderController = () => {
     const useCase = makeBeforeCreatePurchaseOrderUseCase();

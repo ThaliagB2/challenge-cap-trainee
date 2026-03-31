@@ -1,5 +1,5 @@
-import { makeBeforeCreateAppointmentUseCase } from '@/main/factories/use-cases/entity-events/appointments';
 import { BeforeCreateAppointmentsController } from '@/presentation/entity-events/appointments';
+import { makeBeforeCreateAppointmentUseCase } from '@/main/factories/use-cases/entity-events/appointments';
 
 export const makeBeforeCreateAppointmentController = () => {
     const useCase = makeBeforeCreateAppointmentUseCase();

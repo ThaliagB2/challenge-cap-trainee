@@ -1,7 +1,7 @@
 import { BadRequestError } from '@/domain/errors';
 import { BulkCreatePurchaseOrdersUseCase } from '@/domain/use-cases/actions/bulk-create-purchase-orders';
-import { describe, expect, it } from 'vitest';
 import { makeSut } from './shared-helpers';
+import { describe, expect, it } from 'vitest';
 
 describe('BulkCreatePurchaseOrdersUseCase - Validation Error Cases', () => {
     it('should return error when payload is empty', async () => {
