@@ -1,3 +1,9 @@
 using from './products';
 using from './purchase-order-items';
 using from './purchase-orders';
+using from './owners';
+using from './veterinarians';
+using from './pets';
+using from './procedures';
+using from './appointment-statuses';
+using from './appointments';
