@@ -7,11 +7,14 @@ A **VetCare Clinic** é uma rede de clínicas veterinárias em expansão que ate
 Você foi contratado como desenvolvedor para construir o **backend do sistema de gestão da clínica**. O sistema precisa gerenciar tutores (donos dos pets), seus animais, os veterinários da clínica, os agendamentos de consultas e os procedimentos realizados em cada consulta.
 
 A clínica também precisa de funcionalidades específicas:
+
 - **Agendar consultas de emergência** com cobrança de taxa adicional
 - **Consultar a agenda de um veterinário** por período
 - **Gerar relatório de gastos por tutor** com base nas consultas finalizadas
 
 ---
+
+
 
 ## Objetivo
 
@@ -28,6 +31,8 @@ Desenvolver um serviço backend completo utilizando **SAP CAP com TypeScript**, 
 
 ---
 
+
+
 ## Pré-requisitos
 
 - Node.js (versão 20 || 22)
@@ -38,7 +43,11 @@ Desenvolver um serviço backend completo utilizando **SAP CAP com TypeScript**, 
 
 ---
 
+
+
 ## Configuração Inicial
+
+
 
 ### 1. Clonar o repositório template
 
@@ -47,6 +56,8 @@ Clonar o repositório que contém a estrutura base do projeto:
 ```
 https://github.com/ThaliagB2/challenge-cap-trainee
 ```
+
+
 
 ### 2. Criar a branch de trabalho
 
@@ -64,33 +75,40 @@ Todos os commits devem ser feitos nesta branch.
 
 Na **pasta raiz** do projeto clonado, executar:
 
-1. **`yarn`** — Instala as dependências do projeto raiz
-2. **`yarn setup`** — Executa o script interativo de configuração do template
+1. `yarn` — Instala as dependências do projeto raiz
+2. `yarn setup` — Executa o script interativo de configuração do template
 
 O script de setup irá solicitar duas informações:
 
-| Pergunta | O que informar | Exemplo |
-|----------|---------------|---------|
-| **App name** | Nome do seu serviço (em kebab-case) | `vet-clinic-service` |
-| **Schema name** | Nome do schema do banco de dados (em UPPER_SNAKE_CASE) | `VET_CLINIC_SCHEMA` |
+
+| Pergunta        | O que informar                                         | Exemplo              |
+| --------------- | ------------------------------------------------------ | -------------------- |
+| **App name**    | Nome do seu serviço (em kebab-case)                    | `vet-clinic-service` |
+| **Schema name** | Nome do schema do banco de dados (em UPPER_SNAKE_CASE) | `VET_CLINIC_SCHEMA`  |
+
 
 O script irá automaticamente:
+
 - Substituir os placeholders `{{app-name}}`, `{{app-name-without-dash}}`, `{{UpperCamelCaseAppName}}` e `{{schema-name}}` em todos os arquivos de configuração
 - Renomear a pasta `sample-service/` para o nome do app escolhido (ex: `vet-clinic-service/`)
 - Remover o próprio script de setup após a execução
+
+
 
 ### 4. Instalar dependências do serviço
 
 Após o setup, entrar na pasta do serviço (que agora tem o nome que você escolheu) e instalar as dependências:
 
 1. Entrar na pasta do serviço (ex: `vet-clinic-service/`)
-2. Executar **`yarn`** para instalar as dependências do serviço
+2. Executar `yarn` para instalar as dependências do serviço
+
+
 
 ### 5. Verificar que o projeto inicia corretamente
 
 Executar o comando de desenvolvimento para garantir que tudo está funcionando:
 
-- **`yarn dev`** — Este comando irá:
+- `yarn dev` — Este comando irá:
   1. Construir o banco de dados local (SQLite)
   2. Gerar os tipos TypeScript a partir dos modelos CDS
   3. Iniciar o servidor CAP com hot-reload
@@ -101,7 +119,11 @@ Se o servidor subir sem erros, a configuração está concluída.
 
 ---
 
+
+
 ## Regras de Versionamento
+
+
 
 ### Conventional Commits
 
@@ -113,16 +135,19 @@ Todos os commits devem seguir o padrão **Conventional Commits** em **inglês**:
 
 **Tipos permitidos:**
 
-| Tipo | Quando usar |
-|------|-------------|
-| `feat` | Nova funcionalidade |
-| `fix` | Correção de bug |
-| `refactor` | Refatoração sem mudar comportamento |
-| `chore` | Tarefas de configuração, setup, dependências |
-| `test` | Adição ou alteração de testes |
-| `docs` | Documentação |
+
+| Tipo       | Quando usar                                  |
+| ---------- | -------------------------------------------- |
+| `feat`     | Nova funcionalidade                          |
+| `fix`      | Correção de bug                              |
+| `refactor` | Refatoração sem mudar comportamento          |
+| `chore`    | Tarefas de configuração, setup, dependências |
+| `test`     | Adição ou alteração de testes                |
+| `docs`     | Documentação                                 |
+
 
 **Exemplos de commits válidos:**
+
 - `feat: add veterinary clinic CDS entity definitions`
 - `feat: add domain models for pets and owners`
 - `feat: implement owner expense report function`
@@ -136,6 +161,8 @@ Todos os commits devem seguir o padrão **Conventional Commits** em **inglês**:
 
 ---
 
+
+
 ## Diagrama UML das Entidades
 
 O sistema possui **5 entidades** com associações e composições. O diagrama abaixo define a estrutura, os tipos e os relacionamentos. Sua tarefa é transformar este diagrama em definições CDS.
@@ -145,7 +172,7 @@ classDiagram
     direction TB
 
     class Owners {
-        &lt;&lt;entity&gt;&gt;
+        <<entity>>
         UUID id [key]
         String~50~ firstName
         String~100~ lastName
@@ -154,7 +181,7 @@ classDiagram
     }
 
     class Pets {
-        &lt;&lt;entity&gt;&gt;
+        <<entity>>
         UUID id [key]
         String~100~ name
         String~50~ species
@@ -164,7 +191,7 @@ classDiagram
     }
 
     class Veterinarians {
-        &lt;&lt;entity&gt;&gt;
+        <<entity>>
         UUID id [key]
         String~50~ firstName
         String~100~ lastName
@@ -173,7 +200,7 @@ classDiagram
     }
 
     class Appointments {
-        &lt;&lt;entity : managed&gt;&gt;
+        <<entity : managed>>
         UUID id [key]
         DateTime date
         String status [enum: SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED]
@@ -183,7 +210,7 @@ classDiagram
     }
 
     class Procedures {
-        &lt;&lt;entity&gt;&gt;
+        <<entity>>
         UUID id [key]
         String~255~ description
         Decimal~10_2~ cost
@@ -200,15 +227,22 @@ classDiagram
 ```
 
 
+
+
+
 ### Legenda dos Relacionamentos
 
-| Símbolo | Tipo | Significado |
-|---------|------|-------------|
-| `-->` | **Association** | Relacionamento simples entre entidades independentes |
-| `*--` | **Composition** | Relacionamento pai-filho (Procedures só existem dentro de um Appointment) |
+
+| Símbolo   | Tipo            | Significado                                                                                 |
+| --------- | --------------- | ------------------------------------------------------------------------------------------- |
+| `-->`     | **Association** | Relacionamento simples entre entidades independentes                                        |
+| `*--`     | **Composition** | Relacionamento pai-filho (Procedures só existem dentro de um Appointment)                   |
 | `managed` | **Aspecto CDS** | Adiciona automaticamente campos de auditoria (createdAt, createdBy, modifiedAt, modifiedBy) |
 
-> **Observação:** O diagrama UML acima contém caracteres especiais que podem não renderizar corretamente em todos os editores. Certifique-se de que você está vendo o diagrama completo antes de começar. Acesse o Mermaid Open Source para visualizar corretamente: https://mermaid.live/
+
+> **Observação:** O diagrama UML acima contém caracteres especiais que podem não renderizar corretamente em todos os editores. Certifique-se de que você está vendo o diagrama completo antes de começar. Acesse o Mermaid Open Source para visualizar corretamente: [https://mermaid.live/](https://mermaid.live/)
+
+
 
 ### Observações sobre as Entidades
 
@@ -221,7 +255,11 @@ classDiagram
 
 ---
 
+
+
 ## Etapas do Desafio
+
+
 
 ### Etapa 1 — Configuração e Estrutura Inicial
 
@@ -229,16 +267,18 @@ classDiagram
 
 **Tasks:**
 
-- [X] Clonar o repositório template
-- [X] Criar a branch `feature/seunome-trainee-2026` a partir da `main`
-- [X] Executar `yarn` e `yarn setup` na raiz do projeto
-- [X] Instalar dependências do serviço e verificar que o projeto inicia com `yarn dev`
-- [X] Estudar a estrutura do projeto template e os exemplos existentes (Products, PurchaseOrders)
-- [X] Ler o arquivo `CLEAN-ARCHITECTURE-CAP.md` por completo para entender cada camada
+- [x] Clonar o repositório template
+- [x] Criar a branch `feature/seunome-trainee-2026` a partir da `main`
+- [x] Executar `yarn` e `yarn setup` na raiz do projeto
+- [x] Instalar dependências do serviço e verificar que o projeto inicia com `yarn dev`
+- [x] Estudar a estrutura do projeto template e os exemplos existentes (Products, PurchaseOrders)
+- [x] Ler o arquivo `CLEAN-ARCHITECTURE-CAP.md` por completo para entender cada camada
 
 **Sugestão de commit:** `chore: initial project setup and configuration`
 
 ---
+
+
 
 ### Etapa 2 — Camada de Banco de Dados (`db/`)
 
@@ -246,28 +286,31 @@ classDiagram
 
 **Tasks:**
 
-- [X] Criar os arquivos CDS para as 5 entidades na pasta `db/models/`, seguindo o diagrama UML
-- [X] Definir as associações (Association) e composições (Composition) corretamente
-- [X] Utilizar o aspecto `managed` na entidade Appointments
-- [X] Implementar o campo `status` como enum com os 4 valores definidos
-- [X] Criar o arquivo barrel (`index.cds`) importando todos os modelos
-- [X] Criar os tipos CDS em `db/types/` para os payloads e retornos da Action e das Functions
-- [X] Criar os arquivos CSV na pasta `test/data/` para popular o banco com dados iniciais:
+- [x] Criar os arquivos CDS para as 5 entidades na pasta `db/models/`, seguindo o diagrama UML
+- [x] Definir as associações (Association) e composições (Composition) corretamente
+- [x] Utilizar o aspecto `managed` na entidade Appointments
+- [x] Implementar o campo `status` como enum com os 4 valores definidos
+- [x] Criar o arquivo barrel (`index.cds`) importando todos os modelos
+- [x] Criar os tipos CDS em `db/types/` para os payloads e retornos da Action e das Functions
+- [x] Criar os arquivos CSV na pasta `test/data/` para popular o banco com dados iniciais:
   - CSV para Owners (mínimo 5 registros)
   - CSV para Pets (mínimo 8 registros, referenciando IDs de Owners)
   - CSV para Veterinarians (mínimo 3 registros)
   - CSV para Appointments (mínimo 8 registros, referenciando Pets e Veterinarians)
   - CSV para Procedures (mínimo 15 registros, referenciando Appointments)
-- [X] Executar `yarn dev` para verificar que as entidades foram criadas e os dados carregados corretamente
+- [x] Executar `yarn dev` para verificar que as entidades foram criadas e os dados carregados corretamente
 
 > **Atenção ao padrão dos nomes dos CSV:** O nome do arquivo CSV deve seguir o padrão `namespace-Entity.csv`. Observe como os CSVs de exemplo estão nomeados no projeto.
 
 **Sugestão de commits:**
+
 - `feat: add CDS entity definitions for veterinary clinic`
 - `feat: add CDS type definitions for action and functions`
 - `chore: add CSV seed data for initial database population`
 
 ---
+
+
 
 ### Etapa 3 — Camada Domain (`src/domain/`)
 
@@ -304,11 +347,14 @@ classDiagram
 > Lembre-se: a camada Domain contém APENAS interfaces, tipos e classes de modelo. Nenhuma implementação concreta, nenhuma dependência de framework.
 
 **Sugestão de commits:**
+
 - `feat: add domain models for clinic entities`
 - `feat: add repository interfaces for data access contracts`
 - `feat: add use case interfaces for actions, functions and entity events`
 
 ---
+
+
 
 ### Etapa 4 — Camada Infra (`src/infra/`)
 
@@ -330,13 +376,15 @@ classDiagram
 
 ---
 
+
+
 ### Etapa 5 — Camada Data (`src/data/`) — Use Cases
 
 **Objetivo:** Implementar a lógica de negócio dos use cases, utilizando a lib Either para tratamento de erros.
 
 **Tasks:**
 
-- [ ] Implementar o use case **`before CREATE Appointments`** em `data/use-cases/entity-events/`:
+- [ ] Implementar o use case `before CREATE Appointments` em `data/use-cases/entity-events/`:
   - Validar se o Pet informado existe (retornar NotFoundError se não)
   - Validar se o Veterinário informado existe (retornar NotFoundError se não)
   - Validar se ao menos um procedimento foi informado (retornar BadRequestError se não)
@@ -345,12 +393,12 @@ classDiagram
   - Definir o status como `SCHEDULED` caso não tenha sido informado
   - Retornar os dados validados e com o totalCost calculado
 
-- [ ] Implementar o use case **`after READ Pets`** em `data/use-cases/entity-events/`:
+- [ ] Implementar o use case `after READ Pets` em `data/use-cases/entity-events/`:
   - Para cada pet retornado, calcular a idade a partir do campo birthDate
   - **Fórmula:** `age = floor((dataAtual - birthDate) / 365.25)` — resultado em anos inteiros
   - Adicionar o campo calculado `age` aos dados do pet antes de retornar
 
-- [ ] Implementar o use case da **Action `scheduleEmergencyAppointment`** em `data/use-cases/actions/`:
+- [ ] Implementar o use case da **Action** `scheduleEmergencyAppointment` em `data/use-cases/actions/`:
   - Receber: petId, veterinarianId, notes e lista de procedures (description e cost de cada)
   - Validar se o Pet existe (retornar `left` com NotFoundError se não)
   - Validar se o Veterinário existe (retornar `left` com NotFoundError se não)
@@ -362,7 +410,7 @@ classDiagram
   - Retornar `right` com o agendamento criado em caso de sucesso
   - Envolver toda a operação em tratamento de erro, retornando `left` com ServerError em caso de exceção inesperada
 
-- [ ] Implementar o use case da **Function `getVeterinarianSchedule`** em `data/use-cases/functions/`:
+- [ ] Implementar o use case da **Function** `getVeterinarianSchedule` em `data/use-cases/functions/`:
   - Receber: veterinarianId e days (número de dias, padrão 7)
   - Validar se o Veterinário existe (retornar `left` com NotFoundError se não)
   - Buscar agendamentos do veterinário dentro do período especificado (da data atual até data atual + days)
@@ -370,7 +418,7 @@ classDiagram
   - Ordenar por data do agendamento (mais próximo primeiro)
   - Retornar `right` com a lista de agendamentos ou `left` com NotFoundError caso não haja agendamentos no período
 
-- [ ] Implementar o use case da **Function `getOwnerExpenseReport`** em `data/use-cases/functions/`:
+- [ ] Implementar o use case da **Function** `getOwnerExpenseReport` em `data/use-cases/functions/`:
   - Receber: ownerId
   - Validar se o Owner existe (retornar `left` com NotFoundError se não)
   - Buscar todos os agendamentos **com status COMPLETED** de todos os pets do tutor
@@ -381,24 +429,29 @@ classDiagram
   - Retornar `right` com os dados do relatório (ownerId, ownerName, totalExpenses, appointmentCount, averageCost)
   - Retornar `left` com NotFoundError caso o tutor não tenha nenhum agendamento finalizado
 
+
+
 ### Tratamento de Erros com Either
 
 Todos os use cases que retornam dados devem utilizar o padrão **Either** da lib `@sweet-monads/either`:
 
-- **`right(data)`** — Representa sucesso. Envelopa os dados de retorno.
-- **`left(error)`** — Representa falha. Envelopa uma instância de erro do domain (NotFoundError, BadRequestError, ServerError).
+- `right(data)` — Representa sucesso. Envelopa os dados de retorno.
+- `left(error)` — Representa falha. Envelopa uma instância de erro do domain (NotFoundError, BadRequestError, ServerError).
 
 O tipo de retorno dos use cases segue o padrão:
+
 - `Either<AbstractError, TipoDoResultado>` para operações síncronas
 - `Promise<Either<AbstractError, TipoDoResultado>>` para operações assíncronas
 
 Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
+
 - Se `isLeft()` for true, extraem o código e a mensagem do erro para montar a resposta de erro
 - Se `isLeft()` for false, extraem os dados de sucesso para montar a resposta de sucesso
 
 > Estude como o template trata erros nos exemplos existentes (bulkCreatePurchaseOrders) para entender o fluxo completo.
 
 **Sugestão de commits:**
+
 - `feat: implement before create appointment use case with validation`
 - `feat: implement after read pets use case with age calculation`
 - `feat: implement schedule emergency appointment action`
@@ -406,6 +459,8 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
 - `feat: implement get owner expense report function`
 
 ---
+
+
 
 ### Etapa 6 — Camada Presentation (`src/presentation/`)
 
@@ -432,11 +487,14 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
   - NÃO conter lógica de negócio
 
 **Sugestão de commits:**
+
 - `feat: add controllers for entity event handlers`
 - `feat: add controller for emergency appointment action`
 - `feat: add controllers for veterinarian schedule and expense report functions`
 
 ---
+
+
 
 ### Etapa 7 — Camada Main (`src/main/`) — Composição
 
@@ -467,11 +525,14 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
 > Siga o mesmo padrão dos handlers de exemplo já existentes no template. Observe como as factories são chamadas e como os resultados dos controllers são tratados nas rotas.
 
 **Sugestão de commits:**
+
 - `feat: add factories for use cases and controllers`
 - `feat: define CDS service with entities, action and functions`
 - `feat: register event handlers and custom operation routes`
 
 ---
+
+
 
 ### Etapa 8 — Testes HTTP
 
@@ -522,6 +583,8 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
 
 ---
 
+
+
 ### Etapa 9 — Revisão Final
 
 **Objetivo:** Garantir que tudo está funcionando e o código segue os padrões.
@@ -541,31 +604,49 @@ Os **controllers** (na Presentation) verificam o resultado com `isLeft()`:
 
 ---
 
+
+
 ## Resumo das Operações Customizadas
+
+
 
 ### Action
 
-| Nome | Tipo | Parâmetros de Entrada | Retorno |
-|------|------|-----------------------|---------|
+
+| Nome                           | Tipo                    | Parâmetros de Entrada                                                                                         | Retorno                           |
+| ------------------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------- |
 | `scheduleEmergencyAppointment` | Action (modifica dados) | petId: UUID, veterinarianId: UUID, notes: String, procedures: array of { description: String, cost: Decimal } | Appointment criado com procedures |
+
+
+
 
 ### Functions
 
-| Nome | Tipo | Parâmetros de Entrada | Retorno |
-|------|------|-----------------------|---------|
-| `getVeterinarianSchedule` | Function (somente leitura) | veterinarianId: UUID, days: Integer (default 7) | Array de Appointments com dados do Pet e Owner |
-| `getOwnerExpenseReport` | Function (somente leitura) | ownerId: UUID | Relatório com totalExpenses, appointmentCount, averageCost |
+
+| Nome                      | Tipo                       | Parâmetros de Entrada                           | Retorno                                                    |
+| ------------------------- | -------------------------- | ----------------------------------------------- | ---------------------------------------------------------- |
+| `getVeterinarianSchedule` | Function (somente leitura) | veterinarianId: UUID, days: Integer (default 7) | Array de Appointments com dados do Pet e Owner             |
+| `getOwnerExpenseReport`   | Function (somente leitura) | ownerId: UUID                                   | Relatório com totalExpenses, appointmentCount, averageCost |
+
+
+
 
 ### Event Handlers
 
-| Evento | Entidade | O que faz |
-|--------|----------|-----------|
+
+| Evento          | Entidade     | O que faz                                                                     |
+| --------------- | ------------ | ----------------------------------------------------------------------------- |
 | `before CREATE` | Appointments | Valida pet, veterinário e procedures. Calcula totalCost. Define status padrão |
-| `after READ` | Pets | Calcula e adiciona campo `age` (idade em anos) a partir do birthDate |
+| `after READ`    | Pets         | Calcula e adiciona campo `age` (idade em anos) a partir do birthDate          |
+
 
 ---
 
+
+
 ## Fórmulas de Cálculo
+
+
 
 ### Custo Total de um Agendamento Regular (before CREATE)
 
@@ -598,28 +679,36 @@ averageCost = totalExpenses / appointmentCount
 ```
 
 Onde:
+
 - `totalExpenses` = soma do `totalCost` de todos os agendamentos com status **COMPLETED** do tutor
 - `appointmentCount` = quantidade de agendamentos com status **COMPLETED** do tutor
 
 ---
 
+
+
 ## Códigos de Erro Esperados
 
-| Código | Classe de Erro | Situação |
-|--------|---------------|----------|
-| 400 | BadRequestError | Payload inválido, lista de procedimentos vazia, dados obrigatórios ausentes |
-| 404 | NotFoundError | Pet, Veterinário ou Owner não encontrado; nenhum agendamento no período |
-| 500 | ServerError | Erro inesperado do servidor, falha na operação de banco |
+
+| Código | Classe de Erro  | Situação                                                                    |
+| ------ | --------------- | --------------------------------------------------------------------------- |
+| 400    | BadRequestError | Payload inválido, lista de procedimentos vazia, dados obrigatórios ausentes |
+| 404    | NotFoundError   | Pet, Veterinário ou Owner não encontrado; nenhum agendamento no período     |
+| 500    | ServerError     | Erro inesperado do servidor, falha na operação de banco                     |
+
 
 ---
+
+
 
 ## Referência de Arquitetura
 
 Para dúvidas sobre a estrutura do projeto, papel de cada camada, regras de dependência e como criar novas features:
 
-**Consulte o arquivo `CLEAN-ARCHITECTURE-CAP.md`** disponível no repositório template.
+**Consulte o arquivo** `CLEAN-ARCHITECTURE-CAP.md` disponível no repositório template.
 
 Este documento detalha:
+
 - A responsabilidade de cada uma das 5 camadas
 - O mapa de dependências ao criar Actions, Functions e Entity Handlers
 - O fluxo completo de uma requisição
@@ -629,20 +718,16 @@ Este documento detalha:
 
 ---
 
+
+
 ## Dicas Finais
 
 1. **Comece pelo banco de dados** — Sem as entidades, nada funciona. Garanta que os modelos CDS e os CSVs estão corretos antes de avançar.
-
 2. **Siga a ordem das camadas** — Domain primeiro (interfaces), depois Infra (repositórios), depois Data (use cases), depois Presentation (controllers), e por fim Main (composição). Essa ordem garante que você nunca implementa algo sem ter o contrato definido.
-
 3. **Use os exemplos como guia** — O template já tem exemplos completos. Quando tiver dúvida sobre como algo deve ser estruturado, olhe como foi feito nos exemplos (Products, PurchaseOrders).
-
 4. **Commits pequenos e frequentes** — Não espere terminar uma etapa inteira para commitar. Commite cada unidade lógica de trabalho.
-
 5. **Teste continuamente** — Após cada implementação, execute `yarn dev` e teste via HTTP para garantir que não quebrou nada.
-
 6. **Respeite as fronteiras das camadas** — Se você está importando `@sap/cds` fora da camada Infra ou Main, algo está errado. Se você está fazendo SELECT no banco dentro de um Use Case, algo está errado.
-
 7. **Either é seu aliado** — O padrão Either elimina a necessidade de try-catch nos controllers. O erro já vem tratado e tipado desde o use case. Confie no padrão.
 
 ---

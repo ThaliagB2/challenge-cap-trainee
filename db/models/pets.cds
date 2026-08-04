@@ -8,4 +8,5 @@ entity Pets {
         birthDate: Date;
         weight: Decimal(5, 2);
         owner: Association to one models.Owners;
+        appointments: Association to many models.Appointments on appointments.pet=$self
 }

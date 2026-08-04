@@ -1,7 +1,7 @@
 namespace db.types;
 
 type OwnerExpenseReport {
-    ownerId: UUID;
+    ownerid: UUID;
         ownerName: String;
         totalExpenses: Decimal(12,2);
         appointmentCount: Integer;

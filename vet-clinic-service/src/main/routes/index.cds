@@ -19,17 +19,13 @@ extend service VetClinicService with {
         days: Integer default 7
     ) returns types.VeterinarianScheduleItem;
     function getOwnerExpenseReport(
-        ownerId: UUID
+        ownerid: UUID
     ) returns types.OwnerExpenseReport;
 }
 
 // Actions
 extend service VetClinicService with {
     action scheduleEmergencyAppointment(
-        petId: UUID,
-        veterinarianId: UUID,
-        notes: String,
-        procedure: array of types.EmergencyProcedureInput
-        
-        ) returns types.EmergencyAppointmentResult;
+        params: types.EmergencyAppointmentParams
+    ) returns types.EmergencyAppointmentResult;
 }
