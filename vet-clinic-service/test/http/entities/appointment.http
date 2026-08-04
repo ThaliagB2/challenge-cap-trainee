@@ -1,3 +1,8 @@
 ### GET all appointments with procedures expanded
-GET http://localhost:4004/sample/Appointments?$expand=pet,veterinarian,procedures
+GET http://localhost:4004/sample/Appointments?$expand=procedures
+Authorization: Basic dummy:dummy
+
+### GET all appointments with status expanded
+GET http://localhost:4004/sample/Appointments?$expand=status
+Accept-Language: pt
 Authorization: Basic dummy:dummy

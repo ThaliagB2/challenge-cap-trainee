@@ -1,0 +1,9 @@
+id,locale,description
+SCHEDULED,en,Scheduled
+SCHEDULED,pt,Agendado
+IN_PROGRESS,en,In Progress
+IN_PROGRESS,pt,Em Andamento
+COMPLETED,en,Completed
+COMPLETED,pt,Concluído
+CANCELLED,en,Cancelled
+CANCELLED,pt,Cancelado
