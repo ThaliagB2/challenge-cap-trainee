@@ -1,4 +1,4 @@
-id, date, status, isEmergency, totalCost, notes, pet_id, veterinarian_id
+id, date, status_id, isEmergency, totalCost, notes, pet_id, veterinarian_id
     
 2d0eabff-89d5-408b-9709-1fd84de997b2, 2026-02-02T02:22:22Z, IN_PROGRESS, false, 1000.00, Checkup anual de rotina com hemograma completo. Pet apresentou leve tártaro., 6c21524b-795b-410e-9ff0-40ad638f144f, d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c
 17247474-71e1-46cd-9660-ff286d7471af, 2026-03-03T03:33:33Z, COMPLETED, true, 2000.00, Emergência — ingestão de corpo estranho. Realizada endoscopia para remoção de fragmento ósseo., 56458c20-6cf4-4d32-836b-48b4aa05b114, d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c
