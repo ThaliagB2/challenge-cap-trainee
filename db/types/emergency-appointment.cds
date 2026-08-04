@@ -12,4 +12,16 @@ type EmergencyAppointmentResult {
         pet: Association to one models.Pets;
         procedures: Composition of many models.Procedures;
         veterinarian: Association to one models.Veterinarians;
+};
+
+type EmergencyProcedureInput {
+    description : String(255);
+    cost : Decimal(10, 2);
+}
+
+type EmergencyAppointmentParams {
+        petId: UUID;
+        veterinarianId: UUID;
+        notes: String;
+        procedure: array of types.EmergencyProcedureInput
 }
