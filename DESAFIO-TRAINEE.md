@@ -251,14 +251,14 @@ classDiagram
 - [X] Utilizar o aspecto `managed` na entidade Appointments
 - [X] Implementar o campo `status` como enum com os 4 valores definidos
 - [X] Criar o arquivo barrel (`index.cds`) importando todos os modelos
-- [ ] Criar os tipos CDS em `db/types/` para os payloads e retornos da Action e das Functions
-- [ ] Criar os arquivos CSV na pasta `test/data/` para popular o banco com dados iniciais:
+- [X] Criar os tipos CDS em `db/types/` para os payloads e retornos da Action e das Functions
+- [X] Criar os arquivos CSV na pasta `test/data/` para popular o banco com dados iniciais:
   - CSV para Owners (mínimo 5 registros)
   - CSV para Pets (mínimo 8 registros, referenciando IDs de Owners)
   - CSV para Veterinarians (mínimo 3 registros)
   - CSV para Appointments (mínimo 8 registros, referenciando Pets e Veterinarians)
   - CSV para Procedures (mínimo 15 registros, referenciando Appointments)
-- [ ] Executar `yarn dev` para verificar que as entidades foram criadas e os dados carregados corretamente
+- [X] Executar `yarn dev` para verificar que as entidades foram criadas e os dados carregados corretamente
 
 > **Atenção ao padrão dos nomes dos CSV:** O nome do arquivo CSV deve seguir o padrão `namespace-Entity.csv`. Observe como os CSVs de exemplo estão nomeados no projeto.
 

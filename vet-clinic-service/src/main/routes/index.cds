@@ -19,7 +19,7 @@ extend service VetClinicService with {
         days: Integer default 7
     ) returns types.VeterinarianScheduleItem;
     function getOwnerExpenseReport(
-        ownerid: UUID
+        ownerId: UUID
     ) returns types.OwnerExpenseReport;
 }
 
