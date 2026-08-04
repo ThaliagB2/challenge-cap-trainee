@@ -1,0 +1,3 @@
+### GET all owners with pets expanded
+GET http://localhost:4004/sample/Owners?$expand=pets
+Authorization: Basic dummy:dummy

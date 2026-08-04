@@ -1,0 +1,3 @@
+### GET all pets with appointments expanded
+GET http://localhost:4004/sample/Pets?$expand=appointments
+Authorization: Basic dummy:dummy

@@ -1,0 +1,10 @@
+id, name, species, breed, birthDate, weight, owner_id
+
+6c21524b-795b-410e-9ff0-40ad638f144f, Nick, cachorro, shitzu, 2020-02-02, 8.75, d4fe6108-7d6d-4121-ba6d-d45d37f2a93c
+56458c20-6cf4-4d32-836b-48b4aa05b114, Tom, gato, siames, 2021-03-03, 5.89, 0ed4cd43-0a64-40bb-9822-2557675e7fe9
+5091558f-2348-4e4d-8948-0d1c3c63c164, Pipoca, cachorro, viralata, 2020-04-04, 13.74, 312d98d3-1238-47fc-b64b-795f68474f28
+d12ad51d-2a36-4c3e-bc06-77f89d23b379, Paçoca, cachorro, viralata, 2020-05-05, 14.77, 312d98d3-1238-47fc-b64b-795f68474f28
+39cac7e3-aeee-4229-b28f-37a684a9117f, Cajú, ave, calopsita, 2023-06-06, 0.53,ae622c02-7be4-477d-9360-2e770a04a98d
+ac318467-5442-4a8e-8f03-f9cc7aff9922, Bem, cachorro, pastor alemão, 2024-07-07, 12.56, 0ed4cd43-0a64-40bb-9822-2557675e7fe9
+6a6916ac-61e4-4582-a04d-6a2147245edd, Leo, gato, persa, 2020-08-08, 4.57, a0745da9-b676-4ee7-8839-3e6a68eb0ed4
+872bd6c1-4b50-4b28-83ed-c14ae5e9112b, Pit, hamster, sírio, 2024-09-09, 0.23, a0745da9-b676-4ee7-8839-3e6a68eb0ed4

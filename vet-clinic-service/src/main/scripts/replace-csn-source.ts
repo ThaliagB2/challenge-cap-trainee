@@ -5,7 +5,7 @@ const filePath = path.join(process.cwd(), 'srv', 'csn.json');
 
 interface JsonData {
     definitions: {
-        {{UpperCamelCaseAppName}}: {
+        VetClinicService: {
             '@source': string;
         };
     };
@@ -15,8 +15,8 @@ function updateSourceInJsonSync(): void {
     try {
         const data: string = fs.readFileSync(filePath, 'utf8');
         const jsonData: JsonData = JSON.parse(data);
-        if (jsonData.definitions.{{UpperCamelCaseAppName}}['@source'] === '{{app-name}}/src/main/routes/index.cds') {
-            jsonData.definitions.{{UpperCamelCaseAppName}}['@source'] = 'srv/src/main/routes/index.cds';
+        if (jsonData.definitions.VetClinicService['@source'] === 'vet-clinic-service/src/main/routes/index.cds') {
+            jsonData.definitions.VetClinicService['@source'] = 'srv/src/main/routes/index.cds';
         }
         const updatedJson: string = JSON.stringify(jsonData, null, 2);
         fs.writeFileSync(filePath, updatedJson, 'utf8');

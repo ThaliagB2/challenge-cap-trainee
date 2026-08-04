@@ -1,0 +1,3 @@
+### GET all veterinarian with appointments expanded
+GET http://localhost:4004/sample/Veterinarians?$expand=appointments
+Authorization: Basic dummy:dummy
