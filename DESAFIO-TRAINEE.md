@@ -229,12 +229,12 @@ classDiagram
 
 **Tasks:**
 
-- [ ] Clonar o repositório template
-- [ ] Criar a branch `feature/seunome-trainee-2026` a partir da `main`
-- [ ] Executar `yarn` e `yarn setup` na raiz do projeto
-- [ ] Instalar dependências do serviço e verificar que o projeto inicia com `yarn dev`
-- [ ] Estudar a estrutura do projeto template e os exemplos existentes (Products, PurchaseOrders)
-- [ ] Ler o arquivo `CLEAN-ARCHITECTURE-CAP.md` por completo para entender cada camada
+- [X] Clonar o repositório template
+- [X] Criar a branch `feature/seunome-trainee-2026` a partir da `main`
+- [X] Executar `yarn` e `yarn setup` na raiz do projeto
+- [X] Instalar dependências do serviço e verificar que o projeto inicia com `yarn dev`
+- [X] Estudar a estrutura do projeto template e os exemplos existentes (Products, PurchaseOrders)
+- [X] Ler o arquivo `CLEAN-ARCHITECTURE-CAP.md` por completo para entender cada camada
 
 **Sugestão de commit:** `chore: initial project setup and configuration`
 
@@ -246,11 +246,11 @@ classDiagram
 
 **Tasks:**
 
-- [ ] Criar os arquivos CDS para as 5 entidades na pasta `db/models/`, seguindo o diagrama UML
-- [ ] Definir as associações (Association) e composições (Composition) corretamente
-- [ ] Utilizar o aspecto `managed` na entidade Appointments
-- [ ] Implementar o campo `status` como enum com os 4 valores definidos
-- [ ] Criar o arquivo barrel (`index.cds`) importando todos os modelos
+- [X] Criar os arquivos CDS para as 5 entidades na pasta `db/models/`, seguindo o diagrama UML
+- [X] Definir as associações (Association) e composições (Composition) corretamente
+- [X] Utilizar o aspecto `managed` na entidade Appointments
+- [X] Implementar o campo `status` como enum com os 4 valores definidos
+- [X] Criar o arquivo barrel (`index.cds`) importando todos os modelos
 - [ ] Criar os tipos CDS em `db/types/` para os payloads e retornos da Action e das Functions
 - [ ] Criar os arquivos CSV na pasta `test/data/` para popular o banco com dados iniciais:
   - CSV para Owners (mínimo 5 registros)

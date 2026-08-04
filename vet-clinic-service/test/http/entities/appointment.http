@@ -1,0 +1,3 @@
+### GET all appointments with procedures expanded
+GET http://localhost:4004/sample/Appointments?$expand=pet,veterinarian,procedures
+Authorization: Basic dummy:dummy
