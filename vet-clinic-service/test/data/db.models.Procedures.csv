@@ -1,0 +1,17 @@
+id, description, cost, appointment_id
+
+23bbb0b2-4b63-4b6a-9612-5f1a1fc52cbf,Consulta clínica com anamnese completa,800.00, 2d0eabff-89d5-408b-9709-1fd84de997b2
+ae3053c9-aa36-4e2f-9eb4-65ef3c072b5c,Hemograma completo com bioquímico,200.00, 2d0eabff-89d5-408b-9709-1fd84de997b2
+1e0c4e1d-a3b4-412f-a49a-595546efb496,Consulta de rotina para vacinação,1500.00,17247474-71e1-46cd-9660-ff286d7471af
+7670b183-7652-4571-901d-76083b6edb97,Aplicação de vacina V10 e antirrábica,500.00,17247474-71e1-46cd-9660-ff286d7471af
+cfc9d743-cd74-4f1e-b8ae-8cd0c7cb23fe,Consulta pré-cirúrgica e avaliação de risco anestésico,500.00,5af95cb1-1185-40db-8534-6ca75223a49a
+49e39100-e4e0-47f9-b967-8379dfac0264,Cirurgia de castração eletiva,1000.00,5af95cb1-1185-40db-8534-6ca75223a49a
+ddcc848d-fd39-436c-90c8-faf91aa7e03a,Medicação pós-operatória e curativo,500.00,5af95cb1-1185-40db-8534-6ca75223a49a
+928ef573-3fc7-4ee3-96e3-2420b5cdefd0,Consulta dermatológica com raspado de pele,300.00,60b82939-8e02-450b-b7df-d19611efeafc
+3b39e496-06ac-4b9d-bb4f-baa92eb08009,Consulta de emergência e estabilização,200.00,e1a0c7a2-94d8-475b-879a-693e52ddbbdd
+7fa35d9f-fa12-4171-a902-47b292c496ac,Endoscopia para remoção de corpo estranho,100.00,e1a0c7a2-94d8-475b-879a-693e52ddbbdd
+32096369-49f1-4c6b-a6e3-5360d744f7ba,Observação clínica 24h com fluidoterapia,100.00,e1a0c7a2-94d8-475b-879a-693e52ddbbdd
+5ce6e0e6-03b4-49d1-a57e-a11971e672a3,Revisão pós-cirúrgica e retirada de pontos,800.00,970a7662-0673-457c-86cc-0b6d557f410f
+9f0fd6fb-5bb5-493e-b6b6-12c67979add7,Anestesia inalatória com monitoramento,150.00,61a9f96f-0c07-410b-8acb-1afe2cd8e246
+3bb8be57-bdfd-43d4-aa62-a3a14cfb1714,Tartarectomia e polimento dental,150.00,61a9f96f-0c07-410b-8acb-1afe2cd8e246
+f80daf8e-d120-446b-878f-6db59cc06ad9,Consulta ortopédica com radiografia digital,400.00,df7021cc-672f-4ebc-b00a-7a5f3a195a0e

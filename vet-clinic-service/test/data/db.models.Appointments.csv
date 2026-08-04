@@ -1,0 +1,10 @@
+id, date, status, isEmergency, totalCost, notes, pet_id, veterinarian_id
+    
+2d0eabff-89d5-408b-9709-1fd84de997b2, 2026-02-02T02:22:22Z, IN_PROGRESS, false, 1000.00, Checkup anual de rotina com hemograma completo. Pet apresentou leve tártaro., 6c21524b-795b-410e-9ff0-40ad638f144f, d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c
+17247474-71e1-46cd-9660-ff286d7471af, 2026-03-03T03:33:33Z, COMPLETED, true, 2000.00, Emergência — ingestão de corpo estranho. Realizada endoscopia para remoção de fragmento ósseo., 56458c20-6cf4-4d32-836b-48b4aa05b114, d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c
+5af95cb1-1185-40db-8534-6ca75223a49a, 2026-04-04T04:44:44Z, SCHEDULED, true, 2000.00, Emergência — claudicação aguda em membro posterior. Suspeita de ruptura de ligamento cruzado. Realizar radiografia., 5091558f-2348-4e4d-8948-0d1c3c63c164, d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c
+60b82939-8e02-450b-b7df-d19611efeafc, 2026-05-05T05:55:50Z, IN_PROGRESS, false, 300.00, Vacinação V10 e antirrábica. Sem reações adversas observadas., d12ad51d-2a36-4c3e-bc06-77f89d23b379, d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c
+e1a0c7a2-94d8-475b-879a-693e52ddbbdd, 2026-06-06T06:00:00Z, COMPLETED, false, 400.00, Consulta dermatológica. Diagnosticada dermatite alérgica. Prescrito shampoo medicamentoso e ração hipoalergênica., 39cac7e3-aeee-4229-b28f-37a684a9117f, 8766f186-3806-4813-9308-3377eaa20a03
+970a7662-0673-457c-86cc-0b6d557f410f, 2026-07-07T07:00:00Z, IN_PROGRESS, false, 800.00, Limpeza dental (tartarectomia) com anestesia inalatória. Jejum de 8h obrigatório., ac318467-5442-4a8e-8f03-f9cc7aff9922, d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c
+61a9f96f-0c07-410b-8acb-1afe2cd8e246, 2026-08-08T08:00:00Z, SCHEDULED, false, 300.00, Retorno pós-cirúrgico — avaliação de cicatrização e retirada de pontos., 6a6916ac-61e4-4582-a04d-6a2147245edd, d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c
+df7021cc-672f-4ebc-b00a-7a5f3a195a0e, 2026-09-09T09:00:00Z, SCHEDULED, false, 400.00, Castramento eletivo. Cirurgia sem intercorrências. Retorno em 10 dias para retirada de pontos., 872bd6c1-4b50-4b28-83ed-c14ae5e9112b, f1448370-022d-47db-bbb8-f61010c38fa2
