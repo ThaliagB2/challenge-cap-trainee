@@ -1,0 +1,50 @@
+@baseUrl = http://localhost:4004/sample
+@auth = Basic dummy:dummy
+
+### GET all procedures
+GET {{baseUrl}}/Procedures
+Authorization: {{auth}}
+
+### GET all with appointment expanded
+GET {{baseUrl}}/Procedures?$expand=appointment
+Authorization: {{auth}}
+
+### GET procedure by ID (Consulta clínica)
+GET {{baseUrl}}/Procedures(23bbb0b2-4b63-4b6a-9612-5f1a1fc52cbf)
+Authorization: {{auth}}
+
+### GET procedure that doesn't exist → 404
+GET {{baseUrl}}/Procedures(00000000-0000-0000-0000-000000000000)
+Authorization: {{auth}}
+
+### GET procedures by cost (>= 500)
+GET {{baseUrl}}/Procedures?$filter=cost ge 500
+Authorization: {{auth}}
+
+### GET procedures by appointment with expand
+GET {{baseUrl}}/Procedures?$filter=appointment_id eq 2d0eabff-89d5-408b-9709-1fd84de997b2&$expand=appointment
+Authorization: {{auth}}
+
+### POST create new procedure (linked to existing appointment)
+POST {{baseUrl}}/Procedures
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "description": "Exame de sangue para perfil renal",
+    "cost": 120.00,
+    "appointment_id": "2d0eabff-89d5-408b-9709-1fd84de997b2"
+}
+
+### PATCH update cost
+PATCH {{baseUrl}}/Procedures(23bbb0b2-4b63-4b6a-9612-5f1a1fc52cbf)
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "cost": 850.00
+}
+
+### DELETE procedure
+DELETE {{baseUrl}}/Procedures(f80daf8e-d120-446b-878f-6db59cc06ad9)
+Authorization: {{auth}}
