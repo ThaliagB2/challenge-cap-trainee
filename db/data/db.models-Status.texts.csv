@@ -1,0 +1,5 @@
+locale,code,name,descr
+pt_BR,SCHEDULED,Agendado,Agendamento marcado
+pt_BR,IN_PROGRESS,Em andamento,Atendimento em andamento
+pt_BR,COMPLETED,Concluído,Atendimento concluído
+pt_BR,CANCELLED,Cancelado,Agendamento cancelado

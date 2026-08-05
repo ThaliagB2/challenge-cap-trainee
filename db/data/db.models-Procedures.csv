@@ -1,0 +1,16 @@
+id,description,cost,appointment_id
+dddddddd-dddd-dddd-dddd-ddddddddddd1,Consulta clínica,150.00,cccccccc-cccc-cccc-cccc-ccccccccccc1
+dddddddd-dddd-dddd-dddd-ddddddddddd2,Exame físico,70.00,cccccccc-cccc-cccc-cccc-ccccccccccc1
+dddddddd-dddd-dddd-dddd-ddddddddddd3,Vacinacao anual,120.00,cccccccc-cccc-cccc-cccc-ccccccccccc2
+dddddddd-dddd-dddd-dddd-ddddddddddd4,Aplicacao de medicamento,100.00,cccccccc-cccc-cccc-cccc-ccccccccccc2
+dddddddd-dddd-dddd-dddd-ddddddddddd5,Atendimento emergencial,250.00,cccccccc-cccc-cccc-cccc-ccccccccccc3
+dddddddd-dddd-dddd-dddd-ddddddddddd6,Hemograma,90.00,cccccccc-cccc-cccc-cccc-ccccccccccc3
+dddddddd-dddd-dddd-dddd-ddddddddddd7,Ultrassonografia,140.00,cccccccc-cccc-cccc-cccc-ccccccccccc3
+dddddddd-dddd-dddd-dddd-ddddddddddd8,Consulta cancelada,0.00,cccccccc-cccc-cccc-cccc-ccccccccccc4
+dddddddd-dddd-dddd-dddd-ddddddddddd9,Exame de sangue,110.00,cccccccc-cccc-cccc-cccc-ccccccccccc5
+dddddddd-dddd-dddd-dddd-dddddddddd10,Exame de urina,80.00,cccccccc-cccc-cccc-cccc-ccccccccccc5
+dddddddd-dddd-dddd-dddd-dddddddddd11,Consulta dermatologica,180.00,cccccccc-cccc-cccc-cccc-ccccccccccc6
+dddddddd-dddd-dddd-dddd-dddddddddd12,Procedimento cirurgico,500.00,cccccccc-cccc-cccc-cccc-ccccccccccc7
+dddddddd-dddd-dddd-dddd-dddddddddd13,Anestesia,150.00,cccccccc-cccc-cccc-cccc-ccccccccccc7
+dddddddd-dddd-dddd-dddd-dddddddddd14,Consulta preventiva,120.00,cccccccc-cccc-cccc-cccc-ccccccccccc8
+dddddddd-dddd-dddd-dddd-dddddddddd15,Avaliacao nutricional,80.00,cccccccc-cccc-cccc-cccc-ccccccccccc8

@@ -1,0 +1,5 @@
+code,name,descr
+SCHEDULED,Scheduled,Scheduled appointment
+IN_PROGRESS,In progress,Appointment currently in progress
+COMPLETED,Completed,Completed appointment
+CANCELLED,Cancelled,Cancelled appointment
