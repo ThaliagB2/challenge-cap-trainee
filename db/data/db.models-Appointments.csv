@@ -1,4 +1,4 @@
-id,date,status_code,isEmergency,totalCost,notes,pet_id,veterinarian_id
+id,date,status_id,isEmergency,totalCost,notes,pet_id,veterinarian_id
 cccccccc-cccc-cccc-cccc-ccccccccccc1,2026-08-01T09:00:00Z,SCHEDULED,false,150.00,Consulta de rotina,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1
 cccccccc-cccc-cccc-cccc-ccccccccccc2,2026-08-01T10:30:00Z,COMPLETED,false,220.00,Vacinacao anual,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1
 cccccccc-cccc-cccc-cccc-ccccccccccc3,2026-08-02T14:00:00Z,IN_PROGRESS,true,480.00,Atendimento emergencial,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2

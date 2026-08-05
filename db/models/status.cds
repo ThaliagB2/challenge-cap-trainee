@@ -1,7 +1,12 @@
 namespace db.models;
 
-using { sap.common.CodeList } from '@sap/cds/common';
+entity Status {
+    key id : String enum {
+        SCHEDULED   = 'SCHEDULED';
+        IN_PROGRESS = 'IN_PROGRESS';
+        COMPLETED   = 'COMPLETED';
+        CANCELLED   = 'CANCELLED';
+    };
 
-entity Status : CodeList {
-    key code : String(30);
+    description : localized String;
 }
