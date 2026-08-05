@@ -9,27 +9,27 @@ export type OwnerProps = {
 export class OwnerModel {
     constructor(private props: OwnerProps) {}
 
-    public static with(props: OwnerProps) {
+    public static with(props: OwnerProps) : OwnerModel {
         return new OwnerModel(props);
     }
 
-    public get id() {
+    public get id(): string {
         return this.props.id;
     }
 
-    public get firstName() {
+    public get firstName(): string {
         return this.props.firstName;
     }
 
-    public get lastName() {
+    public get lastName(): string {
         return this.props.lastName;
     }
 
-    public get phone() {
+    public get phone(): string {
         return this.props.phone;
     }
 
-    public get email() {
+    public get email(): string {
         return this.props.email;
     }
 

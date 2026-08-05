@@ -1,4 +1,3 @@
-
 export type VeterinarianProps = {
     id: string;
     firstName: string;
@@ -10,27 +9,27 @@ export type VeterinarianProps = {
 export class VeterinarianModel {
     constructor(private props: VeterinarianProps){}
 
-    public static with(props: VeterinarianProps) {
+    public static with(props: VeterinarianProps): VeterinarianModel {
         return new VeterinarianModel(props);
     }
 
-    public get id(){
+    public get id(): string{
         return this.props.id;
     }
 
-    public get firstName(){
+    public get firstName(): string{
        return this.props.firstName;
     }
 
-    public get lastName(){
+    public get lastName(): string{
         return this.props.lastName;
     }
 
-    public get specialty(){
+    public get specialty(): string{
         return this.props.specialty;
     }
 
-    public get crmv(){
+    public get crmv(): string{
         return this.props.crmv;
     }
 

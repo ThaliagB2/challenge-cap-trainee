@@ -8,23 +8,23 @@ export type ProcedureProps = {
 export class ProcedureModel {
     constructor(private props: ProcedureProps) {}
 
-    public static with(props: ProcedureProps){
+    public static with(props: ProcedureProps) : ProcedureModel{
         return new ProcedureModel(props)
     }
 
-    public get id(){
+    public get id(): string {
         return this.props.id
     }
 
-    public get description(){
+    public get description(): string{
     return this.props.description
     }
 
-    public get cost(){
+    public get cost(): number{
     return this.props.cost
     }
 
-    public get appointment_id(){
+    public get appointment_id(): string{
     return this.props.appointment_id
     }
 
