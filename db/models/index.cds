@@ -3,3 +3,4 @@ using from './pets';
 using from './veterinarians';
 using from './appointments';
 using from './procedures';
+using from './status';
