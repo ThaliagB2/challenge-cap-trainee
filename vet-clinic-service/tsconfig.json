@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "es2022",
         "module": "commonjs",
-        "outDir": "../gen/{{app-name}}/srv",
+        "outDir": "../gen/vet-clinic-service/srv",
         "rootDir": "./",
         "baseUrl": "./",
         "moduleResolution": "node",

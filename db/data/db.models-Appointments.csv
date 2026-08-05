@@ -1,0 +1,9 @@
+id,date,status_id,isEmergency,totalCost,notes,pet_id,veterinarian_id
+cccccccc-cccc-cccc-cccc-ccccccccccc1,2026-08-01T09:00:00Z,SCHEDULED,false,150.00,Consulta de rotina,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1
+cccccccc-cccc-cccc-cccc-ccccccccccc2,2026-08-01T10:30:00Z,COMPLETED,false,220.00,Vacinacao anual,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1
+cccccccc-cccc-cccc-cccc-ccccccccccc3,2026-08-02T14:00:00Z,IN_PROGRESS,true,480.00,Atendimento emergencial,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2
+cccccccc-cccc-cccc-cccc-ccccccccccc4,2026-08-03T08:30:00Z,CANCELLED,false,0.00,Consulta cancelada pelo tutor,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb3
+cccccccc-cccc-cccc-cccc-ccccccccccc5,2026-08-03T11:00:00Z,COMPLETED,false,300.00,Exames laboratoriais,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1
+cccccccc-cccc-cccc-cccc-ccccccccccc6,2026-08-04T15:30:00Z,SCHEDULED,false,180.00,Avaliacao dermatologica,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb3
+cccccccc-cccc-cccc-cccc-ccccccccccc7,2026-08-05T13:00:00Z,COMPLETED,true,650.00,Procedimento cirurgico,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2
+cccccccc-cccc-cccc-cccc-ccccccccccc8,2026-08-06T16:00:00Z,SCHEDULED,false,200.00,Consulta preventiva,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa8,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1
