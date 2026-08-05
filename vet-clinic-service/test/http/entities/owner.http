@@ -1,3 +1,44 @@
+@baseUrl = http://localhost:4004/sample
+@auth = Basic dummy dummy
+
+
+## GET all owners
+GET {{baseUrl}}/Owners
+Authorization: {{auth}}
+
 ### GET all owners with pets expanded
-GET http://localhost:4004/sample/Owners?$expand=pets
-Authorization: Basic dummy:dummy
+GET {{baseUrl}}/Owners?$expand=pets
+Authorization: {{auth}}
+
+### GET owner by ID (Pedro Souza)
+GET {{baseUrl}}/Owners(312d98d3-1238-47fc-b64b-795f68474f28)
+Authorization: {{auth}}
+
+### GET owner that doesn't exist → 404
+GET {{baseUrl}}/Owners(00000000-0000-0000-0000-000000000000)
+Authorization: {{auth}}
+
+### POST create new owner
+POST {{baseUrl}}/Owners
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "firstName": "Rafael",
+    "lastName": "Oliveira",
+    "phone": "77 77777-7777",
+    "email": "rafael@email.com"
+}
+
+### PATCH update phone
+PATCH {{baseUrl}}/Owners(312d98d3-1238-47fc-b64b-795f68474f28)
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "phone": "11 91234-5678"
+}
+
+### DELETE owner (Patricia Santos — sem pets vinculados)
+DELETE {{baseUrl}}/Owners(a0745da9-b676-4ee7-8839-3e6a68eb0ed4)
+Authorization: {{auth}}
