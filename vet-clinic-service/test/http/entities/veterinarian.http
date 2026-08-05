@@ -1,3 +1,47 @@
-### GET all veterinarian with appointments expanded
-GET http://localhost:4004/sample/Veterinarians?$expand=appointments
-Authorization: Basic dummy:dummy
+@baseUrl = http://localhost:4004/sample
+@auth = Basic dummy:dummy
+
+### GET all veterinarians
+GET {{baseUrl}}/Veterinarians
+Authorization: {{auth}}
+
+### GET all with appointments expanded
+GET {{baseUrl}}/Veterinarians?$expand=appointments
+Authorization: {{auth}}
+
+### GET veterinarian by ID (Gustavo Bastos)
+GET {{baseUrl}}/Veterinarians(d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c)
+Authorization: {{auth}}
+
+### GET veterinarian that doesn't exist → 404
+GET {{baseUrl}}/Veterinarians(00000000-0000-0000-0000-000000000000)
+Authorization: {{auth}}
+
+### GET veterinarians by specialty
+GET {{baseUrl}}/Veterinarians?$filter=specialty eq 'roedores'
+Authorization: {{auth}}
+
+### GET veterinarians by CRMV
+GET {{baseUrl}}/Veterinarians?$filter=crmv eq 'CRMV-SP 12345-V'
+Authorization: {{auth}}
+
+### POST create new veterinarian
+POST {{baseUrl}}/Veterinarians
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "firstName": "Marina",
+    "lastName": "Almeida",
+    "specialty": "Felinos",
+    "crmv": "CRMV-RJ 99887-V"
+}
+
+### PATCH update specialty
+PATCH {{baseUrl}}/Veterinarians(d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c)
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "specialty": "Clinica geral e felinos"
+}
