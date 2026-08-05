@@ -1,7 +1,8 @@
+import cds from "@sap/cds";
+
 import { VeterinarianModel } from "@/domain/models/db/veterinarian";
 import { VeterinarianRepository } from "@/domain/repositories/veterinarian";
 import { Veterinarian } from "@models/db/models";
-import cds from "@sap/cds";
 
 export class VeterinarianRepositoryImpl implements VeterinarianRepository {
     private readonly ENTITY_NAME = 'db.models.Veterinarian'

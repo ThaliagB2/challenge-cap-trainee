@@ -1,7 +1,8 @@
+import cds from "@sap/cds";
+
 import { OwnerModel } from "@/domain/models/db/owner";
 import { OwnerRepository } from "@/domain/repositories";
 import { Owner } from "@models/db/models";
-import cds from "@sap/cds";
 
 export class OwnerRepositoryImpl implements OwnerRepository {
     private readonly ENTITY_NAME = 'db.models.Owners';
