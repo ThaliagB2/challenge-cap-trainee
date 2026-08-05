@@ -8,7 +8,6 @@ entity Owners {
     lastName  : String(100);
     phone     : String(20);
     email     : String(255);
-
     pets      : Association to many models.Pets
                     on pets.owner = $self;
 }

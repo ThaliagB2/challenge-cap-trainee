@@ -6,6 +6,5 @@ entity Procedures {
     key id        : UUID;
     description   : String(255);
     cost          : Decimal(10, 2);
-
     appointment   : Association to one models.Appointments not null;
 }

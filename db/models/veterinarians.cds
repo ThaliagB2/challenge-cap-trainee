@@ -6,4 +6,6 @@ entity Veterinarians {
     lastName     : String(100);
     specialty    : String(100);
     crmv         : String(20);
+    appointments   : Association to many models.Appointments
+                       on appointments.veterinarian = $self;
 }

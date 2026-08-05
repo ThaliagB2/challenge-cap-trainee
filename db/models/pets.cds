@@ -9,6 +9,5 @@ entity Pets {
     breed         : String(100);
     birthDate     : Date;
     weight        : Decimal(5, 2);
-
     owner         : Association to one models.Owners not null;
 }
