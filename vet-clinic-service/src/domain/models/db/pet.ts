@@ -44,7 +44,7 @@ export class PetModel {
     }
 
     public get age(): number {
-        return PetModel.calculateAge(this.props.birthDate);
+        return this.calculateAge(this.props.birthDate);
     }
 
     public toObject(): PetProps {
@@ -59,7 +59,7 @@ export class PetModel {
         };
     }
 
-    private static calculateAge(birthDateValue: string, referenceDate: Date = new Date()): number {
+    private calculateAge(birthDateValue: string, referenceDate: Date = new Date()): number {
         const birthDate = new Date(birthDateValue);
 
         let age = referenceDate.getFullYear() - birthDate.getFullYear();
