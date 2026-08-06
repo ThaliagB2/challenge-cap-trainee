@@ -1,8 +1,9 @@
+import { left, right } from "@sweet-monads/either";
+
 import { ServerError } from "@/domain/errors";
 import { PetModel } from "@/domain/models/db/pet";
 import { AfterReadPetsUseCase } from "@/domain/use-cases/entity-events/pets/after-read";
 import { Pet } from "@models/db/models";
-import { left, right } from "@sweet-monads/either";
 
 export class AfterReadPetsUseCaseImpl implements AfterReadPetsUseCase{
     public execute(pets: AfterReadPetsUseCase.Params): AfterReadPetsUseCase.Result {
