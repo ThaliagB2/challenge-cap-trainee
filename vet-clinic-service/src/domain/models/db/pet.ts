@@ -3,9 +3,13 @@ export type PetProps = {
     name: string;
     species: string;
     breed: string;
-    birthDate: Date;
+    birthDate: string;
     weight: number;
     owner_id: string
+}
+
+export type FullPetProps = PetProps & {
+    age: number;
 }
 
 export class PetModel {
@@ -13,6 +17,10 @@ export class PetModel {
 
     public static with(props: PetProps): PetModel {
         return new PetModel(props)
+    }
+
+    public static age(): number {
+        return 
     }
 
     public get id(): string {
@@ -31,7 +39,7 @@ export class PetModel {
         return this.props.breed
     }
 
-    public get birthDate(): Date {
+    public get birthDate(): string {
         return this.props.birthDate
     }
 
@@ -43,6 +51,18 @@ export class PetModel {
         return this.props.owner_id
     }
 
+    public get age(): number {
+        return this.ageCalculation()
+    }
+
+    private ageCalculation(): number {
+        const today = Date.now()
+        const birthDate = new Date(this.props.birthDate).getTime()
+        const diffInMs = today - birthDate
+        const diffInDays = diffInMs / (1000 * 60 * 60 *24)
+        return Math.floor((diffInDays) / 365.25)
+    }
+
     public toObject(): PetProps {
         return {
             id: this.props.id,
@@ -52,6 +72,13 @@ export class PetModel {
             birthDate: this.props.birthDate,
             weight: this.props.weight,
             owner_id: this.props.owner_id,
+        }
+    }
+
+    public toFullObject():  FullPetProps {
+        return {
+            ...this.toObject(),
+            age: this.age,
         }
     }
 }
