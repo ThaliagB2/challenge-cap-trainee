@@ -36,7 +36,7 @@ export class AppointmentModel {
     }
 
     public get totalCost(): number {
-        return AppointmentModel.calculateTotalCost(this.props.procedures);
+        return this.calculateTotalCost(this.props.procedures);
     }
 
     public get notes(): string {
@@ -69,7 +69,7 @@ export class AppointmentModel {
         };
     }
 
-    private static calculateTotalCost(procedures: ProcedureProps[]): number {
+    private calculateTotalCost(procedures: ProcedureProps[]): number {
         return procedures.reduce((total, procedure) => total + procedure.cost, 0);
     }
 }
