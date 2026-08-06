@@ -18,11 +18,7 @@ export class PetModel {
     public static with(props: PetProps): PetModel {
         return new PetModel(props)
     }
-
-    public static age(): number {
-        return 
-    }
-
+    
     public get id(): string {
         return this.props.id
     }
@@ -51,18 +47,6 @@ export class PetModel {
         return this.props.owner_id
     }
 
-    public get age(): number {
-        return this.ageCalculation()
-    }
-
-    private ageCalculation(): number {
-        const today = Date.now()
-        const birthDate = new Date(this.props.birthDate).getTime()
-        const diffInMs = today - birthDate
-        const diffInDays = diffInMs / (1000 * 60 * 60 *24)
-        return Math.floor((diffInDays) / 365.25)
-    }
-
     public toObject(): PetProps {
         return {
             id: this.props.id,
@@ -78,7 +62,15 @@ export class PetModel {
     public toFullObject():  FullPetProps {
         return {
             ...this.toObject(),
-            age: this.age,
+            age: this.ageCalculation(),
         }
+    }
+
+    private ageCalculation(): number {
+        const today = Date.now()
+        const birthDate = new Date(this.birthDate).getTime()
+        const diffInMs = today - birthDate
+        const diffInDays = diffInMs / (1000 * 60 * 60 *24)
+        return Math.floor((diffInDays) / 365.25)
     }
 }
