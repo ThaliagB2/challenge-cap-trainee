@@ -61,7 +61,7 @@ export class AppointmentModel {
             date: this.props.date,
             status_id: this.props.status_id,
             isEmergency: this.props.isEmergency,
-            totalCost: AppointmentModel.calculateTotalCost(this.props.procedures),
+            totalCost: this.calculateTotalCost(this.props.procedures),
             notes: this.props.notes,
             pet_id: this.props.pet_id,
             veterinarian_id: this.props.veterinarian_id,
