@@ -1,2 +1,7 @@
 export * from './product';
 export * from './purchase-order';
+export * from './owner';
+export * from './pet';
+export * from './veterinarian';
+export * from './appointment';
+export * from './procedure';
