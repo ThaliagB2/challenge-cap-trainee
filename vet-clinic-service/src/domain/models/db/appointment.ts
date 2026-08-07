@@ -5,27 +5,22 @@ export type ProcedureProps = {
     cost: number
 }
 
-export type AppointmentForCreateProps = Omit<AppointmentProps, 'id'> & {
+export type AppointmentForCreateProps = Omit<AppointmentProps, 'id'> & Omit<AppointmentProps, 'procedure'> & {
     id?: string;
+    procedures: ProcedureProps[];
 }
-
-// export type PurchaseOrderForCreateProps = Omit<PurchaseOrderProps, 'id'> & {
-//     id?: string;
-// };
 
 export type AppointmentProps = {
     id: string;
     date: string;
-    status: string;
+    status_id: string;
     isEmergency: boolean;
     totalCost: number;
     notes: string;
     pet_id: string;
-    veterinarian_id: string
-    procedures: ProcedureProps[]
+    veterinarian_id: string;
+    procedures?: ProcedureProps[]
 }
-
-// totalCost = procedures[0].cost + procedures[1].cost + ... + procedures[n].cost
 
 export class AppointmentModel {
     constructor (private props: AppointmentProps) {}
@@ -43,23 +38,10 @@ export class AppointmentModel {
                 ...procedure,
                 id: randomUUID(),
             })),
+            status_id: props.status_id || 'SCHEDULED',
             totalCost: 0,
         })
     }
-
-    // public static forCreate(props: PurchaseOrderForCreateProps) {
-    //     const purchaseOrderId = randomUUID();
-    //     return new PurchaseOrderModel({
-    //         ...props,
-    //         id: purchaseOrderId,
-    //         items: props.items?.map((item) => ({
-    //             ...item,
-    //             id: randomUUID(),
-    //             purchaseOrder_id: purchaseOrderId
-    //         })),
-    //         total: 0
-    //     });
-    // }
 
     public get id(): string {
         return this.props.id
@@ -70,7 +52,7 @@ export class AppointmentModel {
     }
 
     public get status(): string{
-        return this.props.status
+        return this.props.status_id
     }
 
     public get isEmergency(): boolean{
@@ -103,12 +85,11 @@ export class AppointmentModel {
         return {
             ...this.toObject(),
             totalCost: this.totalCostCalculation(),
-            procedures: this.props.procedures
         }
     }
 
     private totalCostCalculation(): number {
+        if(!this.props.procedures) return 0
         return this.props.procedures.reduce((sum: number, procedure: ProcedureProps) => sum + procedure.cost, 0)
     }
-
 }
