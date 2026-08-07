@@ -10,5 +10,4 @@ export class ProcedureRepositoryImpl implements ProcedureRepository {
         const query = cds.ql.INSERT.into(this.ENTITY_NAME).entries(data);
         await cds.run(query);
     }
-
 }
