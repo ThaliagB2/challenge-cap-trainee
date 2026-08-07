@@ -8,6 +8,7 @@ import { Pets, Products } from '@models/db/models';
 import { translator } from '@/main/factories/utils/translator';
 
 import { bulkCreatePurchaseOrdersController } from '@/main/factories/controllers/actions/bulk-create-purchase-orders';
+import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
 import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets/after-read';
 import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
 import { extractProductsToExcelController } from '@/main/factories/controllers/functions/extract-products-to-excel';
@@ -16,6 +17,16 @@ export default (service: Service) => {
     service.before('*', async (request: any) => {
         const language = request?.headers['accept-language']?.split(',')[0] || 'en-En';
         request._language = language;
+    });
+
+    service.before('CREATE', 'Appointments', async (request: any) => {
+        return translator.withLanguage(request._language, async () => {
+            const result = await beforeCreateAppointmentController.execute(request.data);
+            if (result.status >= 400) {
+                return request.reject(result.errorData);
+            }
+            return Object.assign(request.data, result.data);
+        });
     });
 
     service.after('READ', 'Products', (products: Products, request: any) => {
