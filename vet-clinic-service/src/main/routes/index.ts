@@ -3,13 +3,13 @@ import '../config/module-alias';
 
 import { Service } from '@sap/cds';
 
-import { Products } from '@models/db/models';
+import { Pets, Products } from '@models/db/models';
 
 import { translator } from '@/main/factories/utils/translator';
 
 import { bulkCreatePurchaseOrdersController } from '@/main/factories/controllers/actions/bulk-create-purchase-orders';
+import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets/after-read';
 import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
-import { beforeCreatePurchaseOrderController } from '@/main/factories/controllers/entity-events/purchase-order';
 import { extractProductsToExcelController } from '@/main/factories/controllers/functions/extract-products-to-excel';
 
 export default (service: Service) => {
@@ -28,16 +28,15 @@ export default (service: Service) => {
         });
     });
 
-    service.before('CREATE', 'PurchaseOrders', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await beforeCreatePurchaseOrderController.execute(request.data);
+    service.after('READ', 'Pets', (pets: Pets, request:any) => {
+        return translator.withLanguage(request._language, () => {
+            const result = afterReadPetsController.execute(pets);
             if (result.status >= 400) {
                 return request.reject(result.errorData);
             }
-            request.data.total = result.data.total;
-            request.data.items = result.data.items;
-        });
-    });
+            request.results = result.data as Pets;
+        })
+    })
 
     service.on('extractProductsToExcel', async (request: any) => {
         return translator.withLanguage(request._language, async () => {

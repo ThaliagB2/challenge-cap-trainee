@@ -7,7 +7,7 @@ import { Owner } from "@models/db/models";
 export class OwnerRepositoryImpl implements OwnerRepository {
     private readonly ENTITY_NAME = 'db.models.Owners';
 
-    public async findById(id: string): Promise<OwnerModel | null> {
+    public async findById(id: OwnerRepository.FindByIdParams): Promise<OwnerRepository.FindByIdResult> {
         const owner = await cds.ql.SELECT.one.from(this.ENTITY_NAME).where({ id });
         if(!owner){
             return null;

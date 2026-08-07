@@ -1,3 +1,40 @@
-### GET all pets with appointments expanded
-GET http://localhost:4004/sample/Pets?$expand=appointments
-Authorization: Basic dummy:dummy
+@baseUrl = http://localhost:4004/sample
+@auth = Basic dummy:dummy
+
+### GET all pets — verificar se 'age' aparece
+GET {{baseUrl}}/Pets
+Authorization: {{auth}}
+
+### GET pet by ID (Nick, nascido 2020-02-02 → age esperado: 6)
+GET {{baseUrl}}/Pets(6c21524b-795b-410e-9ff0-40ad638f144f)
+Authorization: {{auth}}
+
+### GET all pets with owner expanded (age + owner juntos)
+GET {{baseUrl}}/Pets?$expand=owner
+Authorization: {{auth}}
+
+### GET pets filtered by species
+GET {{baseUrl}}/Pets?$filter=species eq 'cachorro'
+Authorization: {{auth}}
+
+### POST create new pet (verificar se age aparece no retorno)
+POST {{baseUrl}}/Pets
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "name": "Bolinha",
+    "species": "cachorro",
+    "breed": "buldogue",
+    "birthDate": "2022-03-15",
+    "weight": 10.50,
+    "owner_id": "312d98d3-1238-47fc-b64b-795f68474f28"
+}
+
+PATCH {{baseUrl}}/Pets(6c21524b-795b-410e-9ff0-40ad638f144f)
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "weight": 9.10
+}
