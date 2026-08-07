@@ -9,5 +9,5 @@ export interface BeforeCreateAppointmentUseCases {
 
 export namespace BeforeCreateAppointmentUseCases {
     export type BeforeCreateParams = Required<AppointmentForCreateProps>
-    export type BeforeCreateResult = Promise<Either<AbstractError, AppointmentProps>>
+    export type BeforeCreateResult = Either<AbstractError, AppointmentProps>
 }
