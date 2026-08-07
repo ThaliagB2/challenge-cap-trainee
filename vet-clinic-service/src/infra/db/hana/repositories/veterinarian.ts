@@ -7,7 +7,7 @@ import { Veterinarian } from "@models/db/models";
 export class VeterinarianRepositoryImpl implements VeterinarianRepository {
     private readonly ENTITY_NAME = 'db.models.Veterinarian'
 
-    public async findById(id: string): Promise<VeterinarianModel | null> {
+    public async findById(id: VeterinarianRepository.FindByIdParams): Promise<VeterinarianRepository.FindByIdResult> {
         const veterinarian = await cds.ql.SELECT.one.from(this.ENTITY_NAME).where({ id });
         if(!veterinarian){
             return null;
