@@ -1,7 +1,8 @@
+import cds from "@sap/cds";
+
 import { PetModel } from "@/domain/models/db/pet";
 import { PetRepository } from "@/domain/repositories/pet";
 import { Pet } from "@models/db/models";
-import cds from "@sap/cds";
 
 export class PetRepositoryImpl implements PetRepository {
     private readonly ENTITY_NAME = 'db.models.Pets';
