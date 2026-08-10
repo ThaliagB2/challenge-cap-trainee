@@ -1,4 +1,4 @@
-import { PetModel } from "../models/db/pet"
+import { PetModel } from "@/domain/models/db/pet"
 
 export interface PetRepository {
     findById(id: PetRepository.FindByIdParams): Promise <PetRepository.FindByIdResult>

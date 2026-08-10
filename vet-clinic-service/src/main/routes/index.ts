@@ -8,6 +8,7 @@ import { Pets, Products } from '@models/db/models';
 import { translator } from '@/main/factories/utils/translator';
 
 import { bulkCreatePurchaseOrdersController } from '@/main/factories/controllers/actions/bulk-create-purchase-orders';
+import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
 import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
 import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets/after-read';
 import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
@@ -77,4 +78,14 @@ export default (service: Service) => {
             return result.data;
         });
     });
+
+    service.on('scheduleEmergencyAppointment', async (request: any) => {
+        return translator.withLanguage(request._language, async () => {
+            const result = await scheduleEmergencyAppointmentController.execute(request.data.params);
+            if (result.status >= 400) {
+                return request.reject(result.errorData);
+            }
+            return result.data;
+        });
+    })
 };
