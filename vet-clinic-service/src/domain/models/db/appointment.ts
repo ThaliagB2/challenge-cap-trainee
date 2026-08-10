@@ -1,5 +1,8 @@
 import { randomUUID } from "crypto";
 
+import { OwnerProps } from "@/domain/models/db/owner";
+import { PetProps } from "@/domain/models/db/pet";
+
 export type ProcedureProps = {
     description: string;
     cost: number
@@ -27,6 +30,11 @@ export type EmergencyAppointmentParams = {
         veterinarian_id: string;
         notes: string;
         procedures: ProcedureProps[]
+}
+
+export type ScheduleVeterinarianAppointmentProps = AppointmentProps & {
+    pet: PetProps;
+    owner: OwnerProps;
 }
 
 export class AppointmentModel {
@@ -74,7 +82,7 @@ export class AppointmentModel {
         return this.props.date;
     }
 
-    public get status(): string{
+    public get status_id(): string{
         return this.props.status_id;
     }
 
