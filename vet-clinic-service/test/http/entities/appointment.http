@@ -1,8 +1,97 @@
-### GET all appointments with procedures expanded
-GET http://localhost:4004/sample/Appointments?$expand=procedures
-Authorization: Basic dummy:dummy
+@baseUrl = http://localhost:4004/sample
+@auth = Basic dummy:dummy
 
-### GET all appointments with status expanded
-GET http://localhost:4004/sample/Appointments?$expand=status
-Accept-Language: pt
-Authorization: Basic dummy:dummy
+### GET all appointments
+GET {{baseUrl}}/Appointments
+Authorization: {{auth}}
+
+### GET all with procedures expanded
+GET {{baseUrl}}/Appointments?$expand=procedures
+Authorization: {{auth}}
+
+### GET all with full expand (pet + veterinarian + procedures)
+GET {{baseUrl}}/Appointments?$expand=pet,veterinarian,procedures
+Authorization: {{auth}}
+
+### GET appointment by ID with procedures
+GET {{baseUrl}}/Appointments(2d0eabff-89d5-408b-9709-1fd84de997b2)?$expand=procedures
+Authorization: {{auth}}
+
+### GET filter by status
+GET {{baseUrl}}/Appointments?$filter=status_id eq 'COMPLETED'
+Authorization: {{auth}}
+
+### GET filter by emergency
+GET {{baseUrl}}/Appointments?$filter=isEmergency eq true
+Authorization: {{auth}}
+
+### POST create new appointment (válido — Nick, Gustavo, 2 procedures)
+### totalCost esperado: 150 + 90 = 240
+POST {{baseUrl}}/Appointments
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "date": "2026-08-10T10:00:00Z",
+    "pet_id": "6c21524b-795b-410e-9ff0-40ad638f144f",
+    "veterinarian_id": "d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c",
+    "notes": "Retorno para avaliação geral após checkup",
+    "isEmergency": false,
+    "status_id": "COMPLETED",
+    "procedures": [
+        { "description": "Consulta de retorno", "cost": 150.00 },
+        { "description": "Exame de sangue complementar", "cost": 90.00 }
+    ]
+}
+
+### POST create with no procedures → 400 Bad Request
+POST {{baseUrl}}/Appointments
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "date": "2026-08-11T10:00:00Z",
+    "pet_id": "6c21524b-795b-410e-9ff0-40ad638f144f",
+    "veterinarian_id": "d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c",
+    "notes": "Deveria falhar",
+    "procedures": []
+}
+
+### POST with non-existent pet → 404 Not Found
+POST {{baseUrl}}/Appointments
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "date": "2026-08-12T10:00:00Z",
+    "pet_id": "00000000-0000-0000-0000-000000000000",
+    "veterinarian_id": "d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c",
+    "notes": "Pet inexistente",
+    "procedures": [
+        { "description": "Consulta", "cost": 100.00 }
+    ]
+}
+
+### POST with non-existent veterinarian → 404 Not Found
+POST {{baseUrl}}/Appointments
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "date": "2026-08-13T10:00:00Z",
+    "pet_id": "6c21524b-795b-410e-9ff0-40ad638f144f",
+    "veterinarian_id": "00000000-0000-0000-0000-000000000000",
+    "notes": "Vet inexistente",
+    "procedures": [
+        { "description": "Consulta", "cost": 100.00 }
+    ]
+}
+
+### PATCH update notes
+PATCH {{baseUrl}}/Appointments(2d0eabff-89d5-408b-9709-1fd84de997b2)
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "notes": "Checkup anual — pet apresentou melhora significativa"
+}
