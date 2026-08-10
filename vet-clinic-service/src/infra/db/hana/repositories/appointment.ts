@@ -16,10 +16,11 @@ export class AppointmentRepositoryImpl implements AppointmentRepository{
     }
 
     public async findByVeterinarianAndPeriod(params: AppointmentRepository.FindByVeterinarianAndPeriodParams): Promise<AppointmentRepository.FindByVeterinarianAndPeriodResult> {
-        const start = new Date().toISOString();
-        const end = new Date(Date.now() + params.days * 1000*60*60*24).toISOString();
-        const appointments = await cds.ql.SELECT.from(this.ENTITY_NAME).where( {veterinarian_id: params.veterinarianId, date: { between: [start, end] }})
-        if(appointments.length == 0){
+        const start = new Date();
+        const end = new Date(Date.now() + params.days * 1000*60*60*24);
+        
+        const appointments = await cds.ql.SELECT.from(this.ENTITY_NAME).where( {veterinarian_id: params.veterinarian_id}).and('date >=', start).and('date <=', end)
+        if(!appointments || appointments.length == 0){
             return null
         }
         return appointments.map((appointment: Appointment) => this.toModel(appointment))
