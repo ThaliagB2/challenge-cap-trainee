@@ -20,8 +20,8 @@ type EmergencyProcedureInput {
 }
 
 type EmergencyAppointmentParams {
-        petId: UUID;
-        veterinarianId: UUID;
+        pet_id: UUID;
+        veterinarian_id: UUID;
         notes: String;
-        procedure: array of types.EmergencyProcedureInput
+        procedures: array of types.EmergencyProcedureInput
 }
