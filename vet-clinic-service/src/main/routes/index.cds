@@ -14,10 +14,10 @@ service VetClinicService {
 
 // Functions
 extend service VetClinicService with {
-    function getVeterinarianScheduleItem(
-        veterinarianId : UUID,
+    function getVeterinarianScheduleItemItem(
+        veterinarian_id : UUID,
         days: Integer default 7
-    ) returns types.VeterinarianScheduleItem;
+    ) returns types.VeterinarianScheduleItemItem;
     function getOwnerExpenseReport(
         ownerid: UUID
     ) returns types.OwnerExpenseReport;
