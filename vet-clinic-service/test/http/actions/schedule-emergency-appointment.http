@@ -1,0 +1,64 @@
+@baseUrl = http://localhost:4004/sample
+@auth = Basic dummy:dummy
+
+### totalCost = (200 + 150) * 1.5 = 525.00
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "params": {
+        "pet_id": "6c21524b-795b-410e-9ff0-40ad638f144f",
+        "veterinarian_id": "d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c",
+        "notes": "Emergência — fratura exposta em membro anterior. Realizar cirurgia imediata.",
+        "procedures": [
+            { "description": "Atendimento emergencial e estabilização", "cost": 200.00 },
+            { "description": "Cirurgia de emergência com anestesia", "cost": 150.00 }
+        ]
+    }
+}
+
+### Non-existent pet → 404
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "params":{
+        "pet_id": "00000000-0000-0000-0000-000000000000",
+        "veterinarian_id": "d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c",
+        "notes": "Deveria falhar",
+        "procedures": [
+            { "description": "Consulta", "cost": 100.00 }
+    ]}
+}
+
+### Non-existent veterinarian → 404
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+    "params":{        
+        "pet_id": "6c21524b-795b-410e-9ff0-40ad638f144f",
+        "veterinarian_id": "00000000-0000-0000-0000-000000000000",
+        "notes": "Deveria falhar",
+        "procedures": [
+            { "description": "Consulta", "cost": 100.00 }
+        ]}
+}
+
+### No procedures → 400
+POST {{baseUrl}}/scheduleEmergencyAppointment
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+
+    "params":{       
+        "pet_id": "6c21524b-795b-410e-9ff0-40ad638f144f",
+        "veterinarian_id": "d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c",
+        "notes": "Deveria falhar",
+        "procedures": []
+        }
+}
