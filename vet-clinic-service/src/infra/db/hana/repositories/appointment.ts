@@ -1,9 +1,7 @@
 import cds from '@sap/cds';
 
-import { AppointmentModel, AppointmentProps } from '@/domain/models/db/appointment';
+import { AppointmentModel } from '@/domain/models/db/appointment';
 import { AppointmentRepository } from '@/domain/repositories';
-
-type AppointmentDatabaseRow = Omit<AppointmentProps, 'procedures'>;
 
 export class AppointmentRepositoryImpl implements AppointmentRepository {
     private readonly ENTITY_NAME = 'db.models.Appointments';
@@ -25,7 +23,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
             }
         });
 
-        const appointments = (await cds.run(appointmentsQuery)) as AppointmentDatabaseRow[];
+        const appointments = (await cds.run(appointmentsQuery)) as AppointmentRepository.AppointmentDatabaseRow[];
 
         return appointments.map((appointment) =>
             AppointmentModel.with({
@@ -49,7 +47,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
             }
         });
 
-        const appointments = (await cds.run(appointmentsQuery)) as AppointmentDatabaseRow[];
+        const appointments = (await cds.run(appointmentsQuery)) as AppointmentRepository.AppointmentDatabaseRow[];
 
         return appointments.map((appointment) =>
             AppointmentModel.with({
