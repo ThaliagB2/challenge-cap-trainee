@@ -22,6 +22,13 @@ export type AppointmentProps = {
     procedures?: ProcedureProps[]
 }
 
+export type EmergencyAppointmentParams = {
+        pet_id: string;
+        veterinarian_id: string;
+        notes: string;
+        procedures: ProcedureProps[]
+}
+
 export class AppointmentModel {
     constructor (private props: AppointmentProps) {}
 
@@ -43,36 +50,52 @@ export class AppointmentModel {
         })
     }
 
+    public static forEmergencyCreate(props: EmergencyAppointmentParams): AppointmentModel{
+        const appointmentId = randomUUID()
+        return new AppointmentModel({
+            ...props,
+            id: appointmentId,
+            date: new Date().toISOString(),
+            isEmergency: true,
+            procedures: props.procedures.map((procedure: ProcedureProps) => ({
+                ...procedure,
+                id: randomUUID(),
+            })),
+            status_id: 'IN_PROGRESS',
+            totalCost: 0,
+        })
+    }
+
     public get id(): string {
-        return this.props.id
+        return this.props.id;
     }
 
     public get date(): string{
-        return this.props.date
+        return this.props.date;
     }
 
     public get status(): string{
-        return this.props.status_id
+        return this.props.status_id;
     }
 
     public get isEmergency(): boolean{
-        return this.props.isEmergency
+        return this.props.isEmergency;
     }
 
     public get totalCost(): number{
-        return this.props.totalCost
+        return this.props.totalCost;
     }
 
     public get notes(): string{
-        return this.props.notes
+        return this.props.notes;
     }
 
     public get pet_id(): string{
-        return this.props.pet_id
+        return this.props.pet_id;
     }
 
     public get veterinarian_id(): string{
-        return this.props.veterinarian_id
+        return this.props.veterinarian_id;
     }
 
     public toObject(): AppointmentProps {
@@ -88,8 +111,15 @@ export class AppointmentModel {
         }
     }
 
+    public toCreationEmergencyObject() {
+        return {
+            ...this.toObject(),
+            totalCost: this.totalCostCalculation() * 1.5
+        }
+    }
+
     private totalCostCalculation(): number {
-        if(!this.props.procedures) return 0
+        if(!this.props.procedures) return 0;
         return this.props.procedures.reduce((sum: number, procedure: ProcedureProps) => sum + procedure.cost, 0)
     }
 }
