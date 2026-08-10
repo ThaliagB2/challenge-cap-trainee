@@ -1,6 +1,6 @@
 import cds from '@sap/cds';
 
-import { PetModel } from '@/domain/models/db/pet';
+import { PetModel, PetProps } from '@/domain/models/db/pet';
 import { PetRepository } from '@/domain/repositories';
 
 export class PetRepositoryImpl implements PetRepository {
@@ -29,7 +29,7 @@ export class PetRepositoryImpl implements PetRepository {
     public async findByOwnerId(ownerId: PetRepository.FindByOwnerIdParams): Promise<PetRepository.FindByOwnerIdResult> {
         const petsQuery = cds.ql.SELECT.from(this.ENTITY_NAME).where({ owner_id: ownerId });
 
-        const pets = await cds.run(petsQuery);
+        const pets = (await cds.run(petsQuery)) as PetProps[];
 
         return pets.map((pet) =>
             PetModel.with({
