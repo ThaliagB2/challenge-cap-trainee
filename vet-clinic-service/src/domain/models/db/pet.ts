@@ -5,46 +5,46 @@ export type PetProps = {
     breed: string;
     birthDate: string;
     weight: number;
-    owner_id: string
-}
+    owner_id: string;
+};
 
 export type FullPetProps = PetProps & {
     age: number;
-}
+};
 
 export class PetModel {
-    constructor(private props: PetProps){}
+    constructor(private props: PetProps) {}
 
     public static with(props: PetProps): PetModel {
-        return new PetModel(props)
+        return new PetModel(props);
     }
-    
+
     public get id(): string {
-        return this.props.id
+        return this.props.id;
     }
 
     public get name(): string {
-        return this.props.name
+        return this.props.name;
     }
 
     public get species(): string {
-        return this.props.species
+        return this.props.species;
     }
 
     public get breed(): string {
-        return this.props.breed
+        return this.props.breed;
     }
 
     public get birthDate(): string {
-        return this.props.birthDate
+        return this.props.birthDate;
     }
 
     public get weight(): number {
-        return this.props.weight
+        return this.props.weight;
     }
 
     public get owner_id(): string {
-        return this.props.owner_id
+        return this.props.owner_id;
     }
 
     public toObject(): PetProps {
@@ -55,22 +55,22 @@ export class PetModel {
             breed: this.props.breed,
             birthDate: this.props.birthDate,
             weight: this.props.weight,
-            owner_id: this.props.owner_id,
-        }
+            owner_id: this.props.owner_id
+        };
     }
 
-    public toFullObject():  FullPetProps {
+    public toFullObject(): FullPetProps {
         return {
             ...this.toObject(),
-            age: this.ageCalculation(),
-        }
+            age: this.ageCalculation()
+        };
     }
 
     private ageCalculation(): number {
-        const today = Date.now()
-        const birthDate = new Date(this.birthDate).getTime()
-        const diffInMs = today - birthDate
-        const diffInDays = diffInMs / (1000 * 60 * 60 *24)
-        return Math.floor((diffInDays) / 365.25)
+        const today = Date.now();
+        const birthDate = new Date(this.birthDate).getTime();
+        const diffInMs = today - birthDate;
+        const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+        return Math.floor(diffInDays / 365.25);
     }
 }
