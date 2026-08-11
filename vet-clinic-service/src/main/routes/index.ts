@@ -12,8 +12,8 @@ import { scheduleEmergencyAppointmentController } from '@/main/factories/control
 import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
 import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets/after-read';
 import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
+import { getVeterinarianScheduleItemController } from '@/main/factories/controllers/functions';
 import { extractProductsToExcelController } from '@/main/factories/controllers/functions/extract-products-to-excel';
-import { getVeterinarianScheduleItemController } from '../factories/controllers/functions';
 
 export default (service: Service) => {
     service.before('*', async (request: any) => {
@@ -70,7 +70,7 @@ export default (service: Service) => {
         });
     });
 
-    service.on('getVeterinarianScheduleItemItem', async (request: any) => {
+    service.on('getVeterinarianScheduleItem', async (request: any) => {
         return translator.withLanguage(request._language, async () => {
             const result = await getVeterinarianScheduleItemController.execute({veterinarian_id: request.data.veterinarian_id, days: request.data.days || 7});
             if (result.status >= 400) {
