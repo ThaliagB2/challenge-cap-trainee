@@ -1,4 +1,4 @@
-import { ProcedureModel } from "../models/db/procedure";
+import { ProcedureModel } from "@/domain/models/db/procedure";
 
 export interface ProcedureRepository {
     create(procedure: ProcedureRepository.CreateParams): Promise <ProcedureRepository.CreateResult>

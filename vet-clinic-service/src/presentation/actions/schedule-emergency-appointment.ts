@@ -1,5 +1,5 @@
 import { EmergencyAppointmentParams } from "@/domain/models/db/appointment";
-import { ScheduleEmergencyAppointmentUseCase } from "@/domain/use-cases/actions/schedule-emergency-appointment";
+import { ScheduleEmergencyAppointmentUseCase } from "@/domain/use-cases/actions";
 import { BaseControllerImpl, BaseControllerResponse } from "@/presentation/base/controller";
 
 export class ScheduleEmergencyAppointmentController extends BaseControllerImpl {

@@ -2,7 +2,7 @@ import { left, right } from "@sweet-monads/either";
 
 import { BadRequestError, NotFoundError, ServerError } from "@/domain/errors";
 import { AppointmentModel } from "@/domain/models/db/appointment";
-import { ScheduleEmergencyAppointmentUseCase } from "@/domain/use-cases/actions/schedule-emergency-appointment";
+import { ScheduleEmergencyAppointmentUseCase } from "@/domain/use-cases/actions";
 import { PetRepositoryImpl, VeterinarianRepositoryImpl } from "@/infra/db/hana/repositories";
 
 export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergencyAppointmentUseCase {
