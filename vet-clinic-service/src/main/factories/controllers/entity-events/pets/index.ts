@@ -1,1 +1,1 @@
-export * from "./after-read";
+export * from './after-read';

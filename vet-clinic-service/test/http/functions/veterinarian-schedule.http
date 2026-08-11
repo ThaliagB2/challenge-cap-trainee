@@ -1,0 +1,22 @@
+@baseUrl = http://localhost:4004/sample
+@auth = Basic dummy:dummy
+
+### SUCCESS — Gustavo's schedule (365 days to cover all dates)
+GET {{baseUrl}}/getVeterinarianScheduleItem(veterinarian_id=d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c,days=365)
+Authorization: {{auth}}
+
+### SUCCESS — Gustavo's schedule, default 7 days
+GET {{baseUrl}}/getVeterinarianScheduleItem(veterinarian_id=d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c)
+Authorization: {{auth}}
+
+### SUCCESS
+GET {{baseUrl}}/getVeterinarianScheduleItem(veterinarian_id=d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c)
+Authorization: {{auth}}
+
+### Not found any appointment for this period for this veterinarian
+GET {{baseUrl}}/getVeterinarianScheduleItem(veterinarian_id=d31dd6eb-faaf-4d0b-9e84-f13d410e6a2c, days=1)
+Authorization: {{auth}}
+
+### Non-existent veterinarian → 404
+GET {{baseUrl}}/getVeterinarianScheduleItem(veterinarian_id=00000000-0000-0000-0000-000000000000,days=7)
+Authorization: {{auth}}
