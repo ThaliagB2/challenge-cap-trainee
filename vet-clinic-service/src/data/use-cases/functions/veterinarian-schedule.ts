@@ -22,7 +22,17 @@ export class GetVeterinarianScheduleItemUseCaseImpl implements GetVeterinarianSc
                 return left(new NotFoundError('Veterinarian not exist'))
             }
 
-            const appointments = await this.appointmentRepository.findByVeterinarianAndPeriod(params)
+            const start = new Date();
+            const end = new Date(Date.now() + params.days * 1000*60*60*24);
+
+            const parameters :AppointmentRepository.FindByVeterinarianAndPeriodParams = {
+                veterinarian_id: veterianarian.id,
+                start: start,
+                end: end,
+            }
+
+            const appointments = await this.appointmentRepository.findByVeterinarianAndPeriod(parameters)
+            
             if(!appointments||appointments.length == 0){
                 return left(new NotFoundError('No appointments found in this period'));
             }
