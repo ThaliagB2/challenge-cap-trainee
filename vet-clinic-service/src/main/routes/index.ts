@@ -12,7 +12,7 @@ import { scheduleEmergencyAppointmentController } from '@/main/factories/control
 import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
 import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets/after-read';
 import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
-import { getVeterinarianScheduleItemController } from '@/main/factories/controllers/functions';
+import { getOwnerExpenseReportController, getVeterinarianScheduleItemController } from '@/main/factories/controllers/functions';
 import { extractProductsToExcelController } from '@/main/factories/controllers/functions/extract-products-to-excel';
 
 export default (service: Service) => {
@@ -41,15 +41,15 @@ export default (service: Service) => {
         });
     });
 
-    service.after('READ', 'Pets', (pets: Pets, request:any) => {
+    service.after('READ', 'Pets', (pets: Pets, request: any) => {
         return translator.withLanguage(request._language, () => {
             const result = afterReadPetsController.execute(pets);
             if (result.status >= 400) {
                 return request.reject(result.errorData);
             }
             request.results = result.data as Pets;
-        })
-    })
+        });
+    });
 
     service.on('extractProductsToExcel', async (request: any) => {
         return translator.withLanguage(request._language, async () => {
@@ -72,13 +72,23 @@ export default (service: Service) => {
 
     service.on('getVeterinarianScheduleItem', async (request: any) => {
         return translator.withLanguage(request._language, async () => {
-            const result = await getVeterinarianScheduleItemController.execute({veterinarian_id: request.data.veterinarian_id, days: request.data.days || 7});
+            const result = await getVeterinarianScheduleItemController.execute({ veterinarian_id: request.data.veterinarian_id, days: request.data.days || 7 });
             if (result.status >= 400) {
                 return request.reject(result.errorData);
             }
             return result.data;
         });
-    })
+    });
+
+    service.on('getOwnerExpenseReport', async (request: any) => {
+        return translator.withLanguage(request._language, async () => {
+            const result = await getOwnerExpenseReportController.execute(request.data.owner_id);
+            if (result.status >= 400) {
+                return request.reject(result.errorData);
+            }
+            return result.data;
+        });
+    });
 
     service.on('bulkCreatePurchaseOrders', async (request: any) => {
         return translator.withLanguage(request._language, async () => {
@@ -98,5 +108,5 @@ export default (service: Service) => {
             }
             return result.data;
         });
-    })
+    });
 };
