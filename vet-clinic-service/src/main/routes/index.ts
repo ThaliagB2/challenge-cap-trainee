@@ -6,7 +6,7 @@ import { Service } from '@sap/cds';
 import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
 import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
 import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets/after-read';
-import { getVeterinarianScheduleItemController } from '@/main/factories/controllers/functions';
+import { getOwnerExpenseReportController, getVeterinarianScheduleItemController } from '@/main/factories/controllers/functions';
 import { translator } from '@/main/factories/utils/translator';
 import { Pets } from '@models/db/models';
 
@@ -39,6 +39,16 @@ export default (service: Service) => {
     service.on('getVeterinarianScheduleItem', async (request: any) => {
         return translator.withLanguage(request._language, async () => {
             const result = await getVeterinarianScheduleItemController.execute({ veterinarian_id: request.data.veterinarian_id, days: request.data.days || 7 });
+            if (result.status >= 400) {
+                return request.reject(result.errorData);
+            }
+            return result.data;
+        });
+    });
+
+    service.on('getOwnerExpenseReport', async (request: any) => {
+        return translator.withLanguage(request._language, async () => {
+            const result = await getOwnerExpenseReportController.execute(request.data.owner_id);
             if (result.status >= 400) {
                 return request.reject(result.errorData);
             }

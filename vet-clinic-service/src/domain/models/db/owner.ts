@@ -6,6 +6,13 @@ export type OwnerProps = {
     email: string;
 };
 
+export type OwnerExpenseReportProps = {
+    ownerName: string;
+    totalCost: number;
+    appointmentCount: number;
+    averageCost: number;
+};
+
 export class OwnerModel {
     constructor(private props: OwnerProps) {}
 
