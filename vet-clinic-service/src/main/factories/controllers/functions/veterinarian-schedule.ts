@@ -1,8 +1,8 @@
-import { getVeterinarianScheduleItemUseCase } from "@/main/factories/use-cases/functions/veterinarian-schedule"
-import { GetVeterinarianScheduleItemController } from "@/presentation/functions"
+import { getVeterinarianScheduleItemUseCase } from '@/main/factories/use-cases/functions/veterinarian-schedule';
+import { GetVeterinarianScheduleItemController } from '@/presentation/functions';
 
 const makeGetVeterinarianScheduleItemController = (): GetVeterinarianScheduleItemController => {
-    return new GetVeterinarianScheduleItemController(getVeterinarianScheduleItemUseCase)
-}
+    return new GetVeterinarianScheduleItemController(getVeterinarianScheduleItemUseCase);
+};
 
-export const getVeterinarianScheduleItemController = makeGetVeterinarianScheduleItemController()
+export const getVeterinarianScheduleItemController = makeGetVeterinarianScheduleItemController();

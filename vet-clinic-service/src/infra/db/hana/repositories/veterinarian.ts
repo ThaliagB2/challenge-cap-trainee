@@ -1,15 +1,15 @@
-import cds from "@sap/cds";
+import cds from '@sap/cds';
 
-import { VeterinarianModel } from "@/domain/models/db/veterinarian";
-import { VeterinarianRepository } from "@/domain/repositories/veterinarian";
-import { Veterinarian } from "@models/db/models";
+import { VeterinarianModel } from '@/domain/models/db/veterinarian';
+import { VeterinarianRepository } from '@/domain/repositories/veterinarian';
+import { Veterinarian } from '@models/db/models';
 
 export class VeterinarianRepositoryImpl implements VeterinarianRepository {
-    private readonly ENTITY_NAME = 'db.models.Veterinarians'
+    private readonly ENTITY_NAME = 'db.models.Veterinarians';
 
     public async findById(id: VeterinarianRepository.FindByIdParams): Promise<VeterinarianRepository.FindByIdResult> {
         const veterinarian = await cds.ql.SELECT.one.from(this.ENTITY_NAME).where({ id });
-        if(!veterinarian){
+        if (!veterinarian) {
             return null;
         }
         return this.toModel(veterinarian);
@@ -22,6 +22,6 @@ export class VeterinarianRepositoryImpl implements VeterinarianRepository {
             lastName: veterianarian.lastName as string,
             specialty: veterianarian.specialty as string,
             crmv: veterianarian.crmv as string
-        })
+        });
     }
 }

@@ -1,6 +1,6 @@
-import cds from "@sap/cds";
+import cds from '@sap/cds';
 
-import { ProcedureRepository } from "@/domain/repositories/procedure";
+import { ProcedureRepository } from '@/domain/repositories/procedure';
 
 export class ProcedureRepositoryImpl implements ProcedureRepository {
     private readonly ENTITY_NAME = 'db.models.Procedures';

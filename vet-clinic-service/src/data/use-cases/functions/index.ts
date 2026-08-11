@@ -1,1 +1,1 @@
-export * from "./veterinarian-schedule";
+export * from './veterinarian-schedule';

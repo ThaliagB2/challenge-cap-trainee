@@ -1,7 +1,7 @@
-import { AfterReadPetsUseCase } from "@/domain/use-cases/entity-events/pets/after-read";
+import { AfterReadPetsUseCase } from '@/domain/use-cases/entity-events/pets/after-read';
 import { BaseControllerImpl, BaseControllerResponse } from '@/presentation/base/controller';
 
-export class AfterReadPetsController extends BaseControllerImpl{
+export class AfterReadPetsController extends BaseControllerImpl {
     constructor(private readonly useCase: AfterReadPetsUseCase) {
         super();
     }
