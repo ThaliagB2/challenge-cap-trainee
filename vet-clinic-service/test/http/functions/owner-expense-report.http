@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:4004/sample
+@auth = Basic dummy:dummy
+
+### SUCCESS — Fernanda Silva (Tom, 1 COMPLETED × 2000.00)
+GET {{baseUrl}}/getOwnerExpenseReport(owner_id=0ed4cd43-0a64-40bb-9822-2557675e7fe9)
+Authorization: {{auth}}
+
+### SUCCESS — Giovana Machado (Cajú, 1 COMPLETED × 400.00)
+GET {{baseUrl}}/getOwnerExpenseReport(owner_id=ae622c02-7be4-477d-9360-2e770a04a98d)
+Authorization: {{auth}}
+
+### Non-existent owner → 404
+GET {{baseUrl}}/getOwnerExpenseReport(owner_id=00000000-0000-0000-0000-000000000000)
+Authorization: {{auth}}
