@@ -3,17 +3,12 @@ import '../config/module-alias';
 
 import { Service } from '@sap/cds';
 
-import { Pets, Products } from '@models/db/models';
-
-import { translator } from '@/main/factories/utils/translator';
-
-import { bulkCreatePurchaseOrdersController } from '@/main/factories/controllers/actions/bulk-create-purchase-orders';
 import { scheduleEmergencyAppointmentController } from '@/main/factories/controllers/actions/schedule-emergency-appointment';
 import { beforeCreateAppointmentController } from '@/main/factories/controllers/entity-events/appointments';
 import { afterReadPetsController } from '@/main/factories/controllers/entity-events/pets/after-read';
-import { afterReadProductsController } from '@/main/factories/controllers/entity-events/products/after-read';
 import { getOwnerExpenseReportController, getVeterinarianScheduleItemController } from '@/main/factories/controllers/functions';
-import { extractProductsToExcelController } from '@/main/factories/controllers/functions/extract-products-to-excel';
+import { translator } from '@/main/factories/utils/translator';
+import { Pets } from '@models/db/models';
 
 export default (service: Service) => {
     service.before('*', async (request: any) => {
@@ -28,16 +23,6 @@ export default (service: Service) => {
                 return request.reject(result.errorData);
             }
             return Object.assign(request.data, result.data);
-        });
-    });
-
-    service.after('READ', 'Products', (products: Products, request: any) => {
-        return translator.withLanguage(request._language, () => {
-            const result = afterReadProductsController.execute(products);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            request.results = result.data as Products;
         });
     });
 
