@@ -1,4 +1,4 @@
-import { AppointmentModel } from '@/domain/models/db/appointment';
+import { AppointmentModel, AppointmentProps } from '@/domain/models/db/appointment';
 
 export interface AppointmentRepository {
     create(appointment: AppointmentRepository.CreateParams): Promise<AppointmentRepository.CreateResult>;
@@ -22,4 +22,5 @@ export namespace AppointmentRepository {
 
     export type FindByPetIdsParams = string[];
     export type FindByPetIdsResult = AppointmentModel[];
+    export type AppointmentDatabaseRow = Omit<AppointmentProps, 'procedures'>;
 }
