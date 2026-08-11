@@ -2,7 +2,7 @@ import { left, right } from '@sweet-monads/either';
 
 import { NotFoundError, ServerError } from '@/domain/errors';
 import { AppointmentModel } from '@/domain/models/db/appointment';
-import { OwnerExpenseReportProps } from '@/domain/models/db/owner';
+import { OwnerExpenseReportProps, OwnerModel } from '@/domain/models/db/owner';
 import { PetModel } from '@/domain/models/db/pet';
 import { OwnerRepository, PetRepository } from '@/domain/repositories';
 import { AppointmentRepository } from '@/domain/repositories/appointments';
@@ -36,22 +36,27 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
             if (completed.length == 0) {
                 return left(new NotFoundError('there not are completed appointments for this owner'));
             }
-            const name = owner.firstName + ' ' + owner.lastName;
-            const totalcost = completed.reduce((sum: number, appointment: AppointmentModel) => sum + appointment.totalCost, 0);
-            const appointmentCount = completed.length;
-            const averageCost = totalcost / appointmentCount;
 
-            const OwnerExpenseReport: OwnerExpenseReportProps = {
-                ownerName: name,
-                totalCost: totalcost,
-                appointmentCount: appointmentCount,
-                averageCost: averageCost
-            };
+            const OwnerExpenseReport = await this.getOwnerExpenseReport(owner, completed);
 
             return right(OwnerExpenseReport);
         } catch (error) {
             const errorData = error as Error;
             return left(new ServerError(errorData.stack, errorData.message));
         }
+    }
+
+    private async getOwnerExpenseReport(owner: OwnerModel, completed: AppointmentModel[]): Promise<OwnerExpenseReportProps> {
+        const name = owner.firstName + ' ' + owner.lastName;
+        const totalcost = completed.reduce((sum: number, appointment: AppointmentModel) => sum + appointment.totalCost, 0);
+        const appointmentCount = completed.length;
+        const averageCost = totalcost / appointmentCount;
+        const ownerExpenseReport: OwnerExpenseReportProps = {
+            ownerName: name,
+            totalCost: totalcost,
+            appointmentCount: appointmentCount,
+            averageCost: averageCost
+        };
+        return ownerExpenseReport;
     }
 }
