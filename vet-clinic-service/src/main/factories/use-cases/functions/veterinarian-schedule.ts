@@ -1,5 +1,5 @@
-import { GetVeterinarianScheduleItemUseCaseImpl } from "@/data/use-cases/functions/veterinarian-schedule";
-import { GetVeterinarianScheduleItemUseCase } from "@/domain/use-cases/functions/veterinarian-schedule";
+import { GetVeterinarianScheduleItemUseCaseImpl } from "@/data/use-cases/functions";
+import { GetVeterinarianScheduleItemUseCase } from "@/domain/use-cases/functions";
 import { AppointmentRepositoryImpl, OwnerRepositoryImpl, PetRepositoryImpl, VeterinarianRepositoryImpl } from "@/infra/db/hana/repositories";
 
 const makeGetVeterinarianScheduleItemUseCase = (): GetVeterinarianScheduleItemUseCase => {
