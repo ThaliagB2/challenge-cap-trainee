@@ -36,25 +36,6 @@ export default (service: Service) => {
         });
     });
 
-    service.on('extractProductsToExcel', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await extractProductsToExcelController.execute();
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            const excelBuffer = result.data;
-
-            const res = request._.res;
-            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            res.setHeader('Content-Disposition', 'attachment; filename=produtos.xlsx');
-            res.setHeader('Content-Length', excelBuffer.length);
-            res.setHeader('Cache-Control', 'max-age=0');
-
-            res.end(excelBuffer);
-            return;
-        });
-    });
-
     service.on('getVeterinarianScheduleItem', async (request: any) => {
         return translator.withLanguage(request._language, async () => {
             const result = await getVeterinarianScheduleItemController.execute({ veterinarian_id: request.data.veterinarian_id, days: request.data.days || 7 });
@@ -68,16 +49,6 @@ export default (service: Service) => {
     service.on('getOwnerExpenseReport', async (request: any) => {
         return translator.withLanguage(request._language, async () => {
             const result = await getOwnerExpenseReportController.execute(request.data.owner_id);
-            if (result.status >= 400) {
-                return request.reject(result.errorData);
-            }
-            return result.data;
-        });
-    });
-
-    service.on('bulkCreatePurchaseOrders', async (request: any) => {
-        return translator.withLanguage(request._language, async () => {
-            const result = await bulkCreatePurchaseOrdersController.execute(request.data.payload);
             if (result.status >= 400) {
                 return request.reject(result.errorData);
             }
