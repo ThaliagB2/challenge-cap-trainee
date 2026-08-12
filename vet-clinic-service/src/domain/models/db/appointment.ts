@@ -70,6 +70,10 @@ export class AppointmentModel {
     }
 
     private calculateTotalCost(procedures: ProcedureProps[]): number {
+        if (procedures.length === 0) {
+            return this.props.totalCost;
+        }
+
         const totalCost = procedures.reduce((total, procedure) => total + procedure.cost, 0);
 
         return this.props.isEmergency ? totalCost * 1.5 : totalCost;
