@@ -13,6 +13,7 @@ export namespace GetOwnerExpenseReportUseCase {
 
     export type ExpenseReport = {
         ownerId: string;
+        ownerName: string;
         totalExpenses: number;
         appointmentCount: number;
         averageCost: number;
