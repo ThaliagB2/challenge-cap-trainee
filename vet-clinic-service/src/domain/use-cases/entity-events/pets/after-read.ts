@@ -15,4 +15,7 @@ export namespace AfterReadPetsUseCase {
     };
 
     export type Result = Either<AbstractError, PetWithAge[]>;
+
+    export type CalculateAgeParams = string;
+    export type CalculateAgeResult = number;
 }

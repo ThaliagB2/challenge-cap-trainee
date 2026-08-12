@@ -2,7 +2,6 @@ import { left, right } from '@sweet-monads/either';
 
 import { NotFoundError } from '@/domain/errors/not-found';
 import { ServerError } from '@/domain/errors/server';
-import { AppointmentModel } from '@/domain/models/db/appointment';
 import { AppointmentRepository, OwnerRepository, PetRepository } from '@/domain/repositories';
 import { GetOwnerExpenseReportUseCase } from '@/domain/use-cases/functions/get-owner-expense-report';
 
@@ -44,7 +43,7 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
         }
     }
 
-    private async getCompletedAppointments(petIds: string[]): Promise<AppointmentModel[]> {
+    private async getCompletedAppointments(petIds: GetOwnerExpenseReportUseCase.GetCompletedAppointmentsParams): GetOwnerExpenseReportUseCase.GetCompletedAppointmentsResult {
         if (petIds.length === 0) {
             return [];
         }

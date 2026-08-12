@@ -1,7 +1,7 @@
 import { Either } from '@sweet-monads/either';
 
 import { AbstractError } from '@/domain/errors';
-import { AppointmentProps } from '@/domain/models/db/appointment';
+import { AppointmentModel, AppointmentProps } from '@/domain/models/db/appointment';
 import { OwnerProps } from '@/domain/models/db/owner';
 import { PetProps } from '@/domain/models/db/pet';
 
@@ -22,4 +22,13 @@ export namespace GetVeterinarianScheduleUseCase {
     };
 
     export type Result = Promise<Either<AbstractError, ScheduleItem[]>>;
+
+    export type ValidateVeterinarianParams = string;
+    export type ValidateVeterinarianResult = Promise<void>;
+
+    export type GetAppointmentsParams = Params;
+    export type GetAppointmentsResult = Promise<AppointmentModel[]>;
+
+    export type CreateScheduleItemParams = AppointmentModel;
+    export type CreateScheduleItemResult = Promise<ScheduleItem>;
 }

@@ -18,7 +18,7 @@ export class AfterReadPetsUseCaseImpl implements AfterReadPetsUseCase {
         }
     }
 
-    private calculateAge(birthDateValue: string): number {
+    private calculateAge(birthDateValue: AfterReadPetsUseCase.CalculateAgeParams): AfterReadPetsUseCase.CalculateAgeResult {
         const currentDate = new Date();
         const birthDate = new Date(birthDateValue);
 

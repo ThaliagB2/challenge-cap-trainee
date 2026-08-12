@@ -2,7 +2,6 @@ import { left, right } from '@sweet-monads/either';
 
 import { NotFoundError } from '@/domain/errors/not-found';
 import { ServerError } from '@/domain/errors/server';
-import { AppointmentModel } from '@/domain/models/db/appointment';
 import { AppointmentRepository, OwnerRepository, PetRepository, VeterinarianRepository } from '@/domain/repositories';
 import { GetVeterinarianScheduleUseCase } from '@/domain/use-cases/functions/get-veterinarian-schedule';
 
@@ -38,7 +37,7 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         }
     }
 
-    private async validateVeterinarian(veterinarianId: string): Promise<void> {
+    private async validateVeterinarian(veterinarianId: GetVeterinarianScheduleUseCase.ValidateVeterinarianParams): GetVeterinarianScheduleUseCase.ValidateVeterinarianResult {
         const veterinarian = await this.veterinarianRepository.findById(veterinarianId);
 
         if (!veterinarian) {
@@ -46,7 +45,7 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         }
     }
 
-    private async getAppointments(params: GetVeterinarianScheduleUseCase.Params): Promise<AppointmentModel[]> {
+    private async getAppointments(params: GetVeterinarianScheduleUseCase.GetAppointmentsParams): GetVeterinarianScheduleUseCase.GetAppointmentsResult {
         const startDate = new Date();
         const endDate = new Date(startDate);
 
@@ -59,7 +58,7 @@ export class GetVeterinarianScheduleUseCaseImpl implements GetVeterinarianSchedu
         });
     }
 
-    private async createScheduleItem(appointment: AppointmentModel): Promise<GetVeterinarianScheduleUseCase.ScheduleItem> {
+    private async createScheduleItem(appointment: GetVeterinarianScheduleUseCase.CreateScheduleItemParams): GetVeterinarianScheduleUseCase.CreateScheduleItemResult {
         const pet = await this.petRepository.findById(appointment.petId);
 
         if (!pet) {
