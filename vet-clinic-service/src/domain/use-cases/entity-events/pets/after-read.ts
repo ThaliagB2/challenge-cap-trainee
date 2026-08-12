@@ -1,7 +1,5 @@
 import { Either } from '@sweet-monads/either';
 
-import { Pets } from '@models/db/models';
-
 import { AbstractError } from '@/domain/errors';
 import { PetProps } from '@/domain/models/db/pet';
 
@@ -10,6 +8,11 @@ export interface AfterReadPetsUseCase {
 }
 
 export namespace AfterReadPetsUseCase {
-    export type Params = Pets;
-    export type Result = Either<AbstractError, PetProps[]>;
+    export type Params = PetProps[];
+
+    export type PetWithAge = PetProps & {
+        age: number;
+    };
+
+    export type Result = Either<AbstractError, PetWithAge[]>;
 }

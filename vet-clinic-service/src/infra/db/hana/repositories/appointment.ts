@@ -7,7 +7,9 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
     private readonly ENTITY_NAME = 'db.models.Appointments';
 
     public async create(appointment: AppointmentRepository.CreateParams): Promise<AppointmentRepository.CreateResult> {
-        const query = cds.ql.INSERT.into(this.ENTITY_NAME).entries(appointment.toObject());
+        const { procedures: _, ...appointmentData } = appointment.toObject();
+
+        const query = cds.ql.INSERT.into(this.ENTITY_NAME).entries(appointmentData);
 
         await cds.run(query);
     }
