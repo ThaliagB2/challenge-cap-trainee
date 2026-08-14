@@ -2,11 +2,7 @@ import { randomUUID } from 'crypto';
 
 import { OwnerProps } from '@/domain/models/db/owner';
 import { PetProps } from '@/domain/models/db/pet';
-
-export type ProcedureProps = {
-    description: string;
-    cost: number;
-};
+import { ProcedureProps } from './procedure';
 
 export type AppointmentForCreateProps = Omit<AppointmentProps, 'id'> &
     Omit<AppointmentProps, 'procedure'> & {
@@ -68,7 +64,8 @@ export class AppointmentModel {
             isEmergency: true,
             procedures: props.procedures.map((procedure: ProcedureProps) => ({
                 ...procedure,
-                id: randomUUID()
+                id: randomUUID(),
+                appointment_id: appointmentId
             })),
             status_id: 'IN_PROGRESS',
             totalCost: 0

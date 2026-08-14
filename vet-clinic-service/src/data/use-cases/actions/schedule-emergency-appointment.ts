@@ -3,12 +3,14 @@ import { left, right } from '@sweet-monads/either';
 import { BadRequestError, NotFoundError, ServerError } from '@/domain/errors';
 import { AppointmentModel } from '@/domain/models/db/appointment';
 import { ScheduleEmergencyAppointmentUseCase } from '@/domain/use-cases/actions';
-import { PetRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
+import { AppointmentRepositoryImpl, PetRepositoryImpl, ProcedureRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
 
 export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergencyAppointmentUseCase {
     constructor(
         private readonly petRepository: PetRepositoryImpl,
-        private readonly veterinarianRepository: VeterinarianRepositoryImpl
+        private readonly veterinarianRepository: VeterinarianRepositoryImpl,
+        private readonly appointmentRepository: AppointmentRepositoryImpl,
+        private readonly procedureRepository: ProcedureRepositoryImpl
     ) {}
 
     public async execute(
@@ -32,6 +34,9 @@ export class ScheduleEmergencyAppointmentUseCaseImpl implements ScheduleEmergenc
             const model = AppointmentModel.forEmergencyCreate({
                 ...params
             });
+
+            await this.appointmentRepository.create(model);
+
             return right(model.toCreationEmergencyObject());
         } catch (error) {
             const err = error as Error;

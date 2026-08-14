@@ -24,7 +24,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     public async create(appointment: AppointmentRepository.CreateParams): Promise<AppointmentRepository.CreateResult> {
-        const data = appointment.toCreationObject();
+        const data = appointment.toCreationEmergencyObject();
         const query = cds.ql.INSERT.into(this.ENTITY_NAME).entries(data);
         await cds.run(query);
     }
