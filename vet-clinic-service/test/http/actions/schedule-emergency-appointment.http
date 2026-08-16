@@ -5,6 +5,7 @@
 POST {{baseUrl}}/scheduleEmergencyAppointment
 Authorization: {{auth}}
 Content-Type: application/json
+Accept-Language: en
 
 {
     "params": {
@@ -22,6 +23,7 @@ Content-Type: application/json
 POST {{baseUrl}}/scheduleEmergencyAppointment
 Authorization: {{auth}}
 Content-Type: application/json
+Accept-Language: en
 
 {
     "params":{

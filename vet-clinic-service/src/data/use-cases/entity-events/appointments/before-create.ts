@@ -15,16 +15,16 @@ export class BeforeCreateAppointmentUseCasesImpl implements BeforeCreateAppointm
         try {
             const pet = await this.petRepository.findById(appointment.pet_id);
             if (!pet) {
-                return left(new NotFoundError('Pet not found'));
+                return left(new NotFoundError('pet.notFound'));
             }
 
             const veterianarian = await this.veterinarianRepository.findById(appointment.veterinarian_id);
             if (!veterianarian) {
-                return left(new NotFoundError('Veterinarian not found'));
+                return left(new NotFoundError('veterinaria.notFound'));
             }
 
             if (!appointment.procedures || appointment.procedures.length == 0) {
-                return left(new BadRequestError('At least one Procedures is required'));
+                return left(new BadRequestError('appointment.atLasteOneProcedure'));
             }
 
             //composition cria as procedures automaticamente no CAP
@@ -33,7 +33,7 @@ export class BeforeCreateAppointmentUseCasesImpl implements BeforeCreateAppointm
             return right(model.toCreationObject());
         } catch (error) {
             const err = error as Error;
-            return left(new ServerError(err.message, err.stack));
+            return left(new ServerError(err.stack));
         }
     }
 }

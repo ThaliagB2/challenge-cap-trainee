@@ -15,7 +15,7 @@ export class AfterReadPetsUseCaseImpl implements AfterReadPetsUseCase {
             return right(petsWithAge);
         } catch (error) {
             const errorData = error as Error;
-            return left(new ServerError(errorData.message, errorData.stack));
+            return left(new ServerError(errorData.stack));
         }
     }
 

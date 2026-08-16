@@ -6,7 +6,10 @@ using { db.types } from '../../../../db/types';
 @requires: 'authenticated-user'
 service VetClinicService {
     entity Owners as projection on models.Owners;
-    entity Pets as projection on models.Pets;
+    entity Pets as projection on models.Pets {
+        *,
+        virtual age: Integer
+    }
     entity Veterinarians as projection on models.Veterinarians;
     entity Procedures as projection on models.Procedures;
     entity Appointments as projection on models.Appointments;

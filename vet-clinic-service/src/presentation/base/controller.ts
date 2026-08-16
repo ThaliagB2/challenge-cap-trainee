@@ -1,27 +1,24 @@
 export type BaseControllerResponse = {
     status: number;
-    data?: any;
-    errorData?: ErrorData;
-};
-
-export type ErrorData = {
-    code: string;
-    details: ErrorDetails[];
+    data?: unknown;
+    errorData?: ErrorDetails;
 };
 
 export type ErrorDetails = {
-    status: number;
+    code?: string | number;
     message: string;
-    target: string;
+    target?: string;
+    args?: unknown[];
+    status?: number;
 };
 
 interface BaseController {
-    success(data: any): BaseControllerResponse;
+    success(data: unknown): BaseControllerResponse;
     error(code: number, details: ErrorDetails[]): BaseControllerResponse;
 }
 
 export class BaseControllerImpl implements BaseController {
-    public success(data: any): BaseControllerResponse {
+    public success(data: unknown): BaseControllerResponse {
         return {
             data,
             status: 200
@@ -29,12 +26,10 @@ export class BaseControllerImpl implements BaseController {
     }
 
     public error(code: number, details: ErrorDetails[]): BaseControllerResponse {
+        const [detail] = details;
         return {
             status: code,
-            errorData: {
-                code: 'MULTIPLE_ERRORS',
-                details
-            }
+            errorData: detail ?? { status: code, message: 'Unknown error' }
         };
     }
 }
