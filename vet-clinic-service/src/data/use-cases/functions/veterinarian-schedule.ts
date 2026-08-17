@@ -20,7 +20,7 @@ export class GetVeterinarianScheduleItemUseCaseImpl implements GetVeterinarianSc
         try {
             const veterianarian = await this.veterinarianRepository.findById(params.veterinarian_id);
             if (!veterianarian) {
-                return left(new NotFoundError('Veterinarian not exist'));
+                return left(new NotFoundError('veterinarian.notFound'));
             }
 
             const parameters = this.getParameters(params);
@@ -28,14 +28,14 @@ export class GetVeterinarianScheduleItemUseCaseImpl implements GetVeterinarianSc
             const appointments = await this.appointmentRepository.findByVeterinarianAndPeriod(parameters);
 
             if (!appointments || appointments.length == 0) {
-                return left(new NotFoundError('No appointments found in this period'));
+                return left(new NotFoundError('appointment.noAppointmentInPreriod'));
             }
 
             const VeterinarianScheduleItem = await this.getVeterinarianScheduleItem(appointments);
             return right(VeterinarianScheduleItem);
         } catch (error) {
             const errorData = error as Error;
-            return left(new ServerError(errorData.stack, errorData.message));
+            return left(new ServerError(errorData.stack));
         }
     }
     private async getVeterinarianScheduleItem(appointments: AppointmentModel[]): Promise<ScheduleVeterinarianAppointmentProps[]> {

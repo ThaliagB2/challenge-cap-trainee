@@ -1,11 +1,13 @@
 import { ScheduleEmergencyAppointmentUseCaseImpl } from '@/data/use-cases/actions/schedule-emergency-appointment';
 import { BeforeCreateAppointmentUseCases } from '@/domain/use-cases/entity-events/appointments/before-create';
-import { PetRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
+import { AppointmentRepositoryImpl, PetRepositoryImpl, ProcedureRepositoryImpl, VeterinarianRepositoryImpl } from '@/infra/db/hana/repositories';
 
 const makeScheduleEmergencyAppointmentUseCase = (): BeforeCreateAppointmentUseCases => {
     const petRepository = new PetRepositoryImpl();
     const veterinarianRepository = new VeterinarianRepositoryImpl();
-    return new ScheduleEmergencyAppointmentUseCaseImpl(petRepository, veterinarianRepository);
+    const appointmentRepository = new AppointmentRepositoryImpl();
+    const procedureRepository = new ProcedureRepositoryImpl();
+    return new ScheduleEmergencyAppointmentUseCaseImpl(petRepository, veterinarianRepository, appointmentRepository, procedureRepository);
 };
 
 export const scheduleEmergencyAppointmentUseCase = makeScheduleEmergencyAppointmentUseCase();

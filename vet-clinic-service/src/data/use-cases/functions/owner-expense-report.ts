@@ -19,22 +19,22 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
         try {
             const owner = await this.ownerRepository.findById(owner_id);
             if (!owner) {
-                return left(new NotFoundError('Not found Owner'));
+                return left(new NotFoundError('owner.notFound'));
             }
 
             const pets = await this.petRepository.findByOwnerId(owner_id);
             if (!pets || pets.length == 0) {
-                return left(new NotFoundError('No pets found for this owner'));
+                return left(new NotFoundError('owner.petsNotFound'));
             }
 
             const appointments = (await Promise.all(pets.map(async (pet: PetModel) => this.appointmentRepository.findByPetId(pet.id)))).flat();
             if (!appointments || appointments.length == 0) {
-                return left(new NotFoundError('No appointment found for this owner'));
+                return left(new NotFoundError(''));
             }
 
             const completed = appointments.filter((appointment) => appointment.status_id === 'COMPLETED');
             if (completed.length == 0) {
-                return left(new NotFoundError('there not are completed appointments for this owner'));
+                return left(new NotFoundError('owner.noCompletedProcedures='));
             }
 
             const OwnerExpenseReport = await this.getOwnerExpenseReport(owner, completed);
@@ -42,7 +42,7 @@ export class GetOwnerExpenseReportUseCaseImpl implements GetOwnerExpenseReportUs
             return right(OwnerExpenseReport);
         } catch (error) {
             const errorData = error as Error;
-            return left(new ServerError(errorData.stack, errorData.message));
+            return left(new ServerError(errorData.stack));
         }
     }
 

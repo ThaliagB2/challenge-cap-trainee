@@ -20,3 +20,4 @@ Authorization: {{auth}}
 ### Non-existent veterinarian → 404
 GET {{baseUrl}}/getVeterinarianScheduleItem(veterinarian_id=00000000-0000-0000-0000-000000000000,days=7)
 Authorization: {{auth}}
+Accept-Language: pt

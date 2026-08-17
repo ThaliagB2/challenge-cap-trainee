@@ -1,7 +1,7 @@
 import { AbstractError } from '@/domain/errors';
 
 export class ServerError extends AbstractError {
-    constructor(stack: string, message = 'internalServerError') {
-        super(message, 500, stack);
+    constructor(stack?: string, key = 'server.internal') {
+        super(key, 500, undefined, stack);
     }
 }

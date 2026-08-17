@@ -1,7 +1,7 @@
 import { AbstractError } from '@/domain/errors';
 
 export class NotFoundError extends AbstractError {
-    constructor(message: string, stack?: string) {
-        super(message, 404, stack);
+    constructor(key: string, args?: (number | string)[], stack?: string) {
+        super(key, 404, args, stack);
     }
 }
