@@ -10,7 +10,7 @@ import { getOwnerExpenseReportController, getVeterinarianScheduleItemController 
 import { Pets } from '@models/db/models';
 
 export default (service: Service) => {
-    service.before('CREATE', 'Appointments', async (request: any) => {
+    service.before('CREATE', 'Appointments', async (request: Request) => {
         const result = await beforeCreateAppointmentController.execute(request.data, request.locale);
         if (result.status >= 400) {
             return request.reject(result.errorData);
