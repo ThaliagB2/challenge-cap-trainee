@@ -1,0 +1,98 @@
+{
+    "common": {
+        "loading": "Carregando...",
+        "error": "Erro",
+        "success": "Sucesso",
+        "save": "Salvar",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "delete": "Excluir",
+        "edit": "Editar",
+        "create": "Novo",
+        "search": "Buscar",
+        "actions": "Ações",
+        "yes": "Sim",
+        "no": "Não",
+        "close": "Fechar",
+        "back": "Voltar",
+        "next": "Próximo",
+        "filter": "Filtrar",
+        "clear": "Limpar",
+        "noData": "Nenhum dado encontrado",
+        "required": "Campo obrigatório",
+        "confirmDelete": "Confirmar exclusão"
+    },
+    "menu": {
+        "home": "Início",
+        "settings": "Configurações",
+        "themeSettings": "Gestão de Tema"
+    },
+    "app": {
+        "welcome": "Bem-vindo ao vet-clinic!"
+    },
+    "errors": {
+        "generic": "Ocorreu um erro inesperado",
+        "network": "Erro de conexão",
+        "unauthorized": "Sessão expirada",
+        "notFound": "Não encontrado"
+    },
+    "theme": {
+        "title": "Gestão de Tema",
+        "subtitle": "Personalize a identidade visual do portal.",
+        "save": "Salvar tema",
+        "saved": "Salvo!",
+        "reset": "Redefinir",
+        "preview": "Preview em tempo real",
+        "previewFull": "Tela cheia",
+        "customCssHint": "CSS global aplicado para personalização avançada.",
+        "sections": {
+            "mainColors": "Cores principais",
+            "bgColors": "Cores de fundo e superfície",
+            "statusColors": "Cores de status",
+            "textColors": "Cores de texto",
+            "logos": "Logos e ícones",
+            "typography": "Tipografia",
+            "layout": "Layout",
+            "customCss": "CSS avançado",
+            "components": "Preview de componentes"
+        },
+        "colors": {
+            "primary": "Primária",
+            "primaryLight": "Primária clara",
+            "primaryDark": "Primária escura",
+            "secondary": "Secundária",
+            "secondaryLight": "Secundária clara",
+            "secondaryDark": "Secundária escura",
+            "background": "Fundo",
+            "surface": "Superfície",
+            "border": "Bordas",
+            "error": "Erro",
+            "warning": "Atenção",
+            "success": "Sucesso",
+            "info": "Informação",
+            "textPrimary": "Texto principal",
+            "textSecondary": "Texto secundário"
+        },
+        "logos": {
+            "header": "Logo principal",
+            "secondary": "Logo secundária",
+            "login": "Logo login",
+            "favicon": "Favicon (URL)"
+        },
+        "typography": {
+            "fontFamily": "Família de fonte",
+            "fontUrl": "URL da fonte",
+            "baseFontSize": "Tamanho base"
+        },
+        "layout": {
+            "borderRadius": "Raio de borda",
+            "headerHeight": "Altura do header",
+            "sidebarWidth": "Largura sidebar"
+        },
+        "darkMode": {
+            "light": "Claro",
+            "dark": "Escuro",
+            "system": "Sistema"
+        }
+    }
+}

@@ -1,0 +1,83 @@
+---
+_schema-version: "3.2"
+ID: vet-clinic
+version: 0.0.1
+description: "vet-clinic"
+
+parameters:
+    enable-parallel-deployments: true
+    deploy_mode: html5-repo
+
+modules:
+    - name: vet-clinic-html5deployer
+      type: com.sap.html5.application-content
+      path: html5deployer
+      requires:
+          - name: vet-clinic-html5repo-host
+      build-parameters:
+          builder: custom
+          commands:
+              - yarn install
+          ignore:
+              - node_modules/
+          requires:
+              - name: vet-clinic
+                artifacts:
+                    - "./*"
+                target-path: resources/vetclinic
+
+    - name: vet-clinic
+      type: html5
+      path: vet-clinic
+      build-parameters:
+          builder: custom
+          commands:
+              - yarn install
+              - yarn build
+          ignore:
+              - node_modules/
+          supported-platforms: []
+          build-result: dist
+
+    - name: vet-clinic-approuter
+      type: approuter.nodejs
+      path: app-router
+      build-parameters:
+          builder: custom
+          commands:
+              - yarn install
+          ignore:
+              - node_modules/
+      parameters:
+          stack: cflinuxfs4
+          memory: 256M
+      requires:
+          - name: vet-clinic-html5repo-runtime
+          - name: vet-clinic-xsuaa
+      properties:
+          COOKIE_BACKWARD_COMPATIBILITY: true
+
+resources:
+    - name: vet-clinic-html5repo-host
+      parameters:
+          service-name: vet-clinic-html5repo-host
+          service-plan: app-host
+          service: html5-apps-repo
+          config:
+              sizeLimit: 8
+      type: org.cloudfoundry.managed-service
+
+    - name: vet-clinic-html5repo-runtime
+      parameters:
+          service-name: vet-clinic-html5repo-runtime
+          service-plan: app-runtime
+          service: html5-apps-repo
+      type: org.cloudfoundry.managed-service
+
+    - name: vet-clinic-xsuaa
+      type: org.cloudfoundry.managed-service
+      parameters:
+          path: ./xs-security.json
+          service: xsuaa
+          service-name: vet-clinic-xsuaa-service
+          service-plan: application
