@@ -1,0 +1,15 @@
+{
+    "welcomeFile": "/index.html",
+    "routes": [
+        {
+            "source": "^(.*)\\.( js|css|map|json|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$",
+            "target": "$1.$2",
+            "service": "html5-apps-repo-rt"
+        },
+        {
+            "source": "^(.*)$",
+            "target": "/index.html",
+            "service": "html5-apps-repo-rt"
+        }
+    ]
+}

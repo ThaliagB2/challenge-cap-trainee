@@ -1,0 +1,8 @@
+{
+    "sap.app": {
+        "id": "vetclinic",
+        "applicationVersion": {
+            "version": "1.0.0"
+        }
+    }
+}

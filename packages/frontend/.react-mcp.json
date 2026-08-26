@@ -1,0 +1,11 @@
+{
+    "version": "1.0.0",
+    "project": {
+        "name": "vet-clinic",
+        "description": "vet-clinic frontend"
+    },
+    "app": {
+        "name": "vet-clinic",
+        "id": "vetclinic"
+    }
+}

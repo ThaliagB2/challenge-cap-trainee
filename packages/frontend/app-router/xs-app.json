@@ -1,0 +1,41 @@
+{
+    "welcomeFile": "/index.html",
+    "authenticationMethod": "route",
+    "sessionTimeout": 30,
+    "logout": {
+        "logoutEndpoint": "/logout",
+        "logoutPage": "/index.html"
+    },
+    "routes": [
+        {
+            "source": "^/.*/assets/(.*)$",
+            "target": "vetclinic/assets/$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/assets/(.*)$",
+            "target": "vetclinic/assets/$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/.*/(.+\\.(js|css|map|json|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))$",
+            "target": "vetclinic/$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/(.+\\.(js|css|map|json|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))$",
+            "target": "vetclinic/$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/(.*)$",
+            "target": "vetclinic/index.html",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        }
+    ]
+}

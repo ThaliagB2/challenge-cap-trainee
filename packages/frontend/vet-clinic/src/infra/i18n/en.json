@@ -1,0 +1,98 @@
+{
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "save": "Save",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "delete": "Delete",
+        "edit": "Edit",
+        "create": "New",
+        "search": "Search",
+        "actions": "Actions",
+        "yes": "Yes",
+        "no": "No",
+        "close": "Close",
+        "back": "Back",
+        "next": "Next",
+        "filter": "Filter",
+        "clear": "Clear",
+        "noData": "No data found",
+        "required": "Required field",
+        "confirmDelete": "Confirm deletion"
+    },
+    "menu": {
+        "home": "Home",
+        "settings": "Settings",
+        "themeSettings": "Theme Management"
+    },
+    "app": {
+        "welcome": "Welcome to vet-clinic!"
+    },
+    "errors": {
+        "generic": "An unexpected error occurred",
+        "network": "Connection error",
+        "unauthorized": "Session expired",
+        "notFound": "Not found"
+    },
+    "theme": {
+        "title": "Theme Management",
+        "subtitle": "Customize the portal visual identity.",
+        "save": "Save theme",
+        "saved": "Saved!",
+        "reset": "Reset",
+        "preview": "Live preview",
+        "previewFull": "Full screen",
+        "customCssHint": "Global CSS applied for advanced customization.",
+        "sections": {
+            "mainColors": "Main colors",
+            "bgColors": "Background and surface colors",
+            "statusColors": "Status colors",
+            "textColors": "Text colors",
+            "logos": "Logos and icons",
+            "typography": "Typography",
+            "layout": "Layout",
+            "customCss": "Advanced CSS",
+            "components": "Components preview"
+        },
+        "colors": {
+            "primary": "Primary",
+            "primaryLight": "Primary light",
+            "primaryDark": "Primary dark",
+            "secondary": "Secondary",
+            "secondaryLight": "Secondary light",
+            "secondaryDark": "Secondary dark",
+            "background": "Background",
+            "surface": "Surface",
+            "border": "Border",
+            "error": "Error",
+            "warning": "Warning",
+            "success": "Success",
+            "info": "Info",
+            "textPrimary": "Primary text",
+            "textSecondary": "Secondary text"
+        },
+        "logos": {
+            "header": "Main logo",
+            "secondary": "Secondary logo",
+            "login": "Login logo",
+            "favicon": "Favicon (URL)"
+        },
+        "typography": {
+            "fontFamily": "Font family",
+            "fontUrl": "Font URL",
+            "baseFontSize": "Base font size"
+        },
+        "layout": {
+            "borderRadius": "Border radius",
+            "headerHeight": "Header height",
+            "sidebarWidth": "Sidebar width"
+        },
+        "darkMode": {
+            "light": "Light",
+            "dark": "Dark",
+            "system": "System"
+        }
+    }
+}
